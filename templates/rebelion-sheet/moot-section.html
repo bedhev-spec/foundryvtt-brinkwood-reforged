@@ -1,0 +1,63 @@
+{{#if aspect.hasMootContent}}
+<section class="rebelion-moot" aria-label="{{aspect.name}} Moots">
+  {{#if aspect.unansweredMoots.length}}
+    <h3 class="rebelion-moot__heading" id="rebellion-{{actorId}}-moot-{{aspect.name}}">{{localize "BITD.RebellionUnansweredMoots" aspect=aspect.name}}</h3>
+    <div class="rebelion-moot__list">
+      {{#each aspect.unansweredMoots}}
+        <article class="bw-ruled-card rebelion-moot__card is-unanswered" data-moot-card>
+          <header class="bw-ruled-card__title-band"><span>{{localize "BITD.RebellionRank" rank=rank}}</span><strong>{{title}}</strong></header>
+          <div class="bw-ruled-card__body">
+            {{{description}}}
+            {{#if ../editable}}
+              <div class="rebelion-moot__choices">{{#each choices}}<button type="button" data-rebellion-action="choose-moot" data-catalogue-id="{{../id}}" data-choice="{{this}}">{{this}}</button>{{/each}}</div>
+              <div class="rebelion-moot__custom">
+                <label>{{localize "BITD.RebellionCustomAnswer"}}<input type="text" data-moot-custom-answer></label>
+                <button type="button" data-rebellion-action="save-moot-answer" data-catalogue-id="{{id}}">{{localize "BITD.RebellionSaveDecision"}}</button>
+              </div>
+            {{/if}}
+          </div>
+        </article>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if aspect.recordedMoots.length}}
+    <details class="rebelion-moot__history">
+      <summary>{{localize "BITD.RebellionRecordedHistory" aspect=aspect.name}}</summary>
+      {{#each aspect.recordedMoots}}
+        <article class="bw-ruled-card rebelion-moot__card is-recorded" data-moot-card>
+          <strong>{{title}}</strong>
+          <p>{{#if snapshot.selectedChoice}}{{snapshot.selectedChoice}}{{else}}{{snapshot.customAnswer}}{{/if}}</p>
+          {{#if ../editable}}
+            <details class="rebelion-moot__recorded">
+              <summary>{{localize "BITD.RebellionEditDecision"}}</summary>
+              {{#each choices}}<label><input type="radio" data-moot-choice name="moot-{{../id}}" value="{{this}}" {{#if (eq this ../snapshot.selectedChoice)}}checked{{/if}}> {{this}}</label>{{/each}}
+              <div class="rebelion-moot__custom">
+                <label>{{localize "BITD.RebellionCustomAnswer"}}<input type="text" data-moot-custom-answer value="{{snapshot.customAnswer}}"></label>
+                <button type="button" data-rebellion-action="save-moot-answer" data-catalogue-id="{{id}}">{{localize "BITD.RebellionSaveDecision"}}</button>
+                {{#if ../canCorrectRank}}
+                  <button type="button" class="rebelion-correction rebelion-correction--clear" data-rebellion-action="clear-moot-answer" data-aspect-name="{{aspect}}" data-decision-id="{{snapshot.id}}" data-catalogue-id="{{id}}" data-decision-title="{{title}}">{{localize "BITD.RebellionClearAnswer"}}</button>
+                {{/if}}
+              </div>
+            </details>
+          {{/if}}
+        </article>
+      {{/each}}
+    </details>
+  {{/if}}
+
+  {{#if aspect.unmatchedDecisions.length}}
+    <details class="rebelion-moot__history">
+      <summary>{{localize "BITD.RebellionRecordedHistory" aspect=aspect.name}}</summary>
+      {{#each aspect.unmatchedDecisions}}
+        <div class="rebelion-moot__orphan">
+          <p>{{title}}: {{selectedChoice}}{{customAnswer}}</p>
+          {{#if ../canCorrectRank}}
+            <button type="button" class="rebelion-correction rebelion-correction--clear" data-rebellion-action="clear-moot-answer" data-aspect-name="{{aspect}}" data-decision-id="{{id}}" data-catalogue-id="{{catalogueId}}" data-decision-title="{{title}}">{{localize "BITD.RebellionClearAnswer"}}</button>
+          {{/if}}
+        </div>
+      {{/each}}
+    </details>
+  {{/if}}
+</section>
+{{/if}}

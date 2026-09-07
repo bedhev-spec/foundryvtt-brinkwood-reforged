@@ -1,0 +1,127 @@
+/* Shared tab and panel visual language. Geometry stays with each sheet. */
+
+.sheet-tab-workspace {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sheet-tab-content {
+  min-height: 0;
+  overflow: hidden;
+
+  > .tab.active {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+}
+.sheet-tabs {
+  // Opaque component colors keep Character and Mask tabs identical even when
+  // their parent sheets use different parchment tokens.
+  --bw-tab-frame: #e0d7c5;
+  --bw-tab-surface: #e9e2d5;
+  --bw-tab-active: #f0ece3;
+  --bw-tab-transition: 120ms ease;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 36px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--bw-rule);
+  border-radius: 3px;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bw-tab-frame);
+}
+
+.sheet-tabs .item {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 40px;
+  padding: 10px 12px;
+  color: var(--bw-ink-soft);
+  background-color: var(--bw-tab-surface);
+  border-bottom: 3px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color var(--bw-tab-transition), border-color var(--bw-tab-transition), box-shadow var(--bw-tab-transition), color var(--bw-tab-transition);
+
+  &:hover:not(.active),
+  &:focus-visible:not(.active) {
+    color: var(--bw-ink);
+      background-color: #eee9e1;
+  }
+
+  &.active {
+    color: var(--bw-ink);
+    background-color: var(--bw-tab-active);
+    border-bottom-color: var(--bw-accent);
+    box-shadow: inset 0 -3px 0 var(--bw-accent), 0 1px 3px rgba(33, 27, 29, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: -3px;
+  }
+}
+
+@container (max-width: 480px) {
+  .sheet-tabs {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .sheet-tabs .item {
+    flex: 0 0 auto;
+  }
+}
+
+.sheet-tabs button.item {
+  border: 0;
+  font: inherit;
+}
+
+.sheet-panel {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(141, 98, 93, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+&.actor.mask .mask-sheet__panel > h2,
+&.actor.mask .mask-sheet__panel.effects > h2 {
+  margin: 0;
+  padding: 7px 10px;
+  color: var(--bw-inverse);
+  background: var(--bw-ink);
+  border-bottom: 1px solid rgba(141, 98, 93, 0.7);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+&.actor.mask .mask-sheet__panel .effects-category[data-effect-panel] {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  .effects-category__header {
+    min-height: 38px;
+    padding: 6px 10px;
+    color: var(--bw-inverse);
+    background: var(--bw-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-tabs .item {
+    transition-duration: 0.01ms;
+  }
+}

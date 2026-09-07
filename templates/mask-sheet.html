@@ -1,0 +1,86 @@
+<form class="{{cssClass}} actor-sheet mask-sheet" data-actor-uuid="{{actor.uuid}}" autocomplete="off">
+  <header class="mask-sheet__identity-block sheet-identity bw-section-frame{{#if maskItem}} mask-sheet__identity-block--with-attributes{{/if}}">
+    {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+
+    <section class="mask-sheet__identity sheet-identity__details" aria-label="{{localize 'BITD.Mask'}}">
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-name.html" identityId=(concat "mask-" _id) name=name nameBoxClass="mask-sheet__name-box"}}
+
+      <div class="sheet-identity__rows">
+        {{#each identityRows as |row|}}
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-row.html" row=row editable=../editable}}
+        {{/each}}
+      </div>
+
+      <section class="mask-sheet__trackers sheet-identity__trackers" aria-label="{{localize 'BITD.Experience'}}">
+        <div class="big-teeth-section mask-tracker">
+          {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html" trackerId=(concat "mask-" _id "-experience") trackerClass="mask-experience" tracker=system.experience label="BITD.Experience" trackerPath="system.experience.value" toothColor="blue" tooltip=system.xp_tooltip editable=editable}}
+        </div>
+
+        <div class="big-teeth-section mask-tracker">
+          {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html" trackerId=(concat "mask-" _id "-essence") trackerClass="mask-essence" tracker=system.essence trackerPath="system.essence.value" toothColor="red" tooltip="Mask.Essence.Tooltip" rollLabel="Mask.Essence.Name" rollValue=system.oath editable=editable}}
+        </div>
+      </section>
+    </section>
+
+    {{#if maskItem}}
+    {{> "systems/brinkwood-reforged/templates/parts/mask-attributes.html"}}
+    {{/if}}
+  </header>
+
+  <div class="mask-sheet__layout">
+    <section class="mask-sheet__main sheet-tab-workspace">
+      <nav class="tabs sheet-tabs mask-sheet__tabs" aria-label="{{localize 'BITD.Mask'}}" data-group="primary" role="tablist">
+    <button type="button" id="mask-{{_id}}-tab-traits" class="item {{#if (eq tabs.primary "traits")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="traits" role="tab" tabindex="{{#if (eq tabs.primary "traits")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-traits" aria-selected="{{#if (eq tabs.primary "traits")}}true{{else}}false{{/if}}">{{localize "Mask.Abilities"}}</button>
+    <button type="button" id="mask-{{_id}}-tab-mask" class="item {{#if (eq tabs.primary "mask")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="mask" role="tab" tabindex="{{#if (eq tabs.primary "mask")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-mask" aria-selected="{{#if (eq tabs.primary "mask")}}true{{else}}false{{/if}}">{{localize "Mask.Tab"}}</button>
+        {{#if isGM}}
+      <button type="button" id="mask-{{_id}}-tab-effects" class="item {{#if (eq tabs.primary "effects")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="effects" role="tab" tabindex="{{#if (eq tabs.primary "effects")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-effects" aria-selected="{{#if (eq tabs.primary "effects")}}true{{else}}false{{/if}}">{{localize "BITD.Effects"}}</button>
+        {{/if}}
+      </nav>
+
+      <div class="mask-sheet__tab-content sheet-tab-content">
+      <section id="mask-{{_id}}-panel-traits" class="tab mask-sheet__panel {{#if (eq tabs.primary "traits")}}active{{/if}}" data-group="primary" data-tab="traits" role="tabpanel" aria-labelledby="mask-{{_id}}-tab-traits">
+        <div class="mask-sheet__traits-workspace">
+      <div class="mask-sheet__trait-library">
+        <div class="mask-sheet__traits">
+          {{#if canAddMaskTraits}}
+          <button type="button" class="mask-sheet__trait-add item-add-popup" data-item-type="trait">
+            <span class="mask-sheet__trait-add-content">
+                  <span class="mask-sheet__trait-add-icon" aria-hidden="true"></span>
+              <span class="mask-sheet__trait-add-label">{{localize "Add"}} {{localize "Mask.Ability"}}</span>
+            </span>
+          </button>
+          {{/if}}
+              {{#each traits as |trait|}}
+              {{> "systems/brinkwood-reforged/templates/parts/actor/trait-card.html" itemId=trait._id title=trait.name description=trait.system.description purchased=trait.system.purchased editable=../editable canDelete=trait.canDelete}}
+              {{/each}}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="mask-{{_id}}-panel-mask" class="tab mask-sheet__panel mask-sheet__mask {{#if (eq tabs.primary "mask")}}active{{/if}}" data-group="primary" data-tab="mask" role="tabpanel" aria-labelledby="mask-{{_id}}-tab-mask">
+        {{#if maskItem}}
+        <article class="mask-sheet__mask-overview bw-section-frame">
+          <header class="bw-section-frame__header"><h2>{{maskItem.name}}</h2></header>
+          <div class="mask-sheet__mask-description">{{{maskDescriptionHtml}}}</div>
+        </article>
+        {{#if alchemicBlood}}
+        {{> "systems/brinkwood-reforged/templates/parts/mask/alchemic-blood.html"}}
+        {{else if alchemicBloodMissing}}
+        <p class="mask-sheet__warning" role="status">{{localize "Mask.AlchemicBlood.Missing"}}</p>
+        {{/if}}
+        {{else}}
+        <p class="mask-sheet__empty">{{localize "Mask.SelectForDetails"}}</p>
+        {{/if}}
+      </section>
+
+      {{#if isGM}}
+      <section id="mask-{{_id}}-panel-effects" class="tab mask-sheet__panel effects {{#if (eq tabs.primary "effects")}}active{{/if}}" data-group="primary" data-tab="effects" role="tabpanel" aria-labelledby="mask-{{_id}}-tab-effects">
+        {{> "systems/brinkwood-reforged/templates/parts/actor-active-effects.html"}}
+      </section>
+      {{/if}}
+      </div>
+    </section>
+  </div>
+</form>

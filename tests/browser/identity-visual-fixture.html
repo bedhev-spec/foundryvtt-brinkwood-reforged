@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brinkwood identity visual comparison</title>
+    <link rel="stylesheet" href="http://localhost:30000/css/foundry2.css">
+    <link id="brinkwood-stylesheet" rel="stylesheet" href="../../styles/blades.css">
+    <style>
+      body { margin: 24px; font: 16px system-ui, sans-serif; }
+      .controls { display: grid; gap: 8px; max-width: 720px; margin-block-end: 20px; }
+      .controls fieldset { display: flex; flex-wrap: wrap; gap: 12px; }
+      #comparison-stage { inline-size: 700px; max-inline-size: 100%; border: 2px solid #333; resize: horizontal; overflow: auto; }
+      .fixture-case { margin: 12px; padding: 10px; }
+      .fixture-case h2 { margin-block: 0 8px; font-size: 1rem; }
+      .fixture-portrait { grid-row: 1 / span 3; inline-size: 72px; block-size: 72px; background: #bbb; }
+      .fixture-trackers { display: none; }
+      output { display: block; white-space: pre-wrap; font-family: ui-monospace, monospace; }
+    </style>
+  </head>
+  <body>
+    <h1>Identity visual comparison</h1>
+    <p>Pre-rendered from the shared row partial DOM contract. This fixture compares stylesheet geometry; it does not run Foundry ApplicationV2.</p>
+    <section class="controls" aria-label="Comparison controls">
+      <fieldset>
+        <legend>Stylesheet</legend>
+        <label><input type="radio" name="stylesheet" value="current" checked> Current</label>
+        <label><input type="radio" name="stylesheet" value="baseline"> Baseline</label>
+      </fieldset>
+      <fieldset>
+        <legend>Sheet width</legend>
+        <button type="button" data-width="700">700px</button>
+        <button type="button" data-width="620">620px</button>
+        <button type="button" data-width="480">480px</button>
+        <button type="button" data-width="410">410px</button>
+      </fieldset>
+      <div>
+        <button id="capture-identity-geometry" type="button">Capture active stylesheet geometry</button>
+        <button id="compare-identity-geometry" type="button">Compare captured baseline and current</button>
+      </div>
+      <p id="stylesheet-status" data-status="ready">Current stylesheet ready.</p>
+      <output id="identity-geometry-results" aria-live="polite">Choose a stylesheet and width, then capture geometry.</output>
+    </section>
+
+    <main id="comparison-stage" data-width="700">
+      <section class="fixture-case">
+        <h2>Character: editable selected, empty, and long read-only value</h2>
+        <form class="brinkwood actor pc character actor-sheet character-sheet" autocomplete="off">
+          <section class="flex-horizontal name-alias sheet-identity bw-section-frame">
+          <div class="fixture-portrait sheet-identity__portrait" aria-hidden="true"></div>
+          <div class="grow-two sheet-identity__details">
+            <div class="sheet-identity__rows sheet-identity__rows--separated character-identity-choices">
+              <div class="item-block sheet-identity__row" data-case="character-selected-editable">
+                <div class="item-class-label"><button type="button" class="item-add-popup identity-choice__text"><span class="identity-choice__content">Class</span></button></div>
+                <div class="identity-choice__track"><div class="item identity-choice__slot identity-choice__value"><button type="button" class="item-body identity-choice__text"><span class="item-name identity-choice__content">Ash Guard</span></button><button type="button" class="item-delete identity-choice__remove" aria-label="Remove"><span class="identity-choice__content" aria-hidden="true">×</span></button></div></div>
+              </div>
+              <div class="item-block sheet-identity__row" data-case="character-empty-editable">
+                <div class="item-class-label"><button type="button" class="item-add-popup identity-choice__text"><span class="identity-choice__content">Pact</span></button></div>
+                <div class="identity-choice__track"><div class="identity-choice__slot identity-choice__blank" aria-hidden="true"></div></div>
+              </div>
+              <div class="item-block sheet-identity__row" data-case="character-long-readonly">
+                <div class="item-class-label"><span class="identity-choice__text"><span class="identity-choice__content">An unusually long localized identity label</span></span></div>
+                <div class="identity-choice__track"><div class="item identity-choice__slot identity-choice__value"><button type="button" class="item-body identity-choice__text"><span class="item-name identity-choice__content">A very long selected identity value that must expose wrapping or ellipsis changes</span></button></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="grow-two fixture-trackers sheet-identity__trackers"></div>
+          </section>
+        </form>
+      </section>
+
+      <section class="fixture-case">
+        <h2>Mask: editable selected and read-only empty</h2>
+        <form class="brinkwood actor pc mask mask-sheet" autocomplete="off">
+          <header class="mask-sheet__identity-block sheet-identity bw-section-frame">
+          <div class="fixture-portrait sheet-identity__portrait" aria-hidden="true"></div>
+          <section class="mask-sheet__identity sheet-identity__details">
+            <div class="sheet-identity__rows">
+              <div class="item-block sheet-identity__row" data-case="mask-selected-editable">
+                <div class="item-class-label"><button type="button" class="item-add-popup identity-choice__text"><span class="identity-choice__content">Mask type</span></button></div>
+                <div class="identity-choice__track"><div class="item identity-choice__slot identity-choice__value"><button type="button" class="item-body identity-choice__text item-add-popup"><span class="item-name identity-choice__content">Briar Mask</span></button><button type="button" class="item-delete identity-choice__remove" aria-label="Remove"><span class="identity-choice__content" aria-hidden="true">×</span></button></div></div>
+              </div>
+              <div class="item-block sheet-identity__row" data-case="mask-empty-readonly">
+                <div class="item-class-label"><span class="identity-choice__text"><span class="identity-choice__content">Optional identity</span></span></div>
+                <div class="identity-choice__track"><div class="identity-choice__slot identity-choice__blank" aria-hidden="true"></div></div>
+              </div>
+            </div>
+          </section>
+          </header>
+        </form>
+      </section>
+    </main>
+    <script type="module" src="./identity-visual-fixture.mjs"></script>
+  </body>
+</html>

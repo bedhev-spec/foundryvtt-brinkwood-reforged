@@ -1,0 +1,43 @@
+<div class="global-clock-dialog__content">
+  <div class="form-group">
+    <label for="global-clock-name">{{localize "BITD.GlobalClock.Name"}}</label>
+    <div class="form-fields">
+      <input id="global-clock-name" name="name" type="text" value="{{clock.name}}" required autofocus>
+    </div>
+  </div>
+  {{#if editing}}
+  <div class="form-group">
+    <label for="global-clock-value">{{localize "BITD.GlobalClock.Value"}}</label>
+    <div class="form-fields">
+      <input id="global-clock-value" name="value" type="number" value="{{clock.value}}" min="0" max="{{clock.max}}" step="1">
+    </div>
+  </div>
+  {{else}}
+  <input name="value" type="hidden" value="0">
+  {{/if}}
+  <div class="form-group">
+    <label for="global-clock-size">{{localize "BITD.GlobalClock.Size"}}</label>
+    <div class="form-fields">
+      <select id="global-clock-size" name="max">
+        {{selectOptions sizes selected=defaultSize}}
+      </select>
+      <span class="hint">{{localize "BITD.GlobalClock.MaxSize" max=maxSize}}</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="global-clock-color">{{localize "BITD.GlobalClock.Color"}}</label>
+    <div class="form-fields">
+      <color-picker id="global-clock-color" name="color" value="{{clock.color}}"></color-picker>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="global-clock-private">{{localize "BITD.GlobalClock.Private"}}</label>
+    <div class="form-fields">
+      <input id="global-clock-private" name="private" type="checkbox"{{checked clock.private}}>
+    </div>
+  </div>
+</div>
+<footer class="form-footer">
+  <button type="submit"><i class="fa-solid fa-check" aria-hidden="true"></i>{{localize "Save"}}</button>
+  <button type="button" data-action="cancel"><i class="fa-solid fa-xmark" aria-hidden="true"></i>{{localize "Cancel"}}</button>
+</footer>

@@ -1,0 +1,43 @@
+{
+  "name": "Brinkwood browser regression fixtures",
+  "fixturePath": "tests/browser/browser-regression-fixture.html",
+  "geometryFixtures": [
+    {
+      "path": "tests/browser/character-sheet-scroll-geometry-fixture.html",
+      "resultElement": "#character-scroll-geometry-results"
+    },
+    {
+      "path": "tests/browser/sheet-geometry-fixture.html",
+      "resultElement": "#sheet-geometry-results"
+    },
+    {
+      "path": "tests/browser/clock-layout-fixture.html",
+      "resultElement": "#clock-layout-results"
+    },
+    {
+      "path": "tests/browser/rebellion-alignment-fixture.html",
+      "resultElement": "#rebellion-alignment-results"
+    }
+  ],
+  "coverage": {
+    "nativeDom": [
+      "Actor notes persistence through the production rich-text binding",
+      "Form-save failure, visible retry, and immutable retry payload through production sheet persistence",
+      "Dialog picker radio selection through the production picker helpers",
+      "Replacement-DOM scroll restoration through the production view-state helpers",
+      "Current-versus-baseline computed identity-row geometry at release widths",
+      "Character, Mask, NPC, modern Item, and legacy Item scroll ownership, horizontal containment, reachable content, and keyboard focus at 700px, 480px, and 410px",
+      "Global clock face, add control, capsule, row alignment, control capacity, and vertical add alignment through rendered CSS"
+    ],
+    "liveFoundryV13": [
+      "ApplicationV2 render and replacement lifecycle",
+      "Foundry ProseMirror editor behavior",
+      "DialogV2 presentation and document persistence"
+    ]
+  },
+  "runner": {
+    "driver": "CUA",
+    "resultElement": "#browser-regression-results",
+    "statusAttributes": ["#editor-fixture[data-status]", "#picker-fixture[data-status]", "#scroll-fixture[data-status]"]
+  }
+}

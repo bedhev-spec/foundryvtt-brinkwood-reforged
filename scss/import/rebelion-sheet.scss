@@ -1,0 +1,1073 @@
+/*
+ * Rebellion owns only its workspace and record layout. Shared identity,
+ * tracker, tab, frame, ruled-card, focus, and save-status visuals remain in
+ * design-system sources.
+ */
+& {
+  --rebellion-gap: 10px;
+
+  min-width: 440px;
+  min-height: 560px;
+
+  .window-content {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .rebelion-sheet__form {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: var(--rebellion-gap);
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+    background: transparent;
+    container-type: inline-size;
+  }
+
+  .rebelion-sheet__header {
+    --bw-portrait-size: 132px;
+    --bw-portrait-shadow-offset: 4px;
+
+    display: grid;
+    grid-template-columns: 132px minmax(180px, 0.72fr) minmax(320px, 1.55fr);
+    align-items: start;
+    gap: 10px 16px;
+    padding: 14px;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .rebelion-sheet__identity,
+  .rebelion-sheet__name,
+  .rebelion-sheet__trackers,
+  .rebelion-sheet__status-line {
+    min-width: 0;
+  }
+
+  .rebelion-sheet__identity {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+  }
+
+  .rebelion-sheet__trackers {
+    gap: 0;
+  }
+
+  .rebelion-sheet__trackers > .rebelion-tracker {
+    align-self: flex-start;
+    width: fit-content;
+    max-width: calc(100% - 10px);
+    padding-block: 3px;
+    padding-right: 10px;
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-sheet__trackers > .rebelion-tracker:last-child {
+    border-bottom: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-tyranny {
+    min-width: 0;
+    margin-bottom: 8px;
+  }
+
+  .rebelion-tyranny > label {
+    color: var(--bw-ink-soft);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .rebelion-tyranny__control {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .rebelion-tyranny input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 36px;
+    margin: 0;
+    padding-inline: 4px;
+    text-align: center;
+  }
+  .rebelion-tyranny small { color: var(--bw-ink-soft); font-weight: 400; }
+
+  .rebelion-sheet__status-line {
+    margin: 0;
+    color: var(--bw-ink-soft);
+    font-size: 0.88rem;
+    line-height: 1.25;
+  }
+
+  .rebelion-sheet__status-line.is-ready {
+    color: var(--bw-ink);
+    font-weight: 700;
+  }
+
+  .rebelion-sheet__guidance {
+    margin: 0;
+    color: var(--bw-ink-soft);
+    line-height: 1.3;
+  }
+
+  .rebelion-sheet__workspace,
+  .rebelion-sheet__content,
+  .rebelion-sheet__panel,
+  .rebelion-sheet__panel-stack {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  // The legacy global `.brinkwood section` rule is still required by older
+  // sheets. Rebellion explicitly owns this section as a vertical tab viewport.
+  .rebelion-sheet__content {
+    display: block;
+  }
+
+  // Rebellion's three panels should only yield space when a scrollbar is
+  // actually present; the shared stable gutter otherwise shortens every card.
+  .rebelion-sheet__content > .rebelion-sheet__panel.active {
+    scrollbar-gutter: auto;
+  }
+
+  .rebelion-sheet__content > .rebelion-sheet__panel.active {
+    width: 100%;
+  }
+
+  .rebelion-sheet__workspace .rebelion-sheet__panel {
+    padding: 0 0 10px;
+  }
+
+  .rebelion-sheet__panel-stack {
+    display: grid;
+    align-content: start;
+    gap: var(--rebellion-gap);
+    width: 100%;
+  }
+
+  // These are vertical section shells. Reset the broad legacy section flex
+  // rule here while leaving shared frame decoration with the design system.
+  .rebelion-settlements,
+  .rebelion-conclave,
+  .rebelion-legacy {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .bw-section-frame__header.rebelion-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+    padding: 6px 9px;
+    background: var(--bw-paper-deep);
+    color: var(--bw-ink);
+  }
+
+  .rebelion-section-heading h2,
+  .rebelion-section-heading p {
+    margin: 0;
+  }
+
+  .rebelion-section-heading h2 {
+    border: 0;
+    color: inherit;
+    font-size: 1rem;
+    line-height: 1.15;
+  }
+
+  .rebelion-section-heading p {
+    color: var(--bw-ink-soft);
+    font-size: 0.82rem;
+    line-height: 1.2;
+  }
+
+  .rebelion-aspect__body,
+  .rebelion-underground__body {
+    padding: 9px;
+  }
+
+  .rebelion-aspect__body {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+
+  .rebelion-aspects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--rebellion-gap);
+    min-width: 0;
+  }
+
+  .rebelion-aspect-summary {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100%;
+    min-width: 0;
+  }
+
+  .rebelion-aspect-summary > .bw-ruled-card__body {
+    display: grid;
+    align-content: start;
+    gap: 9px;
+    min-width: 0;
+  }
+
+  .rebelion-aspect-summary > .bw-ruled-card__title-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 3px 12px;
+  }
+
+.rebelion-aspect-summary > .bw-ruled-card__title-band > span {
+  color: var(--bw-ink-soft);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.rebelion-aspect-summary__rank {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px 8px;
+  color: var(--bw-ink-soft);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.rebelion-sheet__form .rebelion-correction {
+  width: auto;
+  min-height: 26px;
+  margin: 0;
+  padding: 3px 8px;
+  border: 1px solid color-mix(in srgb, var(--bw-red) 62%, var(--bw-rule));
+  background: color-mix(in srgb, var(--bw-paper) 88%, var(--bw-red));
+  color: var(--bw-red-dark, #702923);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.rebelion-sheet__form .rebelion-correction:hover,
+.rebelion-sheet__form .rebelion-correction:focus-visible {
+  border-color: var(--bw-red);
+  background: color-mix(in srgb, var(--bw-paper) 72%, var(--bw-red));
+}
+
+.rebelion-moot__orphan {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 10px;
+}
+
+  .rebelion-aspect__tracker,
+  .rebelion-settlement__trackers {
+    min-width: 0;
+  }
+
+  .rebelion-aspect__maximum {
+    margin: 0;
+    color: var(--bw-ink-soft);
+    font-style: italic;
+  }
+
+  .rebelion-aspect__downtime {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-aspect__downtime h3,
+  .rebelion-aspect__downtime p {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .rebelion-aspect__downtime h3 {
+    color: var(--bw-ink);
+    font-size: 0.88rem;
+  }
+
+  .rebelion-aspect__downtime small {
+    display: block;
+    color: var(--bw-ink-soft);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .rebelion-aspect__actions {
+    color: var(--bw-ink-soft);
+    line-height: 1.25;
+  }
+
+  .rebelion-aspect-summary__footer {
+    min-width: 0;
+    margin: 0;
+    padding: 8px 12px 13px;
+    border-top: 1px solid var(--bw-rule);
+    color: var(--bw-ink-soft);
+  }
+
+  .rebelion-aspect__next-moot {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .rebelion-moot {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    min-width: 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-moot h3,
+  .rebelion-moot p {
+    margin: 0;
+  }
+
+  .rebelion-moot__heading {
+    color: var(--bw-ink);
+    font-family: "Crimson Text", serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .rebelion-moot__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .rebelion-moot__card {
+    align-self: start;
+    min-width: 0;
+  }
+
+  .rebelion-moot__card.is-recorded {
+    border-left-color: #315f82;
+  }
+
+  .rebelion-moot__card.is-unanswered { border-left-color: var(--bw-red); }
+  .rebelion-moot__recorded summary,
+  .rebelion-moot__orphan summary { cursor: pointer; font-weight: 700; }
+  .rebelion-moot__recorded[open] summary { margin-bottom: 7px; }
+
+  .rebelion-moot__card .bw-ruled-card__title-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+  }
+
+  .rebelion-moot__card .bw-ruled-card__body {
+    display: grid;
+    gap: 8px;
+  }
+
+  .rebelion-moot__choices,
+  .rebelion-moot__custom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 5px;
+  }
+
+  .rebelion-moot__choices button,
+  .rebelion-moot__custom button {
+    width: auto;
+    min-height: 32px;
+    margin: 0;
+  }
+
+  .rebelion-moot__custom label {
+    display: grid;
+    flex: 1 1 170px;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .rebelion-moot__custom input {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .rebelion-moot__empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 12px;
+    border: 1px dashed var(--bw-rule);
+    background: var(--bw-paper);
+    color: var(--bw-ink-soft);
+    text-align: center;
+    font-style: italic;
+  }
+
+  .rebelion-moot__historical {
+    color: var(--bw-ink-soft);
+    font-style: italic;
+  }
+
+  .bw-section-frame__header.rebelion-settlements__header {
+    background: var(--bw-ruled-card-title-band);
+    color: var(--bw-ink);
+  }
+
+  .rebelion-underground > summary {
+    cursor: pointer;
+  }
+
+  .rebelion-underground > summary:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: -3px;
+  }
+
+  .rebelion-underground__body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    font-size: calc(1rem + 1.5px);
+  }
+
+  .rebelion-underground__body > p {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+.rebelion-underground__body label:not(.rebelion-underground__actor) {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .rebelion-underground__actors {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 4px 10px;
+    min-width: 0;
+    margin: 0;
+    padding: 7px;
+    border: 1px solid var(--bw-rule);
+  }
+
+.rebelion-underground__actor {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+    box-sizing: border-box;
+    height: 30px;
+    min-width: 0;
+    padding: 3px 4px;
+    cursor: pointer;
+  }
+
+  .rebelion-underground__actor-checkbox {
+    display: grid;
+    width: 18px;
+    height: 18px;
+    place-items: center;
+  }
+
+.rebelion-underground__actor-text {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  font-family: "Crimson Text", serif;
+  font-size: calc(1rem + 1.5px);
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.rebelion-underground__actor-name,
+.rebelion-underground__actor-resource-label,
+.rebelion-underground__actor-resource-value {
+  font: inherit;
+  line-height: 20px;
+}
+
+  .rebelion-underground__actor-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+.rebelion-underground__actor-resource {
+  display: grid;
+  grid-template-columns: 4.5rem 2ch;
+  align-items: baseline;
+  gap: 6px;
+  font: inherit;
+  color: var(--bw-ink-soft);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+  .rebelion-underground__actor-resource-label,
+  .rebelion-underground__actor-resource-value {
+    text-align: right;
+  }
+
+  .rebelion-underground__actor-resource-value {
+    font-variant-numeric: tabular-nums;
+  }
+  .rebelion-underground__actor-groups {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 14px;
+    min-width: 0;
+  }
+  .rebelion-underground__actor-group {
+    display: grid;
+    align-content: start;
+    gap: 3px;
+    min-width: 0;
+  }
+  .rebelion-underground__actor-group h4 {
+    margin: 0 0 2px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--bw-rule);
+    color: var(--bw-ink);
+    font-size: calc(0.85rem + 1.5px);
+  }
+  .rebelion-underground__actor:hover {
+    background: color-mix(in srgb, var(--bw-paper) 84%, var(--bw-blue, #315f82));
+  }
+  .rebelion-underground__actor .bw-checkbox-x {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+  .rebelion-underground__actor-empty {
+    margin: 0;
+    color: var(--bw-ink-soft);
+    font-style: italic;
+  }
+  .rebelion-underground__outcomes {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    min-width: 0;
+  }
+  .rebelion-underground__exact-preview {
+    grid-column: 1 / -1;
+    min-width: 0;
+    padding: 8px 10px;
+    border-left: 3px solid var(--bw-blue, #315f82);
+    background: color-mix(in srgb, var(--bw-paper) 88%, var(--bw-blue, #315f82));
+    color: var(--bw-ink);
+    line-height: 1.35;
+    white-space: pre-line;
+  }
+  .rebelion-underground__body[aria-busy="true"] { opacity: 0.72; }
+  .rebelion-underground__body button:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.55);
+    opacity: 0.58;
+  }
+
+  .rebelion-legacy {
+    padding: 9px;
+    border: 1px dashed var(--bw-rule);
+    background: color-mix(in srgb, var(--bw-paper) 82%, transparent);
+  }
+
+  .rebelion-legacy__header {
+    display: grid;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  .rebelion-legacy__header h2,
+  .rebelion-legacy__header p {
+    margin: 0;
+  }
+
+  .rebelion-legacy__header h2 {
+    color: var(--bw-ink);
+    font-size: .9rem;
+  }
+
+  .rebelion-legacy__header p {
+    color: var(--bw-ink-soft);
+    font-size: .78rem;
+    line-height: 1.25;
+  }
+
+  .rebelion-underground__body select {
+    min-width: 0;
+    margin: 0;
+    font-size: inherit;
+  }
+
+  .rebelion-underground__body button {
+    grid-column: 1 / -1;
+    width: fit-content;
+    min-height: 32px;
+    margin: 0;
+    font-size: inherit;
+  }
+
+  .rebelion-settlements__list,
+  .rebelion-conclave__list {
+    min-width: 0;
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-settlement {
+    display: grid;
+    grid-template-columns: minmax(150px, .42fr) minmax(360px, 1fr);
+    align-items: center;
+    gap: 10px 20px;
+    min-width: 0;
+    padding: 11px 14px;
+    background: var(--bw-paper);
+  }
+
+  .rebelion-settlement + .rebelion-settlement {
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-settlement.is-liberated {
+    box-shadow: inset 3px 0 0 #315f82;
+    background: color-mix(in srgb, var(--bw-paper) 92%, #315f82);
+  }
+
+  .rebelion-settlement__identity {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 6px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .rebelion-settlement__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 3px 7px;
+    min-width: 0;
+  }
+
+  .rebelion-settlement__identity strong {
+    color: var(--bw-ink);
+    font-family: "Crimson Text", serif;
+    font-size: 1.08rem;
+    line-height: 1.15;
+  }
+
+  .rebelion-settlement__status {
+    padding: 1px 5px;
+    border: 1px solid color-mix(in srgb, #315f82 62%, var(--bw-rule));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bw-paper) 82%, #315f82);
+    color: #315f82;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .rebelion-settlement__undo {
+    justify-self: start;
+  }
+
+  .rebelion-settlement__trackers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 6px 16px;
+    width: 100%;
+  }
+
+  .rebelion-settlement__trackers > .rebelion-tracker {
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .rebelion-conclave__header {
+    width: 100%;
+    background: var(--bw-ruled-card-title-band);
+  }
+
+  .rebelion-conclave__header > div {
+    min-width: 0;
+  }
+
+  .rebelion-conclave__header button {
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0;
+  }
+
+  .rebelion-conclave__list {
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    background: transparent;
+  }
+
+  .rebelion-ally {
+    min-width: 0;
+  }
+
+  .rebelion-ally__summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+    min-width: 0;
+  }
+
+  .rebelion-ally__summary > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 9px;
+    min-width: 0;
+  }
+
+  .rebelion-ally__summary-actions {
+    justify-content: flex-end;
+  }
+
+  .rebelion-ally__quick-remove {
+    flex: 0 0 28px;
+    width: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .rebelion-ally__source-name,
+  .rebelion-ally__origin {
+    color: var(--bw-ink-soft);
+    font-size: .78rem;
+    font-weight: 700;
+  }
+
+  .rebelion-ally__body {
+    display: grid;
+    gap: 9px;
+    min-width: 0;
+  }
+
+  .rebelion-ally__strengths {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .rebelion-ally__strengths span {
+    padding: 2px 7px;
+    border: 1px solid var(--bw-rule);
+    border-radius: 999px;
+    background: var(--bw-paper-deep);
+    color: var(--bw-ink);
+    font-size: .78rem;
+    font-weight: 700;
+  }
+
+  .rebelion-ally__strengths em {
+    color: var(--bw-ink-soft);
+  }
+
+  .rebelion-ally__editor {
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-ally__editor > summary {
+    width: fit-content;
+    padding-top: 8px;
+    color: var(--bw-ink);
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .rebelion-ally__editor > summary:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: 2px;
+  }
+
+  .rebelion-ally__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+    min-width: 0;
+    padding-top: 9px;
+  }
+
+  .rebelion-ally__fields label {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+    color: var(--bw-ink);
+    font-weight: 700;
+  }
+
+  .rebelion-ally__field-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    min-width: 0;
+    color: var(--bw-ink);
+    font-size: inherit;
+    font-weight: 700;
+  }
+
+  .rebelion-ally__field-heading small {
+    color: var(--bw-ink-soft);
+    font-size: .78rem;
+    font-weight: 400;
+  }
+
+  .rebelion-ally__fields input,
+  .rebelion-ally__fields select,
+  .rebelion-ally__actor-controls select {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .rebelion-ally__actor-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+    min-width: 0;
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px dashed var(--bw-rule);
+    background: var(--bw-paper);
+  }
+
+  .rebelion-ally__actor-link.is-linked {
+    border-style: solid;
+    border-left: 3px solid #315f82;
+  }
+
+  .rebelion-ally__actor-link.is-unavailable {
+    border-color: var(--bw-red);
+  }
+
+  .rebelion-ally__actor-link.is-dragover {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: 2px;
+    background: color-mix(in srgb, var(--bw-paper) 80%, #315f82);
+  }
+
+  .rebelion-ally__actor-state,
+  .rebelion-ally__actor-controls {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .rebelion-ally__actor-state img {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--bw-rule);
+    object-fit: cover;
+  }
+
+  .rebelion-ally__actor-state span {
+    display: grid;
+    min-width: 0;
+  }
+
+  .rebelion-ally__actor-state strong,
+  .rebelion-ally__actor-state small {
+    overflow-wrap: anywhere;
+  }
+
+  .rebelion-ally__actor-state small {
+    color: var(--bw-ink-soft);
+  }
+
+  .rebelion-ally__actor-controls {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .rebelion-ally__actor-controls select {
+    width: min(220px, 100%);
+  }
+
+  .rebelion-ally__actor-controls button {
+    width: auto;
+    min-height: 32px;
+    margin: 0;
+  }
+
+  .rebelion-ally__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .rebelion-ally__remove {
+    width: auto;
+    margin: 0;
+  }
+
+  .rebelion-conclave__empty {
+    margin: 0;
+    padding: 12px;
+    background: var(--bw-paper);
+    color: var(--bw-ink-soft);
+    font-style: italic;
+  }
+
+  @container (max-width: 760px) {
+    .rebelion-aspects-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @container (max-width: 700px) {
+    .rebelion-sheet__header {
+      --bw-portrait-size: 112px;
+      grid-template-columns: 112px minmax(0, 1fr);
+    }
+
+    .rebelion-sheet__identity,
+    .rebelion-sheet__trackers { grid-column: 2; }
+
+  }
+
+  @container (max-width: 520px) {
+    .rebelion-aspects-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rebelion-settlement {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rebelion-settlement__trackers {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @container (max-width: 480px) {
+    .rebelion-sheet__form {
+      padding: 7px;
+    }
+
+    .rebelion-sheet__header {
+      --bw-portrait-size: 96px;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 8px 10px;
+    }
+
+    .bw-section-frame__header.rebelion-section-heading {
+      align-items: stretch;
+    }
+
+    .bw-section-frame__header.rebelion-section-heading {
+      flex-direction: column;
+    }
+
+    .rebelion-conclave__header button {
+      align-self: start;
+    }
+
+    .rebelion-ally__fields,
+    .rebelion-ally__actor-link {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rebelion-ally__actor-controls {
+      justify-content: flex-start;
+    }
+
+    .rebelion-underground__body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rebelion-underground__outcomes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rebelion-underground__actor-groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rebelion-underground__body > p,
+    .rebelion-underground__body button {
+      grid-column: 1;
+    }
+  }
+
+  @container (max-width: 410px) {
+    .sheet-tabs .item {
+      padding-inline: 8px;
+    }
+
+    .rebelion-settlement {
+      padding-inline: 7px;
+    }
+  }
+
+  @media (max-height: 620px) {
+    .rebelion-sheet__form {
+      --rebellion-gap: 6px;
+
+      padding-block: 6px;
+    }
+
+    .rebelion-sheet__header {
+      padding-block: 6px;
+    }
+
+    .rebelion-sheet__status-line {
+      font-size: 0.82rem;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<div id="character-{{_id}}-attributes" class="attributes">
+  {{#each system.attributes as |attribute attribute_name|}}
+
+  <article id="character-{{../_id}}-attributes-{{attribute_name}}" class="attribute character-attribute-card bw-ruled-card bw-ruled-card--trait-palette">
+    <header id="character-{{../_id}}-attributes-{{attribute_name}}-title" class="attributes-exp bw-ruled-card__title-band">
+      <div class="stripe">
+        <button type="button" class="attribute-label roll-die-attribute rollable-text" data-roll-attribute="{{attribute_name}}" data-roll-attribute-label="{{attribute.label}}" data-roll-value={{attribute.value}}>{{localize attribute.label}}</button>
+      </div>
+    </header>
+
+    {{!-- Skills --}}
+    <div class="character-attribute-card__body bw-ruled-card__body">
+
+    {{#each attribute.skills as |skill skill_name|}}
+
+    <div class="flex-horizontal">
+      <div class="attributes-container" data-granted-value="{{skill.grantedValue}}">
+        {{#each skill.dots as |dot|}}
+        {{#if dot.granted}}
+        <button type="button" class="dot-value dot-value--granted" data-granted="true" aria-label="{{localize skill.label}} {{dot.position}} of 4, {{localize 'BITD.GrantedBy'}} {{dot.source.name}}" aria-pressed="true" title="{{localize 'BITD.GrantedBy'}} {{dot.source.name}}" disabled>&#9899;</button>
+        {{else}}
+        <button type="button" class="dot-value {{#if dot.manual}}dot-value--filled{{else}}dot-value--empty{{/if}}" data-max_value="{{skill.manualMaximum}}" data-value="{{dot.position}}" data-base-value="{{dot.basePosition}}" data-path="system.attributes.{{attribute_name}}.skills.{{skill_name}}.value" aria-label="{{localize skill.label}} {{dot.position}} of 4" aria-pressed="{{#if dot.manual}}true{{else}}false{{/if}}"{{#unless @root.editable}} disabled{{/unless}}>
+          {{#if dot.manual}}&#9899;{{else}}&#9898;{{/if}}
+        </button>
+        {{/if}}
+        {{/each}}
+            <button type="button" class="attribute-skill-label roll-die-attribute rollable-text tooltip" data-roll-attribute-label="{{skill.label}}" data-roll-attribute="{{skill_name}}" data-roll-value={{skill.value}} data-tooltip-html="{{skill.tooltipHtml}}" data-tooltip-class="brinkwood-item-tooltip-shell" data-tooltip-direction="RIGHT">{{localize skill.label}}</button>
+      </div>
+    </div>
+    {{/each}}
+    </div>
+
+  </article>
+  {{/each}}
+</div>

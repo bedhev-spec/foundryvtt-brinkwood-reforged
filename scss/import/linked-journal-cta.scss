@@ -1,0 +1,33 @@
+/* Shared Journal Entry/Page CTA: both NPC and Rebellion place the complete component. */
+.linked-journal-cta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  margin-bottom: 4px;
+
+  button {
+    flex: 0 0 auto;
+    width: auto;
+    min-height: 30px;
+    margin: 0;
+    padding: 3px 8px;
+    border: 1px solid var(--bw-rule);
+    border-radius: 4px;
+    background: var(--bw-paper-deep);
+    color: var(--bw-ink);
+    font: inherit;
+    font-size: 0.8rem;
+    line-height: 1.2;
+
+    &:hover { background: var(--bw-paper); }
+    &:focus-visible { outline: 3px solid var(--bw-focus); outline-offset: 2px; }
+  }
+
+  &__open { font-weight: 700; }
+  &__management { display: flex; flex-wrap: wrap; gap: 4px; }
+  &__unavailable { margin: 0 auto 0 0; color: var(--bw-accent); font-weight: 700; }
+
+  &.is-unavailable { justify-content: space-between; }
+}

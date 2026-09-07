@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:browser": "node scripts/serve-browser-tests.mjs",
+    "validate": "node scripts/validate-system.mjs",
+    "build:moot-pack": "node scripts/build-moot-pack.mjs",
+    "build:css": "sass --no-source-map scss/style.scss styles/blades.css",
+    "check:css": "node scripts/check-css-build.mjs"
+  },
+  "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "3.0.4",
+    "sass": "1.93.2"
+  }
+}

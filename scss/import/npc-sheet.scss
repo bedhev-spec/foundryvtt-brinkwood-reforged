@@ -1,0 +1,226 @@
+/* Compact NPC dossier. Imported under .brinkwood.actor.npc. */
+& {
+  min-width: 320px;
+  color: var(--bw-ink);
+
+  // The part root form owns vertical scrolling; the window wrapper only clips
+  // it so fixed ApplicationV2 chrome cannot become a second scroll surface.
+  .window-content {
+    container-type: inline-size;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--bw-paper);
+  }
+
+  .window-content > .npc-dossier {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1 1 0;
+    height: auto;
+    min-height: 0;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 14px;
+    background: transparent;
+  }
+
+  .npc-dossier__header {
+    display: grid;
+    flex: 0 0 auto;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid var(--bw-rule);
+    border-radius: 7px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.12)),
+      var(--bw-paper-deep);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48), 0 1px 3px rgba(33, 27, 29, 0.08);
+  }
+
+  .npc-dossier__header > .sheet-identity__portrait {
+    --bw-portrait-size: 120px;
+    --bw-portrait-shadow-offset: 4px;
+
+    width: var(--bw-portrait-size);
+    height: var(--bw-portrait-size);
+    flex: 0 0 var(--bw-portrait-size);
+
+  }
+
+  .npc-dossier__identity,
+  .npc-dossier__profile-fields,
+  .npc-dossier__editors {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .npc-dossier__field {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+
+    label,
+    span {
+      color: var(--bw-ink-soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 34px;
+      padding: 5px 8px;
+      border: 1px solid rgba(33, 27, 29, 0.35);
+      border-radius: 5px;
+      background: #fffdf7;
+      color: var(--bw-ink);
+      font: inherit;
+
+      &:disabled {
+        border-color: transparent;
+        background: transparent;
+        color: var(--bw-ink);
+        cursor: default;
+        opacity: 1;
+      }
+    }
+  }
+
+  .npc-dossier__identity input[name="name"] {
+    min-height: auto;
+    padding: 2px 0 5px;
+    border: 0;
+    border-bottom: 2px solid var(--bw-ink);
+    border-radius: 0;
+    background: transparent;
+    font-family: Kirsty, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .npc-dossier__profile {
+    display: block;
+    flex: 0 0 auto;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--bw-rule);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.24);
+  }
+
+  .npc-dossier__profile {
+    padding: 0 10px 10px;
+
+    > h2 {
+      margin: 0 -10px 10px;
+      padding: 8px 10px;
+      background: var(--bw-ink);
+      color: var(--bw-inverse);
+      font-family: var(--bw-heading-font, inherit);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+  }
+
+  .npc-dossier__profile-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .npc-dossier__elite {
+    align-content: start;
+
+    input[type="checkbox"] {
+      width: 20px;
+      min-height: 20px;
+      height: 20px;
+      padding: 0;
+    }
+  }
+
+  .npc-dossier__editors {
+    flex: 0 0 auto;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .npc-dossier__editor-tabs {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .npc-dossier__editor-content {
+    width: 100%;
+    min-width: 0;
+
+    > .tab:not(.active) {
+      display: none;
+    }
+
+    > .tab.active {
+      display: block;
+    }
+  }
+
+  .npc-dossier__editor-panel {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+  }
+
+  @container (max-width: 640px) {
+    .npc-dossier__profile-fields {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+  }
+
+  @container (max-width: 480px) {
+    .window-content > .npc-dossier {
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .npc-dossier__header {
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: 10px;
+      padding: 8px;
+    }
+
+    .npc-dossier__header > .sheet-identity__portrait {
+      --bw-portrait-size: 104px;
+      --bw-portrait-shadow-offset: 3px;
+    }
+  }
+
+  @container (max-width: 410px) {
+    .npc-dossier__header,
+    .npc-dossier__profile-fields {
+      grid-template-columns: 1fr;
+    }
+  }
+}

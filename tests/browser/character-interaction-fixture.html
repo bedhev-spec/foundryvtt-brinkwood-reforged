@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Character interaction regression</title>
+<style>
+  body { font: 16px sans-serif; margin: 24px; }
+  form { height: 260px; width: 460px; overflow-y: auto; border: 1px solid; }
+  .spacer { height: 500px; }
+  .controls { display: flex; align-items: center; gap: 12px; }
+  .blades-clock { position: relative; width: 88px; height: 88px; background-size: contain; }
+  .blades-clock input { position: absolute; opacity: 0; }
+  .blades-clock label { position: absolute; inset: 0; cursor: pointer; }
+  #results[data-status="passed"] { color: green; }
+  #results[data-status="failed"] { color: red; }
+</style>
+<h1>Character interaction regression</h1>
+<p>Native DOM/default actions with production Character, loadout, and view-state handlers. Foundry part replacement is a minimal adapter matching its focus-then-scroll contract.</p>
+<div id="host"></div>
+<button type="button" id="run">Run assertions</button>
+<pre id="results">Ready</pre>
+<script type="module" src="./character-interaction-fixture.mjs"></script>
+</html>

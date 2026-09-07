@@ -1,0 +1,74 @@
+// Colors
+$lightgray: #bbb;
+$darkgray: #666;
+$gray: #999;
+$red: red;
+$almost_black: #191813;
+$almost_white: #EEEFFF;
+$gold: #DAA520;
+$green: #008000;
+$light_green: #12a012;
+$blue: #04578f;
+
+// Transition period for sheet parts that hint what they can do
+$transition-period: 0.2s;
+$hover-opacity: 0.9;
+$hover-brightness: 0.8;
+
+
+
+
+// Utility imports
+@import 'import/mixin';
+@import 'fonts.scss';
+
+//namespacing to avoid conflicts with other modules
+.brinkwood{
+  --bw-paper: #f7f4ed;
+  --bw-paper-deep: #ece5d9;
+  --bw-paper-overlay: rgba(247, 244, 237, 0.72);
+  --bw-ink: #211b1d;
+  --bw-ink-soft: #51464a;
+  --bw-inverse: #f7f4ed;
+  --bw-rule: #8d625d;
+  --bw-accent: #8f2f35;
+  --bw-focus: #9b5d14;
+  font-family: "Crimson Text", serif;
+
+  @import 'import/general-styles.scss';
+  @import 'import/sheet-save-status.scss';
+  @import 'import/sheet-identity.scss';
+  @import 'import/linked-journal-cta.scss';
+
+  &.actor.pc.character{
+    @import 'import/character-sheet.scss';
+  }
+
+  &.actor.mask {
+    @import 'import/mask-sheet.scss';
+  }
+
+	&.actor.rebelion {
+    @import 'import/rebelion-sheet.scss';
+	}
+
+  &.actor.npc {
+    @import 'import/npc-sheet.scss';
+  }
+
+  &.item.sheet{
+    @import 'import/item-sheet.scss';
+  }
+}
+
+
+//top-level styles
+@import 'import/chat.scss';
+@import 'import/dialogs.scss';
+@import 'import/tooltip.scss';
+@import 'import/global-clocks.scss';
+
+// Character-sheet compatibility rules must be emitted last. They replace the
+// v11-era manifest stylesheets while retaining their established cascade.
+@import 'import/legacy-character-sheet-polish.scss';
+@import 'import/legacy-character-effects.scss';

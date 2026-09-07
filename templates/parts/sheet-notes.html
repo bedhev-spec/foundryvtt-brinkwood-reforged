@@ -1,0 +1,5 @@
+{{#if editable}}
+<prose-mirror class="sheet-notes__editor" name="system.description" value="{{system.description}}" data-document-uuid="{{actor.uuid}}" collaborate toggled>{{{enrichedDescription}}}</prose-mirror>
+{{else}}
+<div class="editor editor-content sheet-notes__preview">{{{enrichedDescription}}}</div>
+{{/if}}

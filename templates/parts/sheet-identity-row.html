@@ -1,0 +1,13 @@
+<div class="item-block sheet-identity__row">
+  <div class="item-class-label">
+    {{#if editable}}<button type="button" class="item-add-popup identity-choice__text" data-distinct="true" data-item-type="{{row.itemType}}"><span class="identity-choice__content">{{localize row.label}}</span></button>{{else}}<span class="identity-choice__text"><span class="identity-choice__content">{{localize row.label}}</span></span>{{/if}}
+  </div>
+  <div class="identity-choice__track">
+    {{#if row.item}}
+    <div class="item identity-choice__slot identity-choice__value{{#if row.item.identityTooltipHtml}} tooltip tooltip-trigger--plain{{/if}}" data-item-id="{{row.item._id}}" data-tooltip-html="{{row.item.identityTooltipHtml}}" data-tooltip-class="brinkwood-item-tooltip-shell" data-tooltip-direction="RIGHT">
+      <button type="button" class="item-body identity-choice__text{{#if row.reselect}} item-add-popup{{/if}}"{{#if row.reselect}} data-distinct="true" data-item-type="{{row.itemType}}" aria-label="{{localize row.label}}: {{row.item.name}}"{{/if}}><span class="item-name identity-choice__content">{{row.item.name}}</span></button>
+      {{#if editable}}<button type="button" class="item-delete identity-choice__remove" title="{{localize row.deleteLabel}}" aria-label="{{localize row.deleteLabel}}"><span class="identity-choice__content" aria-hidden="true">&times;</span></button>{{/if}}
+    </div>
+    {{else}}<div class="identity-choice__slot identity-choice__blank" aria-hidden="true"></div>{{/if}}
+  </div>
+</div>

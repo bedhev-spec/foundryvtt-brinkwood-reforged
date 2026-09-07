@@ -1,0 +1,33 @@
+<section class="brinkwood-roll-calculation" aria-label="{{localize 'BITD.RollCalculation'}}">
+  <div class="brinkwood-roll-calculation__title">{{localize "BITD.RollCalculation"}}</div>
+  <div class="brinkwood-roll-equation">
+    <span class="brinkwood-roll-term">
+      <span>{{localize "BITD.RollBaseDice"}}</span>
+      <strong>{{calculation.baseDice}}d</strong>
+    </span>
+    {{#each calculation.modifiers}}
+      <span class="brinkwood-roll-operator">{{this.sign}}</span>
+      <span class="brinkwood-roll-term">
+        <span>{{localize this.label}}</span>
+        <strong>{{this.absoluteValue}}d</strong>
+      </span>
+    {{/each}}
+    <span class="brinkwood-roll-operator">=</span>
+    <span class="brinkwood-roll-term brinkwood-roll-term--total">
+      <span>{{localize "BITD.RollDicePool"}}</span>
+      <strong>{{calculation.dicePool}}d</strong>
+    </span>
+  </div>
+  {{#if calculation.wasClamped}}
+    <p class="brinkwood-roll-pool-floor">{{localize "BITD.RollPoolClamped" total=calculation.unclampedDicePool}}</p>
+  {{/if}}
+  {{#if calculation.zeroMode}}
+    <p class="brinkwood-roll-zero-mode">{{localize "BITD.RollZeroModeCalculation"}}</p>
+  {{/if}}
+  {{#if position}}
+    <dl class="brinkwood-roll-context">
+      <div><dt>{{localize "BITD.Position"}}</dt><dd>{{localize position_localize}}</dd></div>
+      <div><dt>{{localize "BITD.Effect"}}</dt><dd>{{localize effect_localize}}</dd></div>
+    </dl>
+  {{/if}}
+</section>

@@ -1,0 +1,29 @@
+<form class="{{cssClass}} legacy-item-sheet" autocomplete="off">
+    <header class="sheet-header">
+  {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}"/></h1>
+        </div>
+    </header>
+    
+    {{!-- Sheet Body --}}
+    <section class="sheet-body flex">
+    {{#if editable}}
+      <prose-mirror name="system.description" value="{{system.description}}" data-document-uuid="{{item.uuid}}" collaborate toggled>{{{enrichedDescription}}}</prose-mirror>
+    {{else}}
+    <div class="editor editor-content">{{{enrichedDescription}}}</div>
+    {{/if}}
+    </section>
+    <div class="flex-vertical">
+      <label class="label-stripe">{{localize "BITD.AbilityPrice"}}</label>
+      <input id="ability-price" type="text" name="system.price" value="{{system.price}}" placeholder="{{localize 'BITD.AbilityPrice'}}">
+      <label class="label-stripe">{{localize "BITD.AbilityClass"}}</label>
+      <input id="ability-class" type="text" name="system.class" value="{{system.class}}" placeholder="{{localize 'BITD.AbilityClass'}}">
+      {{#if isGM}}
+        <div class="label-stripe">{{localize "BITD.Logic"}}</div>
+        <textarea name="system.logic">{{{system.logic}}}</textarea>
+        <div class="label-stripe">{{localize "BITD.Effects"}}</div>
+        <div id="effects">{{> "systems/brinkwood-reforged/templates/parts/active-effects.html" compact=true}}</div>
+      {{/if}}
+    </div>
+</form>

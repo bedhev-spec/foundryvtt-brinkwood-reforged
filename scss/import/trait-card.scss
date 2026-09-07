@@ -1,0 +1,96 @@
+// Shared Trait Card component used by Character and Mask sheets.
+// Sheet files own only list placement and scrolling, never card presentation.
+  .trait-card {
+display: grid;
+grid-template-columns: minmax(0, 1fr);
+min-width: 0;
+min-height: 0;
+height: auto;
+align-self: start;
+align-content: start;
+overflow: visible;
+  }
+
+.trait-card__header {
+  display: grid;
+grid-template-columns: minmax(0, 1fr) auto;
+align-items: start;
+  min-width: 0;
+}
+
+  .trait-card__title {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+min-width: 0;
+margin: 0;
+padding: 0;
+  }
+
+.trait-card__purchase {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  accent-color: auto;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid var(--bw-ink-soft);
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:checked {
+    border-color: var(--bw-ink-soft);
+    background-color: #fff;
+    background-image:
+      linear-gradient(45deg, transparent 45%, var(--bw-ink) 46%, var(--bw-ink) 54%, transparent 55%),
+      linear-gradient(-45deg, transparent 45%, var(--bw-ink) 46%, var(--bw-ink) 54%, transparent 55%);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.65;
+  }
+}
+
+  .trait-card__remove {
+width: 26px;
+min-width: 26px;
+height: 26px;
+min-height: 26px;
+margin: -3px -4px -3px 8px;
+border: 0;
+border-radius: 3px;
+background: transparent;
+color: var(--bw-ink-soft);
+font-size: 1.35rem;
+line-height: 1;
+
+&:hover,
+&:focus-visible {
+  background: rgba(141, 98, 93, 0.16);
+  color: var(--bw-ink);
+}
+
+&:focus-visible {
+  outline: 3px solid var(--bw-focus);
+  outline-offset: 1px;
+}
+  }
+
+  .trait-card__description {
+min-width: 0;
+max-width: 100%;
+height: auto;
+max-height: none;
+color: var(--bw-ink);
+align-self: start;
+overflow: visible;
+  overflow-wrap: anywhere;
+}
+
+.trait-card__description > * {
+  max-width: 100%;
+}

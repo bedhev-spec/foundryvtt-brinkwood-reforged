@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Character sheet responsive scroll geometry</title>
+    <style>
+      body { font-family: system-ui, sans-serif; }
+      iframe { display: block; width: 760px; border: 1px solid #777; margin-block: 12px; }
+      output { display: block; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Character sheet responsive scroll geometry</h1>
+    <p>This fixture verifies short and tall viewport scroll ownership against the shipped stylesheet.</p>
+    <div id="frames"></div>
+    <output id="character-scroll-geometry-results" aria-live="polite">Running…</output>
+    <script type="module" src="./character-sheet-scroll-geometry-fixture.mjs"></script>
+  </body>
+</html>

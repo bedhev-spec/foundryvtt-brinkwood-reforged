@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../styles/blades.css">
+    <style>
+      html, body { height: 100%; margin: 0; overflow: hidden; }
+      body { background: #444; }
+      .fixture-application { display: flex; flex-direction: column; width: 700px; height: 1170px; margin: 16px; }
+      .fixture-application > .window-header { flex: 0 0 32px; background: #222; color: white; }
+      .fixture-application > .window-content { flex: 1 1 auto; height: auto; min-height: 0; }
+      .fixture-block { box-sizing: border-box; border: 1px solid #8d625d; background: #eeeae0; }
+      .fixture-application form.actor-sheet > .name-alias.fixture-block { min-height: 150px !important; }
+      .fixture-application .sheet-identity__portrait { width: 80px; height: 80px; background: #d8cab7; }
+      .fixture-application .sheet-identity__details,
+      .fixture-application .sheet-identity__trackers { min-height: 40px; background: rgba(255, 255, 255, 0.3); }
+      .fixture-application form.actor-sheet > .character-attributes.fixture-block { height: 120px !important; min-height: 120px !important; }
+      .fixture-application form.actor-sheet > .bans-armor.fixture-block { height: 180px !important; min-height: 180px !important; }
+      .fixture-panel-content { flex: 0 0 900px; min-height: 900px; background: linear-gradient(#f6f1e8, #d8cab7); }
+      .fixture-bottom { margin-top: 850px; min-height: 40px; background: #8f2f35; color: white; }
+    </style>
+  </head>
+  <body>
+    <article class="application brinkwood sheet actor pc character fixture-application">
+      <header class="window-header">Character</header>
+      <div class="window-content">
+        <form class="actor-sheet character-sheet">
+          <div class="roll-statistics-toolbar"></div>
+          <section class="name-alias fixture-block">
+            <div class="sheet-identity__portrait">Portrait</div>
+            <div class="grow-two sheet-identity__details">Name and details</div>
+            <div class="grow-two sheet-identity__trackers">Alias and trackers</div>
+          </section>
+          <section class="character-attributes fixture-block">
+            <div class="attributes">
+              <article class="attribute">Insight</article>
+              <article class="attribute">Prowess</article>
+              <article class="attribute">Resolve</article>
+            </div>
+          </section>
+          <section class="bans-armor fixture-block">Bans and armor</section>
+          <section class="character-sheet__workspace sheet-tab-workspace">
+            <nav class="tabs sheet-tabs">
+              <button class="item">Traits</button>
+              <button class="item">Loadout</button>
+              <button class="item">Background</button>
+              <button class="item">Downtime</button>
+              <button class="item active">Effects</button>
+            </nav>
+            <div class="tab-content sheet-tab-content">
+              <section class="tab active" data-group="primary" data-tab="traits">
+                <div class="fixture-panel-content">Active panel<div class="fixture-bottom">Bottom content</div></div>
+              </section>
+            </div>
+          </section>
+        </form>
+      </div>
+    </article>
+  </body>
+</html>

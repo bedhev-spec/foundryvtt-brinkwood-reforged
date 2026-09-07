@@ -1,0 +1,32 @@
+<section class="global-clock-display {{horizontalEdge}} {{verticalEdge}}{{#if clocks.length}} has-clocks{{/if}}" data-location="{{location}}" style="--vertical-offset: {{verticalOffset}};">
+  {{#if clocks.length}}
+  <div class="global-clock-list" role="list" aria-label="{{localize 'BITD.GlobalClock.ListLabel'}}">
+    {{#each clocks as |clock|}}
+    <article class="global-clock-entry ui-control{{#if clock.private}} private{{/if}}" data-clock-id="{{clock.id}}" role="listitem" style="--clock-max: {{clock.max}}; --clock-filled: {{clock.value}}; --clock-color: {{clock.color}}; --clock-background: {{clock.backgroundColor}};">
+      <div class="global-clock__name">
+        {{#if clock.private}}<i class="fa-solid fa-eye-slash" aria-hidden="true"></i><span class="global-clock__visually-hidden">{{localize "BITD.GlobalClock.Private"}}</span>{{/if}}
+        <span class="global-clock__label">{{clock.name}}</span>
+        <span class="global-clock__progress" aria-live="polite">{{clock.value}}/{{clock.max}}</span>
+      </div>
+      {{#if @root.editable}}
+      <div class="global-clock__controls" aria-label="{{localize 'BITD.GlobalClock.ControlsLabel'}}">
+        <button type="button" data-action="toggleVisibility" aria-label="{{#if clock.private}}{{localize 'BITD.GlobalClock.Show'}}{{else}}{{localize 'BITD.GlobalClock.Hide'}}{{/if}}" data-tooltip="{{#if clock.private}}{{localize 'BITD.GlobalClock.Show'}}{{else}}{{localize 'BITD.GlobalClock.Hide'}}{{/if}}"><i class="fa-solid {{#if clock.private}}fa-eye{{else}}fa-eye-slash{{/if}}" aria-hidden="true"></i></button>
+        <button type="button" data-action="editClock" aria-label="{{localize 'BITD.GlobalClock.Edit'}}"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></button>
+        <button type="button" data-action="deleteClock" aria-label="{{localize 'BITD.GlobalClock.Delete'}}"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
+      </div>
+      {{/if}}
+      <button type="button" class="global-clock__face" data-clock-id="{{clock.id}}"{{#unless @root.editable}} disabled{{/unless}} aria-label="{{clock.name}}: {{clock.value}} / {{clock.max}}">
+        {{#each clock.spokes as |spoke|}}<span class="global-clock__spoke" style="--clock-index: {{spoke}};"></span>{{/each}}
+      </button>
+    </article>
+    {{/each}}
+  </div>
+  {{/if}}
+  {{#if editable}}
+  <div class="global-clock__toolbar ui-control">
+    <button type="button" class="global-clock__add" data-action="addClock" aria-label="{{localize 'BITD.GlobalClock.Add'}}" data-tooltip="{{localize 'BITD.GlobalClock.Add'}}" title="{{localize 'BITD.GlobalClock.Add'}}">
+      <i class="fa-solid fa-clock" aria-hidden="true"></i>
+    </button>
+  </div>
+  {{/if}}
+</section>

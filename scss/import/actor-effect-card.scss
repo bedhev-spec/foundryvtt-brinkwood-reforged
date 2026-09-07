@@ -1,0 +1,371 @@
+// Shared Character and Mask Effect UI. Item sheets retain the legacy compact
+// Effect component and its root-form scroll contract.
+.actor-effects {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.actor-effects__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 8px;
+  padding: 4px;
+  border: 1px solid var(--bw-rule);
+  background: var(--bw-paper-deep);
+}
+
+button.actor-effects__tab {
+  flex: 1 1 8rem;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 34px;
+  margin: 0;
+  padding: 6px 9px;
+  border: 1px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--bw-ink-soft);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  transition: color var(--bw-tab-transition), background-color var(--bw-tab-transition), border-color var(--bw-tab-transition);
+
+  &:hover,
+  &:focus-visible,
+  &.active {
+    color: var(--bw-ink);
+    border-color: var(--bw-rule);
+    border-bottom-color: var(--bw-accent);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.42);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: 1px;
+  }
+}
+
+.actor-effects__category {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.actor-effects__category[hidden] {
+  display: none;
+}
+
+.actor-effects__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  align-content: start;
+}
+
+button.actor-effects__add {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px dashed var(--bw-rule);
+  border-left: 5px solid var(--bw-accent);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--bw-ink);
+  font-family: "Crimson Text", serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(141, 98, 93, 0.14);
+    color: var(--bw-ink);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: 1px;
+  }
+
+  i {
+    flex: 0 0 20px;
+    width: 20px;
+    text-align: center;
+  }
+
+  .actor-effects__add-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    line-height: 20px;
+    transform: translateY(2px);
+  }
+}
+
+.actor-effect-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: visible;
+  align-self: start;
+
+  &:focus-within {
+    border-color: var(--bw-accent);
+  }
+}
+
+.actor-effect-card--disabled {
+  color: var(--bw-ink-soft);
+
+  .actor-effect-card__image {
+    filter: grayscale(1);
+    opacity: 0.65;
+  }
+}
+
+.actor-effect-card__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  background: #e0d7c5;
+}
+
+.actor-effect-card__title {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.actor-effect-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  gap: 0;
+  margin: -3px -4px -3px 8px;
+  padding: 1px;
+  border: 1px solid var(--bw-rule);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+
+  button.effect-control {
+    display: inline-grid;
+    flex: 0 0 30px;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background: transparent;
+    color: var(--bw-ink);
+    place-items: center;
+
+    + button.effect-control {
+      border-left: 1px solid var(--bw-rule);
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(141, 98, 93, 0.16);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--bw-focus);
+      outline-offset: 1px;
+    }
+  }
+
+  .actor-effect-card__delete:hover,
+  .actor-effect-card__delete:focus-visible {
+    color: var(--bw-accent);
+  }
+}
+
+.actor-effect-card__body {
+  display: grid;
+  min-width: 0;
+}
+
+.actor-effect-card__summary {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--bw-rule);
+}
+
+.actor-effect-card__image {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bw-rule);
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.actor-effect-card__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  min-width: 0;
+  margin: 0;
+  color: var(--bw-ink);
+  font-family: Georgia, "Bitstream Charter", "Times New Roman", serif;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-shadow: none;
+
+  div {
+    display: flex;
+    min-width: 0;
+    gap: 4px;
+  }
+
+  dt {
+    color: var(--bw-ink);
+    font-weight: 700;
+  }
+
+  dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--bw-ink-soft);
+    overflow-wrap: anywhere;
+  }
+}
+
+.actor-effect-card__details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px 16px;
+  min-width: 0;
+  padding-top: 10px;
+}
+
+.actor-effect-card__detail-group,
+.actor-effect-card__empty-details {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin: 0;
+}
+
+.actor-effect-card__detail-group h5 {
+  margin: 0 0 5px;
+  color: var(--bw-ink-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.actor-effect-card__status-group,
+.actor-effect-card__description {
+  flex-basis: 100%;
+  max-width: 100%;
+}
+
+.actor-effect-card__statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actor-effect-card__statuses li {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-block-size: 28px;
+  padding: 4px 9px;
+  border: 1px solid var(--bw-ink-soft);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.48);
+  color: var(--bw-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.actor-effect-card__description,
+.actor-effect-card__description > * {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.actor-effect-card__description > :last-child {
+  margin-bottom: 0;
+}
+
+.actor-effect-card__empty-details {
+  color: var(--bw-ink-soft);
+  font-style: italic;
+}
+
+@container (max-width: 420px) {
+  .actor-effect-card__header {
+    align-items: start;
+  }
+
+  .actor-effect-card__actions {
+    margin-left: 4px;
+  }
+
+  .actor-effect-card__metadata {
+    flex-direction: column;
+    gap: 3px;
+  }
+}
+
+@container (max-width: 410px) {
+  button.actor-effects__tab {
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button.actor-effects__tab {
+    transition-duration: 0.01ms;
+  }
+}

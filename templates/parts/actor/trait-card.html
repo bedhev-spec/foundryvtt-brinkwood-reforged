@@ -1,0 +1,12 @@
+<article class="item trait-card bw-ruled-card bw-ruled-card--trait-palette" data-item-id="{{itemId}}">
+  <header class="trait-card__header bw-ruled-card__title-band">
+    <h3 class="trait-card__title bw-ruled-card__title">
+      <input type="checkbox" id="item-{{itemId}}-purchased" class="trait-card__purchase bw-checkbox-x" data-item-id="{{itemId}}" aria-label="{{localize "BITD.Purchased"}}: {{title}}" title="{{localize "BITD.Purchased"}}" {{#if purchased}}checked{{/if}}{{#unless editable}} disabled{{/unless}}>
+      {{title}}
+    </h3>
+    {{#if canDelete}}
+      <button type="button" class="item-delete trait-card__remove" title="{{localize "BITD.RemoveTrait"}}" aria-label="{{localize "BITD.RemoveTrait"}}: {{title}}"><span aria-hidden="true">&times;</span></button>
+    {{/if}}
+  </header>
+  <div class="trait-card__description bw-ruled-card__body">{{{description}}}</div>
+</article>

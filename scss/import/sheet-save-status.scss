@@ -1,0 +1,16 @@
+.brinkwood .sheet-save-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--bw-accent, #8f2f35);
+  background: var(--bw-paper, #f7f4ed);
+  color: var(--bw-ink, #201b18);
+}
+
+.brinkwood .sheet-save-status__retry {
+  min-height: 28px;
+  padding: 2px 8px;
+}

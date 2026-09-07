@@ -1,0 +1,55 @@
+<form class="{{cssClass}} loadout-item-sheet" autocomplete="off">
+  <header class="loadout-item-sheet__header">
+    {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+    <div class="loadout-item-sheet__identity">
+      <span>{{localize "BITD.LoadoutItem"}}</span>
+      <input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}"/>
+      <p>{{localize "BITD.LoadoutItemHint"}}</p>
+    </div>
+  </header>
+
+  <section class="loadout-item-sheet__section bw-text-section" aria-labelledby="item-{{_id}}-description-heading">
+    <h2 class="bw-text-section__header" id="item-{{_id}}-description-heading">{{localize "BITD.Description"}}</h2>
+    <div class="bw-text-section__body">
+      <textarea id="item-description" name="system.description" aria-labelledby="item-{{_id}}-description-heading">{{system.description}}</textarea>
+    </div>
+</section>
+
+  <section class="loadout-item-sheet__section">
+    <h2>{{localize "BITD.ItemDetails"}}</h2>
+    <div class="loadout-item-sheet__grid">
+      <label>
+        <span>{{localize "BITD.Load"}}</span>
+        <input id="item-load" type="number" min="0" step="1" name="system.load" value="{{system.load}}"{{#unless canEditLoad}} disabled aria-disabled="true"{{/unless}}>
+      </label>
+      <label>
+        <span>{{localize "BITD.Uses"}}</span>
+        <input id="item-uses" type="number" min="0" step="1" name="system.uses" value="{{system.uses}}">
+      </label>
+      <label>
+        <span>{{localize "BITD.NumberAvailable"}}</span>
+        <input id="item-num_available" type="number" min="0" step="1" name="system.num_available" value="{{system.num_available}}">
+      </label>
+      <label>
+        <span>{{localize "BITD.LoadoutCategory"}}</span>
+        <select id="item-class" name="system.class">
+          {{#each loadoutCategoryOptions as |option|}}
+            <option value="{{option.value}}"{{#if option.selected}} selected{{/if}}>{{localize option.label}}</option>
+          {{/each}}
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="loadout-item-sheet__section bw-text-section" aria-labelledby="item-{{_id}}-additional-heading">
+    <h2 class="bw-text-section__header" id="item-{{_id}}-additional-heading">{{localize "BITD.AdditionalInfo"}}</h2>
+    <div class="bw-text-section__body">
+      <textarea id="item-additional_info" name="system.additional_info" aria-labelledby="item-{{_id}}-additional-heading">{{system.additional_info}}</textarea>
+    </div>
+  </section>
+
+<section class="loadout-item-sheet__section loadout-item-sheet__effects" aria-labelledby="item-{{_id}}-effects-heading">
+<h2 id="item-{{_id}}-effects-heading">{{localize "BITD.Effects"}}</h2>
+      <div id="effects">{{> "systems/brinkwood-reforged/templates/parts/active-effects.html" compact=true}}</div>
+    </section>
+</form>

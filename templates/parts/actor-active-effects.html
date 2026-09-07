@@ -1,0 +1,98 @@
+<div class="actor-effects">
+  <div class="effects-tabs actor-effects__tabs" role="tablist" aria-label="{{localize "BITD.EffectTypes"}}">
+    {{#each effects as |section sid|}}
+      {{#if section.visible}}
+<button type="button" class="effects-tab actor-effects__tab {{#if (eq section.type ../activeEffectTab)}}active{{/if}}"
+        id="effects-{{../_id}}-{{section.type}}-tab" role="tab"
+        aria-controls="effects-{{../_id}}-{{section.type}}-panel"
+        aria-selected="{{#if (eq section.type ../activeEffectTab)}}true{{else}}false{{/if}}"
+        tabindex="{{#if (eq section.type ../activeEffectTab)}}0{{else}}-1{{/if}}"
+        data-effect-tab="{{section.type}}">{{localize section.label}}</button>
+      {{/if}}
+    {{/each}}
+  </div>
+
+  {{#each effects as |section sid|}}
+    {{#if section.visible}}
+    <section class="actor-effects__category" data-effect-type="{{section.type}}"
+      data-effect-panel="{{section.type}}" role="tabpanel"
+      id="effects-{{../_id}}-{{section.type}}-panel"
+      aria-labelledby="effects-{{../_id}}-{{section.type}}-tab"
+      {{#unless (eq section.type ../activeEffectTab)}}hidden{{/unless}}>
+      <div class="actor-effects__list">
+{{#if section.canCreate}}
+{{#unless (eq section.type "inactive")}}
+{{#if ../editable}}
+<button type="button" class="effect-control actor-effects__add" data-effect-action="create"
+            title="{{localize 'Add'}} {{localize 'BITD.Effect'}}"
+            aria-label="{{localize 'Add'}} {{localize 'BITD.Effect'}}">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+          <span class="actor-effects__add-label">{{localize "Add"}} {{localize "BITD.Effect"}}</span>
+</button>
+{{/if}}
+{{/unless}}
+{{/if}}
+
+        {{#each section.effects as |effect|}}
+        <article class="actor-effect-card bw-ruled-card{{#if effect.disabled}} actor-effect-card--disabled{{/if}}" data-effect-id="{{effect.id}}">
+          <header class="actor-effect-card__header bw-ruled-card__title-band">
+            <h4 class="actor-effect-card__title bw-ruled-card__title">{{effect.name}}</h4>
+            {{#if ../../editable}}
+            <div class="actor-effect-card__actions" aria-label="{{localize 'BITD.EffectActions'}}">
+              <button type="button" class="effect-control" data-effect-action="toggle"
+                title="{{#if effect.disabled}}{{localize 'BITD.EffectEnable'}}{{else}}{{localize 'BITD.EffectDisable'}}{{/if}}"
+                aria-label="{{#if effect.disabled}}{{localize 'BITD.EffectEnable'}}{{else}}{{localize 'BITD.EffectDisable'}}{{/if}}">
+                <i class="fas {{#if effect.disabled}}fa-toggle-off{{else}}fa-toggle-on{{/if}}" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="effect-control" data-effect-action="edit"
+                title="{{localize 'BITD.EffectEdit'}}" aria-label="{{localize 'BITD.EffectEdit'}}">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="effect-control actor-effect-card__delete" data-effect-action="delete"
+                title="{{localize 'BITD.EffectDelete'}}" aria-label="{{localize 'BITD.EffectDelete'}}">
+                <i class="fas fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+            {{/if}}
+          </header>
+
+          <div class="actor-effect-card__body bw-ruled-card__body">
+            <div class="actor-effect-card__summary">
+              <img class="actor-effect-card__image" src="{{effect.img}}" alt="">
+              <dl class="actor-effect-card__metadata">
+                <div>
+                  <dt>{{localize "BITD.EffectSource"}}</dt>
+                  <dd>{{#if effect.sourceName}}{{effect.sourceName}}{{else}}&mdash;{{/if}}</dd>
+                </div>
+                <div>
+                  <dt>{{localize "BITD.EffectDuration"}}</dt>
+                  <dd>{{#if effect.duration.label}}{{effect.duration.label}}{{else}}&mdash;{{/if}}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="actor-effect-card__details">
+              {{#if effect.hasStatuses}}
+              <div class="actor-effect-card__detail-group actor-effect-card__status-group">
+                <h5>{{localize "BITD.EffectStatuses"}}</h5>
+                <ul class="actor-effect-card__statuses">
+                  {{#each effect.statuses as |status|}}<li>{{status}}</li>{{/each}}
+                </ul>
+              </div>
+              {{/if}}
+              {{#if effect.hasDescription}}
+              <div class="actor-effect-card__detail-group actor-effect-card__description">
+                <h5>{{localize "BITD.EffectDescription"}}</h5>
+                {{{effect.enrichedDescription}}}
+              </div>
+              {{/if}}
+              {{#unless effect.hasDetails}}<p class="actor-effect-card__empty-details">{{localize "BITD.EffectNoDetails"}}</p>{{/unless}}
+            </div>
+          </div>
+        </article>
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+  {{/each}}
+</div>

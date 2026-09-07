@@ -1,0 +1,267 @@
+/*
+ * CSS clock concept adapted from Global Progress Clocks by Carlos Fernandez
+ * (Supe), copyright 2023, MIT. See THIRD_PARTY_NOTICES.md.
+ * Lunar-Dawn is credited upstream for converting the clock artwork to CSS.
+ */
+
+#brinkwood-global-clock-overlay {
+  --global-clock-size: 36px;
+  --global-clock-control-size: 28px;
+  --global-clock-control-gap: 3px;
+  --global-clock-control-padding: 8px;
+  --global-clock-toolbar-padding: 4px;
+  --global-clock-toolbar-center-offset: calc(var(--global-clock-toolbar-padding) + 1px);
+  --global-clock-controls-min-width: calc(
+    var(--global-clock-control-size) + var(--global-clock-control-size) + var(--global-clock-control-size)
+    + var(--global-clock-control-gap) + var(--global-clock-control-gap)
+    + var(--global-clock-control-padding) + var(--global-clock-control-padding)
+  );
+  position: fixed;
+  right: var(--global-clock-right-inset, 0px);
+  z-index: calc(var(--z-index-tooltip, 9999) - 1);
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  // Fifteen extra pixels reduce name truncation while retaining a bounded overlay.
+  max-width: 305px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: max(var(--ui-fade-opacity), 0.92);
+
+  &[data-location="topRight"] {
+    top: 16px;
+    bottom: auto;
+  }
+
+  &[data-location="bottomRight"] {
+    top: auto;
+    bottom: var(--global-clock-bottom-inset, 14px);
+  }
+}
+
+.global-clock-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  max-height: 100%;
+
+  &.has-clocks {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 8px;
+    min-width: 190px;
+  }
+
+  &.top {
+    align-items: start;
+    padding-top: var(--vertical-offset);
+  }
+  &.bottom {
+    align-items: end;
+    padding-bottom: var(--vertical-offset);
+  }
+}
+
+.global-clock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden auto;
+  pointer-events: auto;
+  scrollbar-gutter: stable;
+}
+
+.global-clock-display.has-clocks.top .global-clock-list {
+  padding-top: var(--global-clock-toolbar-center-offset);
+}
+
+.global-clock-display.has-clocks.bottom .global-clock-list {
+  padding-bottom: var(--global-clock-toolbar-center-offset);
+}
+
+.global-clock-entry {
+  align-self: flex-end;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--global-clock-size);
+  grid-template-rows: var(--global-clock-size);
+  align-items: center;
+  min-width: max(190px, calc(var(--global-clock-controls-min-width) + var(--global-clock-size)));
+  max-width: 285px;
+  border: 1px solid var(--control-border-color);
+  border-radius: calc(var(--global-clock-size) / 2);
+  background: var(--control-bg-color);
+  color: var(--control-icon-color);
+  pointer-events: auto;
+
+  &.private {
+    border-color: #8a50ff;
+    box-shadow: 0 0 4px #8a50ff;
+  }
+}
+
+.global-clock__name {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  padding: 0 8px 0 12px;
+
+  .global-clock__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.global-clock-entry.private .global-clock__name {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.global-clock__controls {
+  position: absolute;
+  inset: 0 var(--global-clock-size) 0 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--global-clock-control-gap);
+  padding: 0 var(--global-clock-control-padding);
+  border-radius: calc(var(--global-clock-size) / 2) 0 0 calc(var(--global-clock-size) / 2);
+  background: var(--control-bg-color);
+  opacity: 0;
+  pointer-events: none;
+
+  button {
+    width: var(--global-clock-control-size);
+    min-width: var(--global-clock-control-size);
+    height: var(--global-clock-control-size);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.global-clock-entry:hover .global-clock__controls,
+.global-clock-entry:focus-within .global-clock__controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.global-clock__visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (hover: none) {
+  .global-clock__controls {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.global-clock__face {
+  position: relative;
+  align-self: stretch;
+  width: var(--global-clock-size);
+  min-width: var(--global-clock-size);
+  height: var(--global-clock-size);
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--clock-color) calc(var(--clock-filled) / var(--clock-max) * 1turn),
+    var(--clock-background) 0
+  );
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 1;
+    cursor: default;
+  }
+}
+
+.global-clock__spoke {
+  --spoke-width: 2px;
+  position: absolute;
+  top: calc(-0.5 * var(--spoke-width));
+  right: calc(50% - var(--spoke-width) / 2);
+  width: var(--spoke-width);
+  height: calc(50% + 0.5 * var(--spoke-width));
+  background: #000;
+  transform: rotate(calc(var(--clock-index) / var(--clock-max) * 1turn));
+  transform-origin: center bottom;
+}
+
+.global-clock__progress {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  opacity: 0.78;
+}
+
+.global-clock__toolbar {
+  display: inline-flex;
+  align-self: flex-end;
+  padding: var(--global-clock-toolbar-padding);
+  border: 1px solid var(--control-border-color, #6f7077);
+  border-radius: calc(var(--global-clock-size) / 2 + 4px);
+  background: var(--control-bg-color, #202b36);
+  color: var(--control-icon-color, #e6e7e8);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  pointer-events: auto;
+}
+
+.global-clock-display.has-clocks.top .global-clock__toolbar {
+  align-self: start;
+}
+
+.global-clock-display.has-clocks.bottom .global-clock__toolbar {
+  align-self: end;
+}
+
+.global-clock-display.bottom .global-clock__toolbar {
+  align-self: flex-end;
+}
+
+.global-clock__toolbar .global-clock__add {
+  display: inline-grid;
+  place-items: center;
+  width: var(--global-clock-size);
+  min-width: var(--global-clock-size);
+  height: var(--global-clock-size);
+  min-height: var(--global-clock-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+
+  &:focus-visible {
+    outline: 2px solid var(--bw-focus, #e8b65c);
+    outline-offset: 2px;
+  }
+}
+
+.brinkwood-global-clock-dialog .window-content {
+  .global-clock-dialog__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  color-picker { width: 100%; }
+}

@@ -1,0 +1,30 @@
+<section class="mask-alchemic-blood bw-section-frame" aria-labelledby="mask-{{_id}}-alchemic-blood-heading">
+  <header class="mask-alchemic-blood__header bw-section-frame__header">
+    <h3 id="mask-{{_id}}-alchemic-blood-heading">{{localize "Mask.AlchemicBlood.Name"}}</h3>
+    <span class="mask-alchemic-blood__count">{{localize "Mask.AlchemicBlood.Unlocked"}}: {{alchemicBlood.count}} / 6</span>
+  </header>
+  <div class="mask-alchemic-blood__body">
+    <p>{{localize "Mask.AlchemicBlood.Description"}}</p>
+    {{#if alchemicBlood.hasInitialEffect}}
+    <p class="mask-alchemic-blood__guidance">{{localize "Mask.AlchemicBlood.AdvancementGuidance"}}</p>
+    {{else}}
+    <p class="mask-alchemic-blood__guidance">{{localize "Mask.AlchemicBlood.InitialGuidance"}}</p>
+    {{/if}}
+
+    <div class="mask-alchemic-blood__effects" role="list">
+      {{#each alchemicBlood.effects as |effect|}}
+      <article class="mask-alchemic-blood__effect trait-card bw-ruled-card bw-ruled-card--trait-palette" role="listitem" data-alchemic-blood-card="{{effect.id}}" tabindex="-1">
+        <header class="mask-alchemic-blood__effect-header trait-card__header bw-ruled-card__title-band">
+          <h4 class="mask-alchemic-blood__effect-title trait-card__title bw-ruled-card__title">
+            <input type="checkbox" class="mask-alchemic-blood__select trait-card__purchase bw-checkbox-x" data-alchemic-blood-effect="{{effect.id}}" data-alchemic-blood-selected="{{#if effect.actionSelected}}true{{else}}false{{/if}}" aria-label="{{localize effect.actionLabelKey}}: {{localize effect.nameKey}}" title="{{localize effect.actionLabelKey}}" {{#if effect.selected}}checked{{/if}}{{#unless effect.canSelect}} disabled{{/unless}}>
+            {{localize effect.nameKey}}
+          </h4>
+        </header>
+        <div class="mask-alchemic-blood__effect-copy trait-card__description bw-ruled-card__body">
+          <p>{{localize effect.descriptionKey}}</p>
+        </div>
+      </article>
+      {{/each}}
+    </div>
+  </div>
+</section>

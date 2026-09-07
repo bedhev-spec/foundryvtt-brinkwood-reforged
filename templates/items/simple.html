@@ -1,0 +1,30 @@
+<form class="{{cssClass}} legacy-item-sheet" autocomplete="off">
+  <header class="sheet-header">
+    {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+      <div class="header-fields">
+          <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}"/></h1>
+      </div>
+  </header>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body legacy-item-sheet__body">
+    <div class="legacy-item-sheet__primary">
+    <label class="label-stripe">{{localize "BITD.Description"}}</label>
+    {{#if editable}}
+      <prose-mirror name="system.description" value="{{system.description}}" data-document-uuid="{{item.uuid}}" collaborate toggled>{{{enrichedDescription}}}</prose-mirror>
+    {{else}}
+    <div class="editor editor-content">{{{enrichedDescription}}}</div>
+    {{/if}}
+    </div>
+    {{#if isGM}}
+      <aside class="legacy-item-sheet__secondary">
+      <div class="label-stripe">{{localize "BITD.Logic"}}</div>
+      <textarea name="system.logic">{{{system.logic}}}</textarea>
+      </aside>
+      <section class="legacy-item-sheet__effects">
+      <div class="label-stripe">{{localize "BITD.Effects"}}</div>
+      <div id="effects">{{> "systems/brinkwood-reforged/templates/parts/active-effects.html" compact=true}}</div>
+      </section>
+    {{/if}}
+  </section>
+</form>

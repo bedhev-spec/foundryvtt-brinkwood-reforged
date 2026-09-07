@@ -1,0 +1,13 @@
+{{#if linkedJournal.show}}
+<section class="linked-journal-cta{{#if (eq linkedJournal.state "unavailable")}} is-unavailable{{/if}}" data-linked-journal-cta data-linked-journal-uuid="{{linkedJournal.uuid}}" aria-label="{{localize "BITD.LinkedJournal"}}">
+  {{#if linkedJournal.available}}
+  <button type="button" class="linked-journal-cta__open" data-linked-journal-action="open" title="{{linkedJournal.title}}"><i class="fas fa-book-open" aria-hidden="true"></i> {{localize "BITD.OpenJournal"}}</button>
+  {{#if editable}}<div class="linked-journal-cta__management"><button type="button" data-linked-journal-action="change">{{localize "BITD.Change"}}</button><button type="button" data-linked-journal-action="unlink">{{localize "BITD.Unlink"}}</button></div>{{/if}}
+  {{else if (eq linkedJournal.state "unavailable")}}
+  <p class="linked-journal-cta__unavailable" role="status"><i class="fas fa-triangle-exclamation" aria-hidden="true"></i> {{localize "BITD.LinkedJournalUnavailable"}}</p>
+  {{#if editable}}<div class="linked-journal-cta__management"><button type="button" data-linked-journal-action="change">{{localize "BITD.Change"}}</button><button type="button" data-linked-journal-action="unlink">{{localize "BITD.Unlink"}}</button></div>{{/if}}
+  {{else if editable}}
+  <button type="button" class="linked-journal-cta__open" data-linked-journal-action="link"><i class="fas fa-link" aria-hidden="true"></i> {{localize "BITD.LinkJournal"}}</button>
+  {{/if}}
+</section>
+{{/if}}

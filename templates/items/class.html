@@ -1,0 +1,33 @@
+<form class="{{cssClass}} legacy-item-sheet" autocomplete="off">
+  <header class="sheet-header">
+  {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+      <div class="header-fields">
+          <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}"/></h1>
+      </div>
+  </header>
+
+  <section class="flex-vertical">
+    <label class="label-stripe">{{localize "BITD.Description"}}</label>
+    {{#if editable}}
+      <prose-mirror name="system.description" value="{{system.description}}" data-document-uuid="{{item.uuid}}" collaborate toggled>{{{enrichedDescription}}}</prose-mirror>
+    {{else}}
+    <div class="editor editor-content">{{{enrichedDescription}}}</div>
+    {{/if}}
+    <label class="label-stripe">{{localize "BITD.ExpClues"}}</label>
+    <div><i>- {{localize "BITD.ClassExpClue1"}}</i></div>
+    <div>{{localize "BITD.ClassExpClueDescription"}}</div>
+    <div><i>- {{localize "BITD.ClassExpClue2"}}</i></div>
+    <div><i>- {{localize "BITD.ClassExpClue3"}}</i></div>
+  {{#each system.experience_clues as |clue index|}}
+  <input type="text" name="system.experience_clues.{{index}}" value="{{clue}}" {{#unless ../editable}}readonly{{/unless}}>
+  {{/each}}
+
+    {{#if isGM}}
+      <div class="label-stripe">{{localize "BITD.Logic"}}</div>
+      <textarea name="system.logic">{{{system.logic}}}</textarea>
+      <div class="label-stripe">{{localize "BITD.Effects"}}</div>
+      <div id="effects">{{> "systems/brinkwood-reforged/templates/parts/active-effects.html" compact=true}}</div>
+    {{/if}}
+  </section>
+
+</form>

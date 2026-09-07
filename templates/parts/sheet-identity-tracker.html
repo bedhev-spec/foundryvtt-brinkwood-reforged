@@ -1,0 +1,18 @@
+<div id="{{trackerId}}" class="big-teeth {{trackerClass}}{{#if tooltip}} tooltip-trigger--plain{{/if}}"{{#if tooltip}} data-tooltip-html="<section class='brinkwood-item-tooltip brinkwood-tracker-tooltip'><header>{{#if label}}{{localize label}}{{else}}{{localize tracker.name}}{{/if}}</header><div class='brinkwood-item-tooltip__description'>{{localize tooltip}}</div><section class='brinkwood-tracker-tooltip__subinfo'><h4>{{localize 'BITD.Progress'}}</h4><p><strong>{{tracker.value}}</strong> / {{tracker.max}}</p></section></section>" data-tooltip-class="brinkwood-item-tooltip-shell" data-tooltip-direction="RIGHT"{{/if}}>
+  {{#if rollLabel}}
+  <span class="black-label"><button type="button" class="roll-die-attribute rollable-text" data-roll-attribute-label="{{rollLabel}}" data-roll-value="{{rollValue}}">{{localize rollLabel}}</button></span>
+  {{else}}
+  <span class="black-label">{{#if label}}{{localize label}}{{else}}{{localize tracker.name}}{{/if}}</span>
+  {{/if}}
+  <div class="legacy-tracker-segments" role="group" aria-label="{{localize tracker.name}}">
+    {{#times_from_1 tracker.max}}
+    <button type="button" class="dot-value{{#if ../tracker.additionalSlots}}{{#contains this ../tracker.additionalSlots}} dot-value--additional-essence{{/contains}}{{/if}}" data-path="{{../trackerPath}}" data-max_value="{{../tracker.max}}" data-value="{{this}}" aria-label="{{localize ../tracker.name}} {{this}} of {{../tracker.max}}" aria-pressed="{{#if (lt ../tracker.value this)}}false{{else}}true{{/if}}"{{#if ../tracker.additionalSlots}}{{#contains this ../tracker.additionalSlots}} data-tooltip="{{localize 'Mask.Essence.AdditionalSlot'}}" title="{{localize 'Mask.Essence.AdditionalSlot'}}"{{/contains}}{{/if}}{{#unless ../editable}} disabled{{/unless}}>
+      {{#if (lt ../tracker.value this)}}
+      <img class="big-teeth" src="systems/brinkwood-reforged/styles/assets/teeth/stresstooth-halfgrey.png" alt="">
+      {{else}}
+      <img class="big-teeth" src="systems/brinkwood-reforged/styles/assets/teeth/stresstooth-{{../toothColor}}.png" alt="">
+      {{/if}}
+    </button>
+    {{/times_from_1}}
+  </div>
+</div>

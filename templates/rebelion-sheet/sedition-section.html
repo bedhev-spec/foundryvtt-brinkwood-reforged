@@ -1,0 +1,44 @@
+<section class="bw-section-frame bw-ruled-card--trait-palette rebelion-settlements" aria-labelledby="rebellion-{{actorId}}-{{label}}">
+  <header class="bw-section-frame__header rebelion-section-heading rebelion-settlements__header">
+    <h2 id="rebellion-{{actorId}}-{{label}}">{{localize label}}</h2>
+  </header>
+  <div class="rebelion-settlements__list">
+    {{#each collection}}
+    <article class="rebelion-settlement{{#if (eq sedition.level 3)}} is-liberated{{/if}}">
+      <header class="rebelion-settlement__identity">
+        <div class="rebelion-settlement__title">
+          <strong>{{name}}</strong>
+          {{#if (eq sedition.level 3)}}<span class="rebelion-settlement__status">{{localize "BITD.RebellionLiberated"}}</span>{{/if}}
+        </div>
+        {{#if ../canCorrectTerritory}}
+          {{#unless (eq sedition.level 0)}}
+          <button type="button" class="rebelion-correction rebelion-settlement__undo" data-rebellion-action="undo-territory-level" data-collection="{{collection}}" data-index="{{index}}" data-territory-name="{{name}}">{{localize "BITD.RebellionUndoTerritoryLevel"}}</button>
+          {{/unless}}
+        {{/if}}
+      </header>
+      <div class="sheet-identity__trackers rebelion-settlement__trackers" aria-label="{{localize "BITD.Sedition"}} / {{localize "BITD.Level"}}">
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html"
+          trackerId=(concat "rebellion-" ../actorId "-" collection "-" index "-sedition")
+          tracker=clockTracker
+          trackerPath=(concat "rebellion.location." collection "." index ".clock")
+          trackerClass="rebelion-tracker rebelion-tracker--sedition"
+          toothColor="blue"
+          label="BITD.Sedition"
+          tooltip="Click an empty tooth to gain Sedition. Filling the clock raises the level and clears the clock."
+          editable=../editable
+        }}
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html"
+          trackerId=(concat "rebellion-" ../actorId "-" collection "-" index "-level")
+          tracker=levelTracker
+          trackerPath=(concat "rebellion.location." collection "." index ".level")
+          trackerClass="rebelion-tracker rebelion-tracker--level"
+          toothColor="blue"
+          label="BITD.Level"
+          tooltip="Click a higher tooth to advance the territory level. Reductions use the GM-only confirmed Undo Territory Level workflow."
+          editable=../editable
+        }}
+      </div>
+    </article>
+    {{/each}}
+  </div>
+</section>

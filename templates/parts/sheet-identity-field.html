@@ -1,0 +1,5 @@
+{{!-- Reusable fixed-geometry text field for first-section identity data. --}}
+<div id="{{fieldId}}-box" class="sheet-identity__field-box{{#if fieldBoxClass}} {{fieldBoxClass}}{{/if}}">
+  <label for="{{fieldId}}">{{localize fieldLabel}}</label>
+  <input type="text" id="{{fieldId}}" class="{{fieldClass}}" name="{{fieldName}}" value="{{fieldValue}}">
+</div>

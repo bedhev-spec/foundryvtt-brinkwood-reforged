@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rebellion structural alignment contract</title>
+  <link rel="stylesheet" href="../../styles/blades.css">
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body { padding: 16px; }
+    .fixture-case { margin-bottom: 20px; }
+    .fixture-case.brinkwood.actor.rebelion { min-height: 0; container-type: inline-size; }
+    .fixture-case[data-width="900"] { width: 900px; }
+    .fixture-case[data-width="700"] { width: 700px; }
+    .fixture-case[data-width="460"] { width: 460px; }
+    .fixture-case .rebelion-aspects-grid,
+    .fixture-case .rebelion-underground__actor-groups { box-sizing: border-box; }
+    output { display: block; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Rebellion structural alignment</h1>
+
+  <section class="fixture-case brinkwood actor rebelion" data-width="900" data-aspect-case>
+    <div class="rebelion-aspects-grid">
+      <article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary">
+        <header class="bw-ruled-card__title-band"><h2 class="bw-ruled-card__title">Organization</h2></header>
+        <div class="bw-ruled-card__body"><section class="rebelion-aspect__downtime"><h3>Band-wide downtime</h3><p>Requisition Asset</p><small>Each PC still has one personal downtime action.</small></section></div>
+        <footer class="rebelion-aspect-summary__footer"><p class="rebelion-aspect__next-moot">Next Moot at Rank 1</p></footer>
+      </article>
+      <article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary">
+        <header class="bw-ruled-card__title-band"><h2 class="bw-ruled-card__title">Force</h2></header>
+        <div class="bw-ruled-card__body"><section class="rebelion-aspect__downtime"><h3>Band-wide downtime</h3><p>Reduce Heat / Long secondary action / Third action</p><small>Each PC still has one personal downtime action.</small></section></div>
+        <footer class="rebelion-aspect-summary__footer"><p class="rebelion-aspect__next-moot">Next Moot at Rank 1</p></footer>
+      </article>
+      <article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary">
+        <header class="bw-ruled-card__title-band"><h2 class="bw-ruled-card__title">Influence</h2></header>
+        <div class="bw-ruled-card__body"><section class="rebelion-aspect__downtime"><h3>Band-wide downtime</h3><p>Reduce Heat</p><small>Each PC still has one personal downtime action.</small></section><section class="rebelion-moot"><h3 class="rebelion-moot__heading">Moot decisions</h3><p>A recorded decision remains visible here.</p></section></div>
+        <footer class="rebelion-aspect-summary__footer"><p class="rebelion-aspect__next-moot">Next Moot at Rank 2</p></footer>
+      </article>
+    </div>
+  </section>
+
+  <section class="fixture-case brinkwood actor rebelion" data-width="700" data-aspect-case>
+    <div class="rebelion-aspects-grid">
+      <article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary"><header class="bw-ruled-card__title-band"><h2 class="bw-ruled-card__title">Organization</h2></header><div class="bw-ruled-card__body"><section class="rebelion-aspect__downtime"><p>One line</p></section></div><footer class="rebelion-aspect-summary__footer"><p class="rebelion-aspect__next-moot">Next Moot at Rank 1</p></footer></article>
+      <article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary"><header class="bw-ruled-card__title-band"><h2 class="bw-ruled-card__title">Force</h2></header><div class="bw-ruled-card__body"><section class="rebelion-aspect__downtime"><p>One line followed by enough text to wrap onto several lines at this responsive width.</p></section></div><footer class="rebelion-aspect-summary__footer"><p class="rebelion-aspect__next-moot">Next Moot at Rank 1</p></footer></article>
+      <article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary"><header class="bw-ruled-card__title-band"><h2 class="bw-ruled-card__title">Influence</h2></header><div class="bw-ruled-card__body"><p class="rebelion-aspect__maximum">Maximum rank</p></div></article>
+    </div>
+  </section>
+
+  <form class="fixture-case brinkwood actor rebelion rebelion-underground__body" data-width="900" data-row-case>
+    <fieldset class="rebelion-underground__actors"><legend>Eligible actors</legend><div class="rebelion-underground__actor-groups">
+      <section class="rebelion-underground__actor-group"><h4>Characters</h4>
+        <label class="rebelion-underground__actor"><span class="rebelion-underground__actor-checkbox"><input class="bw-checkbox-x" type="checkbox"></span><span class="rebelion-underground__actor-text"><span class="rebelion-underground__actor-name">Character</span><span class="rebelion-underground__actor-resource"><span class="rebelion-underground__actor-resource-label">Stress:</span><span class="rebelion-underground__actor-resource-value">2</span></span></span></label>
+        <label class="rebelion-underground__actor"><span class="rebelion-underground__actor-checkbox"><input class="bw-checkbox-x" type="checkbox"></span><span class="rebelion-underground__actor-text"><span class="rebelion-underground__actor-name">A deliberately extremely long character name that must truncate</span><span class="rebelion-underground__actor-resource"><span class="rebelion-underground__actor-resource-label">Stress:</span><span class="rebelion-underground__actor-resource-value">10</span></span></span></label>
+      </section>
+      <section class="rebelion-underground__actor-group"><h4>Masks</h4>
+        <label class="rebelion-underground__actor"><span class="rebelion-underground__actor-checkbox"><input class="bw-checkbox-x" type="checkbox"></span><span class="rebelion-underground__actor-text"><span class="rebelion-underground__actor-name">Mask</span><span class="rebelion-underground__actor-resource"><span class="rebelion-underground__actor-resource-label">Essence:</span><span class="rebelion-underground__actor-resource-value">5</span></span></span></label>
+      </section>
+    </div></fieldset>
+  </form>
+
+  <form class="fixture-case brinkwood actor rebelion rebelion-underground__body" data-width="460" data-row-case>
+    <fieldset class="rebelion-underground__actors"><legend>Eligible actors</legend><div class="rebelion-underground__actor-groups">
+      <section class="rebelion-underground__actor-group"><h4>Characters</h4><label class="rebelion-underground__actor"><span class="rebelion-underground__actor-checkbox"><input class="bw-checkbox-x" type="checkbox"></span><span class="rebelion-underground__actor-text"><span class="rebelion-underground__actor-name">Narrow character with a long name</span><span class="rebelion-underground__actor-resource"><span class="rebelion-underground__actor-resource-label">Stress:</span><span class="rebelion-underground__actor-resource-value">2</span></span></span></label></section>
+      <section class="rebelion-underground__actor-group"><h4>Masks</h4><label class="rebelion-underground__actor"><span class="rebelion-underground__actor-checkbox"><input class="bw-checkbox-x" type="checkbox"></span><span class="rebelion-underground__actor-text"><span class="rebelion-underground__actor-name">Narrow mask</span><span class="rebelion-underground__actor-resource"><span class="rebelion-underground__actor-resource-label">Essence:</span><span class="rebelion-underground__actor-resource-value">5</span></span></span></label></section>
+    </div></fieldset>
+  </form>
+
+  <output id="rebellion-alignment-results" aria-live="polite">Running…</output>
+  <script type="module" src="./rebellion-alignment-fixture.mjs"></script>
+</body>
+</html>

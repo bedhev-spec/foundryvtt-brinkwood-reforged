@@ -1,0 +1,91 @@
+<form class="{{cssClass}} actor-sheet npc-dossier" autocomplete="off">
+  {{> "systems/brinkwood-reforged/templates/parts/linked-journal-cta.html" linkedJournal=linkedJournal editable=editable}}
+  <header class="npc-dossier__header">
+    {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html"
+      img=img
+      name=name
+      editable=editable
+    }}
+
+    <div class="npc-dossier__identity">
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-name">{{localize "BITD.Name"}}</label>
+        <input class="name bw-text-field" type="text" id="npc-{{_id}}-name" name="name" value="{{name}}"{{#unless editable}} disabled{{/unless}}>
+      </div>
+
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-short-description">{{localize "BITD.ShortDescription"}}</label>
+        <input class="bw-text-field" type="text" id="npc-{{_id}}-short-description" name="system.description_short" value="{{system.description_short}}"{{#unless editable}} disabled{{/unless}}>
+      </div>
+    </div>
+  </header>
+
+  <section class="npc-dossier__profile" aria-labelledby="npc-{{_id}}-profile-heading">
+    <h2 id="npc-{{_id}}-profile-heading">{{localize "BITD.Profile"}}</h2>
+
+    <div class="npc-dossier__profile-fields">
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-associated-class">{{localize "BITD.NpcClassRole"}}</label>
+        <input class="bw-text-field" type="text" id="npc-{{_id}}-associated-class" name="system.associated_class" value="{{system.associated_class}}"{{#unless editable}} disabled{{/unless}}>
+      </div>
+
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-associated-faction">{{localize "BITD.NpcFaction"}}</label>
+        <input class="bw-text-field" type="text" id="npc-{{_id}}-associated-faction" name="system.associated_faction" value="{{system.associated_faction}}"{{#unless editable}} disabled{{/unless}}>
+      </div>
+
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-associated-crew-type">{{localize "BITD.NpcFactionType"}}</label>
+        <input class="bw-text-field" type="text" id="npc-{{_id}}-associated-crew-type" name="system.associated_crew_type" value="{{system.associated_crew_type}}"{{#unless editable}} disabled{{/unless}}>
+      </div>
+
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-tier">{{localize "BITD.Tier"}}</label>
+        <input class="bw-text-field" type="number" id="npc-{{_id}}-tier" name="system.tier" value="{{system.tier}}" min="0" max="6" step="1"{{#unless editable}} disabled{{/unless}}>
+      </div>
+
+      <div class="npc-dossier__field">
+        <label for="npc-{{_id}}-threat">{{localize "BITD.NpcThreat"}}</label>
+        <input class="bw-text-field" type="number" id="npc-{{_id}}-threat" name="system.threat" value="{{system.threat}}" min="-3" step="1"{{#unless editable}} disabled{{/unless}}>
+      </div>
+
+      <label class="npc-dossier__field npc-dossier__elite" for="npc-{{_id}}-elite">
+        <span>{{localize "BITD.NpcElite"}}</span>
+        <input class="bw-checkbox-x" type="checkbox" id="npc-{{_id}}-elite" name="system.elite"{{checked system.elite}}{{#unless editable}} disabled{{/unless}}>
+      </label>
+    </div>
+  </section>
+
+  <section class="npc-dossier__editors" aria-label="{{localize 'BITD.NpcDetails'}}">
+    <nav class="tabs sheet-tabs npc-dossier__editor-tabs" data-group="npcDetails" role="tablist" aria-label="{{localize 'BITD.NpcDetails'}}">
+      <button type="button" id="npc-{{_id}}-description-tab" class="item {{#if (eq npcDetailsTab 'description')}}active{{/if}}" data-action="tab" data-group="npcDetails" data-tab="description" role="tab" aria-controls="npc-{{_id}}-description-panel" aria-selected="{{#if (eq npcDetailsTab 'description')}}true{{else}}false{{/if}}" tabindex="{{#if (eq npcDetailsTab 'description')}}0{{else}}-1{{/if}}">{{localize "BITD.Description"}}</button>
+      <button type="button" id="npc-{{_id}}-abilities-tab" class="item {{#if (eq npcDetailsTab 'abilities')}}active{{/if}}" data-action="tab" data-group="npcDetails" data-tab="abilities" role="tab" aria-controls="npc-{{_id}}-abilities-panel" aria-selected="{{#if (eq npcDetailsTab 'abilities')}}true{{else}}false{{/if}}" tabindex="{{#if (eq npcDetailsTab 'abilities')}}0{{else}}-1{{/if}}">{{localize "BITD.NpcAbilities"}}</button>
+      <button type="button" id="npc-{{_id}}-schemes-tab" class="item {{#if (eq npcDetailsTab 'schemes')}}active{{/if}}" data-action="tab" data-group="npcDetails" data-tab="schemes" role="tab" aria-controls="npc-{{_id}}-schemes-panel" aria-selected="{{#if (eq npcDetailsTab 'schemes')}}true{{else}}false{{/if}}" tabindex="{{#if (eq npcDetailsTab 'schemes')}}0{{else}}-1{{/if}}">{{localize "BITD.NpcSchemes"}}</button>
+    </nav>
+    <div class="npc-dossier__editor-content">
+    <section id="npc-{{_id}}-description-panel" class="tab npc-dossier__editor-panel bw-rich-text-surface {{#if (eq npcDetailsTab 'description')}}active{{/if}}" data-group="npcDetails" data-tab="description" role="tabpanel" aria-labelledby="npc-{{_id}}-description-tab">
+      {{#if editable}}
+      <prose-mirror name="system.description" value="{{system.description}}" data-document-uuid="{{actor.uuid}}" collaborate toggled>{{{enrichedDescription}}}</prose-mirror>
+      {{else}}
+      <div class="editor editor-content">{{{enrichedDescription}}}</div>
+      {{/if}}
+    </section>
+
+    <section id="npc-{{_id}}-abilities-panel" class="tab npc-dossier__editor-panel bw-rich-text-surface {{#if (eq npcDetailsTab 'abilities')}}active{{/if}}" data-group="npcDetails" data-tab="abilities" role="tabpanel" aria-labelledby="npc-{{_id}}-abilities-tab">
+      {{#if editable}}
+      <prose-mirror name="system.abilities" value="{{system.abilities}}" data-document-uuid="{{actor.uuid}}" collaborate toggled>{{{enrichedAbilities}}}</prose-mirror>
+      {{else}}
+      <div class="editor editor-content">{{{enrichedAbilities}}}</div>
+      {{/if}}
+    </section>
+
+    <section id="npc-{{_id}}-schemes-panel" class="tab npc-dossier__editor-panel bw-rich-text-surface {{#if (eq npcDetailsTab 'schemes')}}active{{/if}}" data-group="npcDetails" data-tab="schemes" role="tabpanel" aria-labelledby="npc-{{_id}}-schemes-tab">
+      {{#if editable}}
+      <prose-mirror name="system.schemes" value="{{system.schemes}}" data-document-uuid="{{actor.uuid}}" collaborate toggled>{{{enrichedSchemes}}}</prose-mirror>
+      {{else}}
+      <div class="editor editor-content">{{{enrichedSchemes}}}</div>
+      {{/if}}
+    </section>
+    </div>
+  </section>
+</form>

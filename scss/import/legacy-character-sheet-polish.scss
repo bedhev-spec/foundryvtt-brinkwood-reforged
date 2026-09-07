@@ -1,0 +1,74 @@
+/*
+ * Late Character decoration and native-checkbox compatibility. Layout,
+ * scrolling, and focus treatment live in character-sheet.scss.
+ */
+.brinkwood.actor.pc.character .character-armor-uses input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  accent-color: auto;
+  border: 1px solid var(--bw-ink-soft);
+  border-radius: 2px;
+  background: #fff;
+}
+
+.brinkwood.actor.pc.character .character-armor-uses input[type="checkbox"]:checked {
+  border-color: var(--bw-ink-soft);
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, transparent 45%, var(--bw-ink) 46%, var(--bw-ink) 54%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, var(--bw-ink) 46%, var(--bw-ink) 54%, transparent 55%);
+}
+
+.brinkwood.actor.pc.character .character-armor-uses input[type="checkbox"]:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.brinkwood.actor.pc.character form.actor-sheet {
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255, 255, 255, 0.48), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(224, 215, 197, 0.14));
+}
+
+.brinkwood.actor.pc.character form.actor-sheet > .name-alias {
+  border: 1px solid rgba(141, 98, 93, 0.62);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 2px 6px rgba(33, 27, 29, 0.08);
+}
+
+.brinkwood.actor.pc.character form.actor-sheet > .name-alias input[type="text"],
+.brinkwood.actor.pc.character form.actor-sheet > .bans-armor input[type="text"] {
+  border: 1px solid rgba(33, 27, 29, 0.42);
+  border-radius: 2px;
+  background: #fffdf7;
+  color: var(--bw-ink);
+  box-shadow: inset 0 1px 2px rgba(33, 27, 29, 0.13);
+}
+
+.brinkwood.actor.pc.character form.actor-sheet > .bans-armor {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 6px rgba(33, 27, 29, 0.06);
+}
+
+.brinkwood.actor.pc.character form.actor-sheet .character-bans tbody tr td:not([rowspan]) {
+  transition: background-color 120ms ease;
+}
+
+.brinkwood.actor.pc.character form.actor-sheet .character-armor-uses {
+  background: rgba(224, 215, 197, 0.24);
+  box-shadow: inset 1px 0 0 rgba(141, 98, 93, 0.28);
+}
+
+.brinkwood.actor.pc.character form.actor-sheet .character-scars-clock,
+.brinkwood.actor.pc.character form.actor-sheet .character-oath-clock {
+  border-color: rgba(141, 98, 93, 0.58);
+  border-radius: 6px;
+  background: rgba(224, 215, 197, 0.46);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    0 1px 2px rgba(33, 27, 29, 0.08);
+}

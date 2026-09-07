@@ -1,0 +1,13 @@
+/*
+ * Late Character compatibility decoration. Geometry, scrolling, and focus
+ * live in character-sheet.scss; this file only preserves established colors
+ * and table-rule cleanup that must win after shared component styles.
+ */
+.brinkwood.actor.pc.character .character-xp-section {
+  border-color: #315f82;
+}
+
+.brinkwood.actor.pc.character .bans-armor .character-bans table tbody tr:last-child > td,
+.brinkwood.actor.pc.character .bans-armor .character-bans table tbody tr:first-child > td[rowspan] {
+  border-bottom: 0;
+}

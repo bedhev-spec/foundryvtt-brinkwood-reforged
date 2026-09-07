@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brinkwood browser regression fixture</title>
+    <style>
+      body { max-width: 760px; margin: 24px auto; font: 16px system-ui, sans-serif; }
+      section { margin-block: 24px; padding: 16px; border: 1px solid #777; }
+      label, button { display: block; margin-block: 8px; }
+      #scroll-root .sheet-tab-content > .tab.active { block-size: 96px; overflow: auto; border: 1px solid #999; }
+      .scroll-filler { block-size: 480px; padding: 8px; }
+      output { display: block; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Brinkwood browser regression fixture</h1>
+    <p id="coverage-notice">This native-DOM fixture exercises production helpers. It is not Foundry v13 or ProseMirror lifecycle coverage.</p>
+
+    <section id="editor-fixture" data-status="pending">
+      <h2>Editor save adapter</h2>
+      <label for="notes-input">Notes</label>
+      <textarea id="notes-input">Initial notes</textarea>
+      <prose-mirror id="notes-editor" name="system.description"><div class="editor-content">Initial notes</div></prose-mirror>
+      <button id="save-notes" type="button">Save notes</button>
+      <p>Document updates: <output id="editor-update-count">0</output></p>
+    </section>
+
+    <section id="picker-fixture" data-status="pending">
+      <h2>Picker selection</h2>
+      <p>First read with no choice, then select <strong>Briar Mask</strong> and read again.</p>
+      <form id="picker-form"></form>
+      <button id="read-picker-selection" type="button">Read selection</button>
+      <p>Selected values: <output id="picker-selection-count">0</output>; no-selection observed: <output id="picker-no-selection">false</output></p>
+    </section>
+
+    <section id="scroll-fixture" data-status="pending">
+      <h2>Scroll restoration</h2>
+      <div id="scroll-root"></div>
+      <button id="replace-scroll-root" type="button">Replace scroll pane</button>
+      <p>Captured/restored scroll: <output id="scroll-position">not captured</output></p>
+    </section>
+
+    <section id="save-retry-fixture" data-status="pending">
+      <h2>Form save failure and retry</h2>
+      <form id="save-retry-form">
+        <label for="save-retry-input">Description</label>
+        <input id="save-retry-input" name="system.description" value="Initial description">
+        <button id="fail-next-save" type="button">Fail next save</button>
+        <button id="save-retry-submit" type="button">Save</button>
+      </form>
+      <p>Updates: <output id="save-retry-updates">0</output>; notifications: <output id="save-retry-notifications">0</output></p>
+    </section>
+
+    <section>
+      <h2>Assertions</h2>
+      <button id="run-browser-regressions" type="button">Run all assertions</button>
+      <output id="browser-regression-results" aria-live="polite">Not run</output>
+    </section>
+    <script type="module" src="./browser-regression-fixture.mjs"></script>
+  </body>
+</html>

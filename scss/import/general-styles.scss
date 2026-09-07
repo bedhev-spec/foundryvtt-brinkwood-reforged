@@ -1,0 +1,1070 @@
+@import 'sheet-text-section.scss';
+
+.window-content {
+  background-color: var(--bw-paper);
+  /* Keep the grain tactile but behind an ivory wash: texture must read as
+   * depth, never as a yellow patterned backdrop. */
+  background-image:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 42%),
+    linear-gradient(180deg, rgba(247, 244, 237, 0.28), rgba(239, 234, 225, 0.28)),
+ url("assets/textures/parchment-grain-sage-v4.png");
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: cover, cover, 768px 768px;
+  background-blend-mode: normal, normal, normal;
+  color: var(--bw-ink);
+}
+
+.window-header {
+  background-color: var(--bw-ink);
+  color: var(--bw-inverse);
+
+  .window-title,
+  .header-control {
+    color: inherit;
+  }
+
+  .header-control:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: -3px;
+  }
+}
+
+.window-content form {
+  color: var(--bw-ink);
+}
+
+/* Shared checkbox visual. Individual sheets own size and placement. */
+form .bw-checkbox-x {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  accent-color: transparent !important;
+  box-sizing: border-box;
+  border: 1px solid var(--bw-ink-soft) !important;
+  border-radius: 2px;
+  background-color: #fff !important;
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+  box-shadow: none !important;
+  color: transparent !important;
+  --checkbox-background-color: #fff;
+  --checkbox-checkmark-color: transparent;
+}
+
+form .bw-checkbox-x::before,
+form .bw-checkbox-x::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+form .bw-checkbox-x:checked {
+  background-color: #fff !important;
+  background-image:
+    linear-gradient(45deg, transparent 45%, var(--bw-ink) 46%, var(--bw-ink) 54%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, var(--bw-ink) 46%, var(--bw-ink) 54%, transparent 55%) !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+}
+
+form .bw-checkbox-x:focus-visible {
+  outline: 3px solid var(--bw-focus);
+  outline-offset: 2px;
+}
+
+form .bw-checkbox-x:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+textarea {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.debug-toggle{
+  opacity: 0.1;
+
+  &.on{
+    opacity: 0.75;
+  }
+}
+
+.rollable-text {
+  transition: color $transition-period;
+}
+
+// Roll headers are text controls; suppress Foundry's orange mouse-focus ring.
+button.roll-die-attribute {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--bw-ink-soft);
+    outline-offset: 2px;
+  }
+}
+.rollable-text:hover {
+  cursor: pointer;
+  color: $red;
+}
+
+section {
+  display: flex;
+  justify-content: space-between;
+
+  .grow-one {
+    flex-grow: 1;
+  }
+
+  .grow-two {
+    flex-grow: 2;
+  }
+
+  &.experience {
+    margin-bottom: 0px;
+    justify-content: center;
+  }
+}
+
+.flex-horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.item-list.flex-horizontal {
+  flex-flow: row wrap;
+}
+
+.item-list  {
+
+  div.item-name {
+    text-align: left;
+  }
+
+  div.item.flex-horizontal {
+    flex: 0 0 12em;
+    align-items: center;
+  } 
+}
+
+.flex-horizontal.trait {
+  align-items: center;
+
+  input[type="checkbox"] {
+    margin-right: 1em;
+  }
+}
+
+
+
+/*
+.item-list input[type="checkbox"] {
+  appearance: none;
+  background-color: #fff;
+  margin: 0;
+  font: inherit;
+  color: #000;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid #000;
+  border-radius: 50%;
+  transform: translateY(0.15em);
+}
+
+.item-list input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em black;
+}
+
+.item-list input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+*/
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab[data-tab]{
+  display: none;
+  &.active{
+    display: block;
+  }
+}
+.black-label {
+  background-color: var(--bw-ink);
+  color: var(--bw-inverse);
+  font-size: 21px;
+  text-align: center;
+  padding: 0px 5px;
+  height: 30px !important;
+  text-transform: capitalize;
+  font-family: Kirsty, serif;
+}
+
+.gray-label {
+  background-color: var(--bw-paper-deep);
+  color: var(--bw-ink);
+  font-size: 21px;
+  text-align: center;
+  padding: 0px 5px;
+  height: 30px !important;
+  text-transform: capitalize;
+  font-family: Kirsty, serif;
+}
+
+
+.label-stripe {
+  text-transform: uppercase;
+  background-color: var(--bw-ink);
+  color: var(--bw-inverse);
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  font-weight: bold;
+}
+
+.label-stripe-gray {
+  text-transform: uppercase;
+  background-color: var(--bw-paper-deep);
+  color: var(--bw-ink);
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  font-weight: bold;
+}
+
+// Shared framed section shell. Sheets retain ownership of their inner layout.
+.bw-section-frame {
+  min-width: 0;
+  border: 1px solid var(--bw-rule);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.bw-section-frame__header {
+  background: var(--bw-ink);
+  color: var(--bw-inverse);
+}
+
+// Character and Mask expose a different number of Attribute families, but
+// each family uses this same stripe, rating-dot, and skill-label language.
+// Sheet styles retain only their placement and column geometry.
+.sheet-attribute-presentation {
+  // Character and Mask Attribute families share this visual contract. Sheet
+  // styles may place the family, but never alter its header or row metrics.
+  --bw-attribute-header-height: 34px;
+  --bw-attribute-header-font-family: "Crimson Text", serif;
+  --bw-attribute-header-font-size: 17px;
+  --bw-attribute-header-line-height: 1.2;
+  --bw-attribute-row-height: 28px;
+  --bw-attribute-dot-track: 26px;
+  --bw-attribute-row-font-family: "Crimson Text", serif;
+  --bw-attribute-row-font-size: 1rem;
+  --bw-attribute-row-line-height: 1.2;
+
+  color: $almost_black;
+
+  .attribute {
+    min-width: 0;
+    margin-bottom: 10px;
+  }
+
+  .stripe {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--bw-attribute-header-height);
+    padding-inline: 5px;
+    background: $almost_black;
+    color: $almost_white;
+    font-family: var(--bw-attribute-header-font-family);
+    font-size: var(--bw-attribute-header-font-size);
+    line-height: var(--bw-attribute-header-line-height);
+  }
+
+  .attribute-label,
+  .attribute-skill-label {
+    color: inherit;
+    font-family: var(--bw-attribute-header-font-family);
+    font-weight: bold;
+    text-shadow: none;
+    text-transform: uppercase;
+  }
+
+  .attribute-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: var(--bw-attribute-header-height);
+    font-size: var(--bw-attribute-header-font-size);
+    line-height: var(--bw-attribute-header-line-height);
+    text-align: center;
+  }
+
+  button.attribute-label,
+  button.attribute-skill-label {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--bw-attribute-header-font-family);
+    font-size: var(--bw-attribute-header-font-size);
+    line-height: var(--bw-attribute-header-line-height);
+
+    &:focus-visible {
+      outline: 2px solid var(--bw-ink-soft);
+      outline-offset: 2px;
+    }
+  }
+
+  button.attribute-skill-label {
+    font-family: var(--bw-attribute-row-font-family);
+    font-size: var(--bw-attribute-row-font-size);
+    line-height: var(--bw-attribute-row-line-height);
+  }
+
+  h2.attribute-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--bw-attribute-header-height);
+    margin: 0;
+    font-family: var(--bw-attribute-header-font-family);
+    font-size: var(--bw-attribute-header-font-size);
+    font-weight: bold;
+    line-height: var(--bw-attribute-header-line-height);
+  }
+
+  .attribute-skill-label {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    min-height: var(--bw-attribute-row-height);
+    margin-top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--bw-attribute-row-font-family);
+    font-size: var(--bw-attribute-row-font-size);
+    line-height: var(--bw-attribute-row-line-height);
+  }
+
+  .attributes-exp {
+    position: relative;
+    margin-top: 0;
+  }
+
+  .attributes-container {
+    display: grid;
+    grid-template-columns: repeat(4, var(--bw-attribute-dot-track)) minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--bw-attribute-row-height);
+    margin: 3px 0;
+    font-family: var(--bw-attribute-row-font-family);
+    font-size: var(--bw-attribute-row-font-size);
+    line-height: var(--bw-attribute-row-line-height);
+
+    button.dot-value {
+      display: inline-grid;
+      align-self: center;
+      width: var(--bw-attribute-dot-track);
+      height: var(--bw-attribute-row-height);
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: transparent;
+      cursor: pointer;
+      font-family: var(--bw-attribute-row-font-family);
+      font-size: var(--bw-attribute-row-font-size);
+      line-height: 1;
+      place-items: center;
+
+      &::before {
+        width: 13px;
+        height: 13px;
+        border: 2px solid var(--bw-ink-soft);
+        border-radius: 50%;
+        content: "";
+        transform: translateY(7px);
+      }
+
+      &.dot-value--filled::before {
+        border-color: var(--bw-ink);
+        background: var(--bw-ink);
+      }
+
+      &.dot-value--granted {
+        cursor: not-allowed;
+        opacity: 1;
+      }
+
+      &.dot-value--granted::before {
+        border-color: #6b4528;
+        background: #b7864d;
+        box-shadow: inset 0 0 0 2px rgba(247, 244, 237, 0.42);
+      }
+
+      &:hover:not(:disabled)::before {
+        border-color: var(--bw-accent);
+      }
+
+      &:focus,
+      &:active {
+        outline: 0;
+        box-shadow: none;
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--bw-focus);
+        outline-offset: 1px;
+      }
+
+      &:focus-visible::before {
+        outline: 3px solid var(--bw-focus);
+        outline-offset: 3px;
+      }
+
+      &:disabled {
+        cursor: default;
+      }
+    }
+  }
+}
+
+.editor,
+.editor-content,
+prose-mirror {
+  min-height: 150px;
+}
+
+.description {
+  font-style: italic;
+}
+
+i {
+  &.nullifier {
+    @include changeable($transition-period, $hover-brightness, $hover-opacity, $red);
+  }
+}
+
+.loadout {
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: none;
+    border: none;
+    cursor: pointer;
+    background: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat right;
+    padding: 0 20px 0 0;
+    margin: 0.1em -6px 0 0;
+    background-color: var(--bw-ink);
+    font-family: Georgia, "Bitstream Charter", "Times New Roman", serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--bw-inverse);
+    text-align: right;
+
+    option {
+      background-color: var(--bw-ink);
+      color: var(--bw-inverse);
+    }
+  }
+
+  select:hover {
+    color: red;
+  }
+}
+
+.abilities, .loadout, .faction-items {
+  .item-name {
+    width: 100px;
+    margin-left: 10px;
+  }
+  .item-body {
+    width: auto;
+  }
+  .item-description {
+    width: 260px;
+  }
+}
+
+td {
+  padding: 5px;
+}
+
+.flexrow, .flexcol {
+	.flex05 {
+    flex: 0.5;
+	}
+
+	.flex075 {
+    flex: 0.75;
+	}
+
+	.flex125 {
+		flex: 1.25;
+	}
+}
+
+.effects-groups {
+  display: grid;
+  gap: 12px;
+  container-type: inline-size;
+}
+
+.effects-category {
+  overflow: hidden;
+  border: 1px solid var(--bw-rule);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.effects-category__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 10px 8px 14px;
+  background: var(--bw-paper-deep);
+
+  h3 {
+    margin: 0;
+    color: var(--bw-ink);
+    font-family: "Crimson Text", serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: none;
+  }
+}
+
+button.effects-category__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  min-height: 36px;
+  margin: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--bw-ink);
+  border-radius: 4px;
+  background: var(--bw-ink);
+  color: var(--bw-inverse);
+  font-family: "Crimson Text", serif;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.effects-category__list {
+  display: grid;
+  gap: 1px;
+  background: var(--bw-rule);
+}
+
+// A compact parchment card shared by static character-sheet records. Consumers
+// own layout; this primitive owns only the visible paper-and-rule language.
+.bw-ruled-card {
+  --bw-ruled-card-rule: var(--bw-rule);
+  --bw-ruled-card-accent: var(--bw-accent);
+  --bw-ruled-card-surface: rgba(255, 255, 255, 0.3);
+  --bw-ruled-card-title-band: var(--bw-paper-deep);
+  --bw-ruled-card-ink: var(--bw-ink);
+
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--bw-ruled-card-rule);
+  border-left: 5px solid var(--bw-ruled-card-accent);
+  border-radius: 6px;
+  background: var(--bw-ruled-card-surface);
+  color: var(--bw-ruled-card-ink);
+}
+
+// Character/Mask Traits and Rebellion Aspects share this complete color
+// palette. Consumers retain their own markup, controls, and geometry.
+.bw-ruled-card--trait-palette {
+  --bw-ruled-card-rule: var(--bw-rule);
+  --bw-ruled-card-accent: var(--bw-accent);
+  --bw-ruled-card-surface: rgba(255, 255, 255, 0.3);
+  --bw-ruled-card-title-band: #e0d7c5;
+  --bw-ruled-card-ink: var(--bw-ink);
+}
+
+.bw-ruled-card__title-band {
+  min-width: 0;
+  margin: 0;
+  padding: 9px 12px;
+  border-radius: 0 5px 0 0;
+  background: var(--bw-ruled-card-title-band);
+  color: var(--bw-ruled-card-ink);
+}
+
+.bw-ruled-card__title {
+  margin: 0;
+  color: var(--bw-ruled-card-ink);
+  font-family: "Crimson Text", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-transform: none;
+  overflow-wrap: anywhere;
+}
+
+.bw-ruled-card__body {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 11px 12px 13px;
+  color: var(--bw-ruled-card-ink);
+  font-size: 1rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.bw-ruled-card__body > :first-child {
+  margin-top: 0;
+}
+
+.bw-ruled-card__body > :last-child {
+  margin-bottom: 0;
+}
+
+.effect-card {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 9px 10px;
+  background: var(--bw-paper);
+
+  &--disabled {
+    color: var(--bw-ink-soft);
+
+    .effect-card__image {
+      filter: grayscale(1);
+      opacity: 0.65;
+    }
+  }
+}
+
+.effect-card__image {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bw-rule);
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.effect-card__identity {
+  min-width: 0;
+
+  h4 {
+    overflow: hidden;
+    margin: 0 0 3px;
+    color: var(--bw-ink);
+    font-size: 1rem;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.effect-card__metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0;
+  color: var(--bw-ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.25;
+  opacity: 1;
+  text-shadow: none;
+
+  div {
+    display: flex;
+    gap: 4px;
+  }
+
+  dt {
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--bw-ink-soft);
+  }
+}
+
+.effect-card {
+  display: block;
+
+  &:focus-within {
+    border-color: var(--bw-accent);
+  }
+}
+
+.effect-card__summary {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 9px 10px;
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--bw-focus);
+    outline-offset: -3px;
+  }
+}
+
+.effect-card__details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px 16px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.effect-card__detail-group,
+.effect-card__empty-details {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin: 0;
+}
+
+.effect-card__detail-group h5 {
+  margin: 0 0 5px;
+  color: var(--bw-ink-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.effect-card__statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.effect-card__statuses li {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  block-size: 28px;
+  min-block-size: 28px;
+  max-block-size: 28px;
+  padding: 2px 6px;
+  border: 1px solid var(--bw-rule);
+  border-radius: 999px;
+  color: var(--bw-ink-soft);
+  font-size: 0.82rem;
+}
+
+.effect-card__description > :last-child {
+  margin-bottom: 0;
+}
+
+.effect-card__empty-details {
+  color: var(--bw-ink-soft);
+  font-style: italic;
+}
+
+.effect-card__actions {
+  display: flex;
+  gap: 4px;
+
+  button.effect-control {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--bw-rule);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--bw-ink);
+
+    &:hover,
+    &:focus-visible {
+      background: var(--bw-paper-deep);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--bw-focus);
+      outline-offset: 1px;
+    }
+  }
+
+  button.effect-control--danger:hover,
+  button.effect-control--danger:focus-visible {
+    border-color: var(--bw-accent);
+    color: var(--bw-accent);
+  }
+}
+
+.effects-category__empty {
+  margin: 0;
+  padding: 14px;
+  background: var(--bw-paper);
+  color: var(--bw-ink-soft);
+  font-style: italic;
+}
+
+@container (max-width: 600px) {
+  .effect-card {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .effect-card__actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
+  .effect-card__summary {
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+  }
+
+  .effect-card__details {
+    flex-direction: column;
+  }
+
+  .effect-card__actions {
+    align-self: flex-end;
+  }
+}
+
+/* Active-effect controls live beside the summary, leaving the full detail
+ * width available for readable descriptions. */
+.effect-card__header {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.effect-card__summary {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.effect-card__header {
+  border-bottom: 1px solid var(--bw-rule);
+}
+
+/* Metadata is informational text, so it deliberately avoids the sheet's
+ * decorative display treatment and remains legible at normal zoom. */
+.effect-card__metadata,
+.effect-card__metadata dt,
+.effect-card__metadata dd {
+  font-family: Georgia, "Bitstream Charter", "Times New Roman", serif;
+  text-shadow: none;
+}
+
+.effect-card__metadata {
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.effect-card__metadata dt {
+  color: var(--bw-ink);
+  font-weight: 700;
+}
+
+.effect-card__metadata dd {
+  color: var(--bw-ink-soft);
+  font-weight: 500;
+}
+
+.effect-card__statuses li {
+  padding: 4px 9px;
+  border-color: var(--bw-ink-soft);
+  background: rgba(255, 255, 255, 0.48);
+  color: var(--bw-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Statuses remain a compact row; rich description copy must never inherit a
+ * narrow side column from the former footer actions. */
+.effect-card__status-group {
+  flex: 0 1 100%;
+}
+
+.effect-card__description {
+  flex: 1 1 100%;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  > * {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
+
+.effect-card__actions {
+  align-items: center;
+  align-self: center;
+  gap: 0;
+  margin-right: 10px;
+  padding: 2px;
+  border: 1px solid var(--bw-rule);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+
+  button.effect-control {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 2px;
+
+    + button.effect-control {
+      border-left: 1px solid var(--bw-rule);
+    }
+
+    &[data-effect-action="toggle"] { order: 1; }
+    &[data-effect-action="edit"] { order: 2; }
+
+    &.effect-control--danger {
+      order: 3;
+      margin-left: 4px;
+      border-left: 1px solid var(--bw-rule);
+    }
+  }
+
+}
+
+@container (max-width: 600px) {
+  .effect-card__actions {
+    grid-column: auto;
+    align-self: center;
+    margin-right: 7px;
+  }
+}
+
+// Item sheets opt into this modifier through the active-effects partial. Keep
+// the shared card default untouched: actor and mask sheets use its larger
+// presentation. This is also the single narrow-width owner for compact cards.
+.effect-card--compact {
+  .effect-card__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .effect-card__summary {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 7px;
+    min-height: 38px;
+    padding: 5px 8px;
+  }
+
+  .effect-card__image {
+    width: 28px;
+    height: 28px;
+  }
+
+  .effect-card__identity h4 {
+    margin-bottom: 1px;
+    font-size: 0.9rem;
+  }
+
+  .effect-card__metadata {
+    gap: 2px 8px;
+    font-size: 0.78rem;
+  }
+
+  .effect-card__actions {
+    box-sizing: border-box;
+    inline-size: fit-content;
+    max-inline-size: 100%;
+    justify-self: end;
+    margin-right: 8px;
+    padding: 1px;
+
+    button.effect-control {
+      box-sizing: border-box;
+      inline-size: 28px !important;
+      min-inline-size: 28px !important;
+      block-size: 28px !important;
+      min-block-size: 28px !important;
+      flex: 0 0 28px !important;
+    }
+  }
+}
+
+@container (max-width: 600px) {
+  .effect-card--compact {
+    .effect-card__header {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .effect-card__actions {
+      grid-column: auto;
+      justify-content: flex-end;
+      justify-self: end;
+      align-self: start;
+      flex-wrap: wrap;
+      margin: 0 8px 7px;
+    }
+  }
+}
+
+@import 'trait-card.scss';
+@import 'actor-effect-card.scss';
+@import 'sheet-tabs.scss';
+@import 'sheet-notes.scss';

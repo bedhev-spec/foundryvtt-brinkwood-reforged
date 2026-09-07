@@ -1,0 +1,213 @@
+<form class="{{cssClass}} actor-sheet rebelion-sheet__form" autocomplete="off">
+  {{> "systems/brinkwood-reforged/templates/parts/linked-journal-cta.html" linkedJournal=linkedJournal editable=editable}}
+  <header class="rebelion-sheet__header sheet-identity bw-section-frame" aria-label="{{localize "BITD.RebellionStatus"}}">
+    {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+
+    <div class="rebelion-sheet__identity">
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-name.html"
+        identityId=(concat "rebellion-" _id)
+        name=name
+        nameBoxClass="rebelion-sheet__name"
+      }}
+
+      <p class="rebelion-sheet__status-line{{#if rebellion.readiness.ready}} is-ready{{/if}}" role="status">
+        {{localize "BITD.RebellionReadiness" ranks=rebellion.readiness.totalRanks liberated=rebellion.readiness.liberated.length}}
+        {{#if (eq rebellion.resupply.value rebellion.resupply.max)}} · Supplies critically low{{/if}}
+        {{#if rebellion.readiness.ready}} · Open rebellion is within reach{{/if}}
+      </p>
+    </div>
+
+    <div class="sheet-identity__trackers rebelion-sheet__trackers" aria-label="Rebellion status">
+      <div class="sheet-identity__field-box rebelion-tyranny">
+        <label for="rebellion-{{_id}}-tyranny">{{localize "BITD.Tyranny"}}</label>
+        <div class="rebelion-tyranny__control">
+          <input class="bw-text-field" id="rebellion-{{_id}}-tyranny" data-tyranny-input data-tyranny-path="system.tyranny.value" type="number" min="0" step="1" value="{{rebellion.tyranny.value}}" {{#unless editable}}disabled{{/unless}}>
+          <small>{{localize (concat "BITD.RebellionTyrannySeverity." rebellion.tyranny.severity)}}</small>
+        </div>
+      </div>
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html"
+        trackerId=(concat "rebellion-" _id "-heat")
+        tracker=rebellion.heat
+        trackerPath="system.heat.value"
+        trackerClass="rebelion-tracker rebelion-tracker--heat"
+        toothColor="red"
+        label="BITD.Heat"
+        tooltip="Click an empty tooth to gain Heat. Clicking the full track again raises Tyranny and clears Heat."
+        editable=editable
+      }}
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html"
+        trackerId=(concat "rebellion-" _id "-resupply")
+        tracker=rebellion.resupply
+        trackerPath="system.resupply.value"
+        trackerClass="rebelion-tracker rebelion-tracker--resupply"
+        toothColor="blue"
+        label="Resupply"
+        tooltip="Click an empty tooth to mark shortages, or a lower tooth to correct the track."
+        editable=editable
+      }}
+    </div>
+  </header>
+
+  <div class="sheet-tab-workspace rebelion-sheet__workspace">
+    <nav class="tabs sheet-tabs rebelion-sheet__tabs" data-group="primary" role="tablist" aria-label="Rebellion sections">
+      <button type="button" id="rebellion-{{_id}}-tab-aspects" class="item {{#if (eq tabs.primary "aspects")}}active{{/if}}" data-action="tab" data-tab="aspects" data-group="primary" role="tab" tabindex="{{#if (eq tabs.primary "aspects")}}0{{else}}-1{{/if}}" aria-controls="rebellion-{{_id}}-panel-aspects" aria-selected="{{#if (eq tabs.primary "aspects")}}true{{else}}false{{/if}}">{{localize "BITD.Aspects"}}</button>
+      <button type="button" id="rebellion-{{_id}}-tab-territories" class="item {{#if (eq tabs.primary "territories")}}active{{/if}}" data-action="tab" data-tab="territories" data-group="primary" role="tab" tabindex="{{#if (eq tabs.primary "territories")}}0{{else}}-1{{/if}}" aria-controls="rebellion-{{_id}}-panel-territories" aria-selected="{{#if (eq tabs.primary "territories")}}true{{else}}false{{/if}}">Territories</button>
+      <button type="button" id="rebellion-{{_id}}-tab-conclave" class="item {{#if (eq tabs.primary "conclave")}}active{{/if}}" data-action="tab" data-tab="conclave" data-group="primary" role="tab" tabindex="{{#if (eq tabs.primary "conclave")}}0{{else}}-1{{/if}}" aria-controls="rebellion-{{_id}}-panel-conclave" aria-selected="{{#if (eq tabs.primary "conclave")}}true{{else}}false{{/if}}">Conclave</button>
+    </nav>
+
+    <section class="sheet-tab-content rebelion-sheet__content">
+      <div id="rebellion-{{_id}}-panel-aspects" class="tab rebelion-sheet__panel {{#if (eq tabs.primary "aspects")}}active{{/if}}" data-tab="aspects" data-group="primary" role="tabpanel" aria-labelledby="rebellion-{{_id}}-tab-aspects">
+        <div class="rebelion-sheet__panel-stack">
+          <div class="rebelion-aspects-grid">
+          {{#each rebellion.aspects}}
+            {{> "systems/brinkwood-reforged/templates/rebelion-sheet/aspect-section.html" aspect=this editable=../editable actorId=../_id canCorrectRank=../rebellion.canCorrectRank}}
+          {{/each}}
+          </div>
+
+      {{#if rebellion.canGoUnderground}}<details class="bw-section-frame bw-ruled-card--trait-palette rebelion-underground">
+        <summary class="bw-ruled-card__title-band"><span class="bw-ruled-card__title">{{localize "BITD.RebellionGoingUnderground"}}</span></summary>
+            <div class="rebelion-underground__body" data-underground-workflow aria-busy="false">
+              <p>{{localize "BITD.RebellionUndergroundPreview"}}</p>
+              <fieldset class="rebelion-underground__actors"><legend>{{localize "BITD.RebellionEligibleActors"}}</legend>
+                <div class="rebelion-underground__actor-groups">
+                  {{#each rebellion.underground.actorGroups}}
+                    <section class="rebelion-underground__actor-group" aria-labelledby="rebellion-{{../_id}}-underground-{{key}}">
+                      <h4 id="rebellion-{{../_id}}-underground-{{key}}">{{localize label}}</h4>
+                      {{#each actors}}
+                        <label class="rebelion-underground__actor" for="rebellion-{{../../_id}}-underground-{{id}}">
+                          <span class="rebelion-underground__actor-checkbox">
+                            <input class="bw-checkbox-x" id="rebellion-{{../../_id}}-underground-{{id}}" type="checkbox" data-underground-actor value="{{id}}">
+                          </span>
+                    <span class="rebelion-underground__actor-text">
+                      <span class="rebelion-underground__actor-name" title="{{name}}">{{name}}</span>
+                          <span class="rebelion-underground__actor-resource">
+                            <span class="rebelion-underground__actor-resource-label">{{resourceLabel}}:</span>
+                            <span class="rebelion-underground__actor-resource-value">{{resourceValue}}</span>
+                          </span>
+                    </span>
+                    </label>
+                      {{else}}
+                        <p class="rebelion-underground__actor-empty">{{localize "BITD.RebellionNoActorsInGroup"}}</p>
+                      {{/each}}
+                    </section>
+                  {{/each}}
+                </div>
+                {{#unless rebellion.eligibleActors.length}}
+                  <p>{{localize "BITD.RebellionNoEligibleActors"}}</p>
+                {{/unless}}
+              </fieldset>
+              <div class="rebelion-underground__outcomes">
+                <label>{{localize "BITD.RebellionCriticalAspectChoice"}}
+                  <select data-underground-critical-aspect{{#unless editable}} disabled{{/unless}}>
+                    <option value="">{{localize "BITD.RebellionChooseAspect"}}</option>
+                    {{#each rebellion.underground.criticalAspects}}<option value="{{name}}">{{name}}</option>{{/each}}
+                  </select>
+                </label>
+                <label>{{localize "BITD.RebellionLeastAspectChoice"}}
+                  <select data-underground-least-aspect{{#unless editable}} disabled{{/unless}}>
+                    <option value="">{{localize "BITD.RebellionChooseAspect"}}</option>
+                    {{#each rebellion.underground.leastProgressAspects}}<option value="{{name}}"{{#if selected}} selected{{/if}}>{{name}}</option>{{/each}}
+                  </select>
+                </label>
+              </div>
+              <output class="rebelion-underground__exact-preview" data-underground-preview aria-live="polite">
+                {{localize "BITD.RebellionUndergroundIncomplete"}}
+              </output>
+              <button type="button" data-rebellion-action="going-underground" disabled aria-disabled="true">{{localize "BITD.RebellionRollAndApply"}}</button>
+            </div>
+          </details>{{/if}}
+        </div>
+      </div>
+
+      <div id="rebellion-{{_id}}-panel-territories" class="tab rebelion-sheet__panel {{#if (eq tabs.primary "territories")}}active{{/if}}" data-tab="territories" data-group="primary" role="tabpanel" aria-labelledby="rebellion-{{_id}}-tab-territories">
+        <div class="rebelion-sheet__panel-stack rebelion-territories">
+          {{> "systems/brinkwood-reforged/templates/rebelion-sheet/sedition-section.html" label="BITD.Towns" collection=rebellion.towns editable=editable actorId=_id canCorrectTerritory=rebellion.canCorrectTerritory}}
+          {{> "systems/brinkwood-reforged/templates/rebelion-sheet/sedition-section.html" label="BITD.Villages" collection=rebellion.villages editable=editable actorId=_id canCorrectTerritory=rebellion.canCorrectTerritory}}
+          <aside class="rebelion-legacy" aria-labelledby="rebellion-{{_id}}-legacy-lands">
+            <header class="rebelion-legacy__header">
+              <h2 id="rebellion-{{_id}}-legacy-lands">{{localize "BITD.RebellionLegacyLands"}}</h2>
+              <p>{{localize "BITD.RebellionLegacyLandsHint"}}</p>
+            </header>
+            {{> "systems/brinkwood-reforged/templates/rebelion-sheet/sedition-section.html" label="BITD.Lands" collection=rebellion.lands editable=editable actorId=_id canCorrectTerritory=rebellion.canCorrectTerritory}}
+          </aside>
+        </div>
+      </div>
+
+      <div id="rebellion-{{_id}}-panel-conclave" class="tab rebelion-sheet__panel {{#if (eq tabs.primary "conclave")}}active{{/if}}" data-tab="conclave" data-group="primary" role="tabpanel" aria-labelledby="rebellion-{{_id}}-tab-conclave">
+        <div class="rebelion-sheet__panel-stack rebelion-conclave-panel">
+          <section class="bw-section-frame bw-ruled-card--trait-palette rebelion-conclave">
+            <header class="bw-section-frame__header rebelion-section-heading rebelion-conclave__header">
+              <div>
+                <h2>{{localize "BITD.RebellionConclaveAllies"}}</h2>
+                <p>{{localize "BITD.RebellionConclaveGuidance"}}</p>
+              </div>
+              {{#if editable}}<button type="button" data-rebellion-action="add-ally"><i class="fas fa-plus" aria-hidden="true"></i> {{localize "BITD.RebellionAddAlly"}}</button>{{/if}}
+            </header>
+            <div class="rebelion-conclave__list">
+              {{#each rebellion.allies}}
+              <article class="rebelion-ally bw-ruled-card bw-ruled-card--trait-palette" data-ally-id="{{id}}">
+                <header class="bw-ruled-card__title-band rebelion-ally__summary">
+                  <div>
+                    <h3 class="bw-ruled-card__title">{{#if name}}{{name}}{{else}}{{localize "BITD.RebellionUnnamedAlly"}}{{/if}}</h3>
+                    {{#if sourceActor.available}}<span class="rebelion-ally__source-name">{{sourceActor.name}}</span>{{/if}}
+                  </div>
+                  <div class="rebelion-ally__summary-actions">
+                    {{#if originAspect}}<span class="rebelion-ally__origin">{{originAspect}} · {{localize "BITD.RebellionRank" rank=originRank}}</span>{{/if}}
+                    {{#if ../editable}}<button type="button" class="rebelion-correction rebelion-ally__quick-remove" data-rebellion-action="remove-ally" data-ally-id="{{id}}" title="{{localize "BITD.RebellionRemoveAlly" name=name}}" aria-label="{{localize "BITD.RebellionRemoveAlly" name=name}}"><i class="fas fa-trash" aria-hidden="true"></i></button>{{/if}}
+                  </div>
+                </header>
+                <div class="bw-ruled-card__body rebelion-ally__body">
+                  <div class="rebelion-ally__strengths" aria-label="{{localize "BITD.RebellionStrengths"}}">
+                    {{#each strengths}}<span>{{this}}</span>{{else}}<em>{{localize "BITD.RebellionNoStrengths"}}</em>{{/each}}
+                  </div>
+                  {{#if ../editable}}
+                  <details class="rebelion-ally__editor" data-ally-editor data-ally-id="{{id}}"{{#if editorOpen}} open{{/if}}>
+                    <summary>{{localize "BITD.RebellionEditAlly"}}</summary>
+                    <div class="rebelion-ally__fields">
+                      <label>{{localize "BITD.Name"}}<input class="bw-text-field" type="text" value="{{name}}" data-ally-id="{{id}}" data-ally-field="name"></label>
+                      <label><span class="rebelion-ally__field-heading">{{localize "BITD.RebellionStrengths"}} <small>{{localize "BITD.RebellionCommaSeparated"}}</small></span><input class="bw-text-field" type="text" value="{{strengths}}" data-ally-id="{{id}}" data-ally-field="strengths"></label>
+                      <label>{{localize "BITD.RebellionOriginAspect"}}
+                        <select class="bw-text-field" data-ally-id="{{id}}" data-ally-field="originAspect">
+                          <option value=""></option>
+                          <option value="Organization"{{#if (eq originAspect "Organization")}} selected{{/if}}>Organization</option>
+                          <option value="Force"{{#if (eq originAspect "Force")}} selected{{/if}}>Force</option>
+                          <option value="Influence"{{#if (eq originAspect "Influence")}} selected{{/if}}>Influence</option>
+                        </select>
+                      </label>
+                      <label>{{localize "BITD.RebellionOriginRank"}}<input class="bw-text-field" type="number" min="0" max="3" step="1" value="{{originRank}}" data-ally-id="{{id}}" data-ally-field="originRank"></label>
+                    </div>
+                    <section class="rebelion-ally__actor-link{{#if sourceActor.available}} is-linked{{else}}{{#if sourceActor.linked}} is-unavailable{{/if}}{{/if}}" data-ally-actor-drop data-ally-id="{{id}}" aria-label="{{localize "BITD.RebellionSourceActor"}}">
+                      <div class="rebelion-ally__actor-state">
+                        {{#if sourceActor.available}}
+                          {{#if sourceActor.img}}<img src="{{sourceActor.img}}" alt="" loading="lazy">{{/if}}
+                          <span><strong>{{sourceActor.name}}</strong><small>{{localize "BITD.RebellionActorLinked"}}</small></span>
+                        {{else if sourceActor.linked}}
+                          <span><strong>{{localize "BITD.RebellionActorUnavailable"}}</strong><small>{{localize "BITD.RebellionDropActorHint"}}</small></span>
+                        {{else}}
+                          <span><strong>{{localize "BITD.RebellionSourceActor"}}</strong><small>{{localize "BITD.RebellionDropActorHint"}}</small></span>
+                        {{/if}}
+                      </div>
+                      <div class="rebelion-ally__actor-controls">
+                        <select class="bw-text-field" data-ally-source-select data-ally-id="{{id}}" aria-label="{{localize "BITD.RebellionChooseActor"}}">
+                          <option value="">{{localize "BITD.RebellionChooseActor"}}</option>
+                          {{#each sourceOptions}}<option value="{{uuid}}"{{#if selected}} selected{{/if}}>{{name}}</option>{{/each}}
+                        </select>
+                        {{#if sourceActor.available}}<button type="button" data-rebellion-action="open-ally-actor" data-actor-uuid="{{sourceActor.uuid}}">{{localize "BITD.Open"}}</button>{{/if}}
+                        {{#if sourceActor.linked}}<button type="button" class="rebelion-correction" data-rebellion-action="clear-ally-actor" data-ally-id="{{id}}">{{localize "BITD.Clear"}}</button>{{/if}}
+                      </div>
+                    </section>
+                    <footer class="rebelion-ally__actions"><button type="button" class="rebelion-correction rebelion-ally__remove" data-rebellion-action="remove-ally" data-ally-id="{{id}}" aria-label="{{localize "BITD.RebellionRemoveAlly" name=name}}">{{localize "BITD.RebellionRemove"}}</button></footer>
+                  </details>
+                  {{/if}}
+                </div>
+              </article>
+              {{else}}
+              <p class="rebelion-conclave__empty">{{localize "BITD.RebellionNoAllies"}}</p>
+              {{/each}}
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</form>

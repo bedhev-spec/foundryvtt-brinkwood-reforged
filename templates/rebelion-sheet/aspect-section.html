@@ -1,0 +1,34 @@
+<article class="bw-ruled-card bw-ruled-card--trait-palette rebelion-aspect-summary" aria-labelledby="rebellion-{{actorId}}-aspect-{{aspect.name}}">
+  <header class="bw-ruled-card__title-band">
+    <h2 class="bw-ruled-card__title" id="rebellion-{{actorId}}-aspect-{{aspect.name}}">{{aspect.name}}</h2>
+    <div class="rebelion-aspect-summary__rank">
+      <span>{{localize "BITD.RebellionAspectRank" rank=aspect.rank}}</span>
+      {{#if canCorrectRank}}
+        {{#if aspect.rank}}
+          <button type="button" class="rebelion-correction rebelion-correction--rank" data-rebellion-action="undo-aspect-rank" data-aspect-name="{{aspect.name}}">{{localize "BITD.RebellionUndoLastRank"}}</button>
+        {{/if}}
+      {{/if}}
+    </div>
+  </header>
+  <div class="bw-ruled-card__body">
+    {{#unless (eq aspect.rank 3)}}
+      <div class="sheet-identity__trackers rebelion-aspect__tracker" aria-label="{{localize "BITD.Progress"}}">{{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html" trackerId=(concat "rebellion-" actorId "-aspect-" aspect.name) tracker=aspect trackerPath=(concat "rebellion.aspect." aspect.name) trackerClass="rebelion-tracker rebelion-tracker--aspect" toothColor="blue" label="BITD.Progress" tooltip="BITD.RebellionAspectProgressTooltip" editable=editable}}</div>
+    {{else}}
+      <p class="rebelion-aspect__maximum">{{localize "BITD.RebellionAspectMaximum"}}</p>
+    {{/unless}}
+
+    <section class="rebelion-aspect__downtime" aria-labelledby="rebellion-{{actorId}}-downtime-{{aspect.name}}">
+      <h3 id="rebellion-{{actorId}}-downtime-{{aspect.name}}">Band-wide downtime</h3>
+      <p><strong>{{aspect.entitlement.count}} action{{#unless (eq aspect.entitlement.count 1)}}s{{/unless}}</strong></p>
+      <p class="rebelion-aspect__actions">{{#each aspect.entitlement.actions}}{{this}}{{#unless @last}} / {{/unless}}{{/each}}</p>
+      <small>Each PC still has one personal downtime action.</small>
+    </section>
+
+    {{> "systems/brinkwood-reforged/templates/rebelion-sheet/moot-section.html" aspect=aspect editable=editable actorId=actorId canCorrectRank=canCorrectRank}}
+  </div>
+  {{#if aspect.nextMootRank}}
+    <footer class="rebelion-aspect-summary__footer">
+      <p class="rebelion-aspect__next-moot">Next Moot at Rank {{aspect.nextMootRank}}</p>
+    </footer>
+  {{/if}}
+</article>

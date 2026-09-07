@@ -1,0 +1,210 @@
+<form class="{{cssClass}} actor-sheet character-sheet" data-actor-uuid="{{actor.uuid}}" autocomplete="off">
+
+  <div class="roll-statistics-toolbar">
+    <button type="button" class="roll-statistics-control" title="{{localize 'BITD.RollStatistics'}}">
+      <i class="fas fa-chart-bar" aria-hidden="true"></i>
+      {{localize "BITD.RollStatistics"}}
+    </button>
+  </div>
+
+  <section id="character-{{_id}}-name-alias" class="flex-horizontal name-alias sheet-identity bw-section-frame">
+    {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-portrait.html" img=img name=name editable=editable}}
+
+    <div class="grow-two sheet-identity__details">
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-name.html" identityId=(concat "character-" _id) name=name}}
+
+      <div id="character-{{_id}}-traits" class="sheet-identity__rows sheet-identity__rows--separated">
+
+        {{#each identityRows as |row|}}
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-row.html" row=row editable=../editable}}
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="grow-two sheet-identity__trackers">
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-field.html" fieldId=(concat "character-" _id "-alias") fieldBoxClass="sheet-identity__alias-box" fieldLabel="BITD.Alias" fieldClass="alias bw-text-field" fieldName="system.alias" fieldValue=system.alias}}
+
+      {{!-- XP --}}
+      <div class="section big-teeth-section character-xp-section">
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html" trackerId=(concat "character-" _id "-xp") trackerClass="character-xp" tracker=system.experience trackerPath="system.experience.value" toothColor="blue" tooltip="Actor.XP.Tooltip" editable=editable}}
+
+      </div>
+ 
+      {{!-- Stress --}}
+      <div id="character-{{_id}}-stress-trauma" class="section big-teeth-section">
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-identity-tracker.html" trackerId=(concat "character-" _id "-stress") trackerClass="character-stress" tracker=system.stress trackerPath="system.stress.value" toothColor="red" tooltip="Actor.Stress.Tooltip" editable=editable}}
+      </div>
+    </div>
+
+
+  </section>
+
+  {{!-- Bans, consequence clocks, and armor --}}
+<section class="character-attributes sheet-attribute-presentation" aria-label="{{localize "BITD.Attributes"}}">
+  {{> "systems/brinkwood-reforged/templates/parts/attributes.html" actor=actor}}
+</section>
+
+<section id="character-{{_id}}-bans-armor" class="bans-armor bw-section-frame" aria-label="{{localize 'BITD.BansArmor'}}">
+    <div id="character-{{_id}}-character-bans" class="character-bans">
+      <table>
+      <thead class="bw-section-frame__header">
+				<tr>
+					<th class="black-white" colspan="4"><span class="tooltip" data-tooltip="Actor.Bans.Tooltip" data-tooltip-class="brinkwood-tooltip" data-tooltip-direction="RIGHT">{{localize "BITD.Bans"}}</span></th>
+			  <th class="black-white"><label></label></th>
+          <th class="black-white">{{localize "BITD.Armor"}}</th>
+				</tr>
+        </thead>
+        <tbody>
+          <tr data-ban-level="3">
+            <td>3</td>
+            <td colspan="2">
+              <input type="text" id="character-{{_id}}-bans-3-1" class="bw-text-field" name="system.bans.heavy.one" value="{{system.bans.heavy.one}}">
+            </td>
+            <td></td>
+            <td rowspan="3">
+              <div id="character-{{_id}}-scars-clock" class="character-scars-clock">
+                {{{blades-clock "system.scars" 4 system.scars _id "scars" }}}
+              </div>
+              <div id="character-{{_id}}-oath-clock" class="character-oath-clock">
+                {{{blades-clock "system.oath" 4 system.oath _id "oath" }}}
+              </div>
+
+            </td>
+            <td rowspan="3" id="character-{{_id}}-armor-uses" class="character-armor-uses">
+              <div>
+                <label for="character-{{_id}}-armor-uses-armor">{{localize "BITD.Armor"}}</label>
+                <input id="character-{{_id}}-armor-uses-armor" class="bw-checkbox-x" type="checkbox" name="system.armor-uses.armor" {{checked system.armor-uses.armor}}>
+              </div>
+              <div>
+                <label for="character-{{_id}}-armor-uses-heavy">{{localize "BITD.Heavy"}}</label>
+                <input id="character-{{_id}}-armor-uses-heavy" class="bw-checkbox-x" type="checkbox" name="system.armor-uses.heavy" {{checked system.armor-uses.heavy}}>
+              </div>
+              <div>
+                <label for="character-{{_id}}-armor-uses-special">{{localize "BITD.Special"}}</label>
+                <input id="character-{{_id}}-armor-uses-special" class="bw-checkbox-x" type="checkbox" name="system.armor-uses.special" {{checked system.armor-uses.special}}>
+              </div>
+            </td>
+          </tr>
+          <tr data-ban-level="2">
+            <td>2</td>
+            <td>
+              <input type="text" id="character-{{_id}}-bans-2-1" class="bw-text-field" name="system.bans.medium.one" value="{{system.bans.medium.one}}">
+            </td>
+            <td>
+              <input type="text" id="character-{{_id}}-bans-2-2" class="bw-text-field" name="system.bans.medium.two" value="{{system.bans.medium.two}}">
+            </td>
+            <td></td>
+          </tr>
+          <tr data-ban-level="1">
+            <td>1</td>
+            <td>
+              <input type="text" id="character-{{_id}}-bans-1-1" class="bw-text-field" name="system.bans.light.one" value="{{system.bans.light.one}}">
+            </td>
+            <td>
+              <input type="text" id="character-{{_id}}-bans-1-2" class="bw-text-field" name="system.bans.light.two" value="{{system.bans.light.two}}">
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  {{!-- Attributes --}}
+<section class="character-sheet__workspace sheet-tab-workspace">
+
+      {{!-- Nav menu --}}
+<nav class="tabs sheet-tabs" data-group="primary" role="tablist" aria-label="{{localize "BITD.Traits"}}">
+    <button type="button" class="item {{#if (eq tabs.primary "traits")}}active{{/if}}" id="character-{{_id}}-tab-traits" role="tab" tabindex="{{#if (eq tabs.primary "traits")}}0{{else}}-1{{/if}}" aria-controls="character-{{_id}}-traits-tab" aria-selected="{{#if (eq tabs.primary "traits")}}true{{else}}false{{/if}}" data-action="tab" data-group="primary" data-tab="traits">{{localize "BITD.Traits"}}</button>
+    <button type="button" class="item {{#if (eq tabs.primary "loadout")}}active{{/if}}" id="character-{{_id}}-tab-loadout" role="tab" tabindex="{{#if (eq tabs.primary "loadout")}}0{{else}}-1{{/if}}" aria-controls="character-{{_id}}-loadout" aria-selected="{{#if (eq tabs.primary "loadout")}}true{{else}}false{{/if}}" data-action="tab" data-group="primary" data-tab="loadout">{{localize "BITD.Loadout"}}</button>
+      <button type="button" class="item {{#if (eq tabs.primary "character-notes")}}active{{/if}}" id="character-{{_id}}-tab-notes" role="tab" tabindex="{{#if (eq tabs.primary "character-notes")}}0{{else}}-1{{/if}}" aria-controls="character-{{_id}}-notes" aria-selected="{{#if (eq tabs.primary "character-notes")}}true{{else}}false{{/if}}" data-action="tab" data-group="primary" data-tab="character-notes">{{localize "BITD.Background"}}</button>
+    <button type="button" class="item {{#if (eq tabs.primary "downtime")}}active{{/if}}" id="character-{{_id}}-tab-downtime" role="tab" tabindex="{{#if (eq tabs.primary "downtime")}}0{{else}}-1{{/if}}" aria-controls="character-{{_id}}-downtime" aria-selected="{{#if (eq tabs.primary "downtime")}}true{{else}}false{{/if}}" data-action="tab" data-group="primary" data-tab="downtime">{{localize "BITD.Downtime"}}</button>
+       {{#if isGM}}
+      <button type="button" class="item {{#if (eq tabs.primary "effects")}}active{{/if}}" id="character-{{_id}}-tab-effects" role="tab" tabindex="{{#if (eq tabs.primary "effects")}}0{{else}}-1{{/if}}" aria-controls="character-{{_id}}-effects" aria-selected="{{#if (eq tabs.primary "effects")}}true{{else}}false{{/if}}" data-action="tab" data-group="primary" data-tab="effects">{{localize "BITD.Effects"}}</button>
+        {{/if}}
+      </nav>
+
+    <div class="tab-content sheet-tab-content flex-vertical grow-two">
+
+<div id="character-{{_id}}-traits-tab" class="tab flex-vertical traits {{#if (eq tabs.primary "traits")}}active{{/if}}" role="tabpanel" aria-labelledby="character-{{_id}}-tab-traits" data-group="primary" data-tab="traits">
+        <div id="character-{{_id}}-traits-list">
+          {{#each traits as |trait id|}}
+          {{#if (eq trait.type "trait")}}
+            {{> "systems/brinkwood-reforged/templates/parts/actor/trait-card.html" itemId=trait._id title=trait.name description=trait.system.description purchased=trait.system.purchased editable=../editable canDelete=trait.canDelete}}
+          {{/if}}
+          {{/each}}
+        </div>
+      </div>
+
+    <div id="character-{{_id}}-loadout" class="tab flex-vertical loadout {{#if (eq tabs.primary "loadout")}}active{{/if}}" role="tabpanel" aria-labelledby="character-{{_id}}-tab-loadout" data-group="primary" data-tab="loadout">
+    <div class="loadout__panel bw-section-frame">
+      <div class="label-stripe loadout__header bw-section-frame__header">
+        <h2 class="loadout__heading">{{localize "BITD.Loadout"}}</h2>
+        <div class="loadout__controls">
+          <output class="loadout__weight{{#if isLoadoutOverloaded}} is-overloaded{{/if}}" aria-label="{{system.loadout}}/{{loadoutCapacity}}{{#if isLoadoutOverloaded}} â {{localize "BITD.Overloaded"}}{{/if}}"{{#if isLoadoutOverloaded}} title="{{localize "BITD.Overloaded"}}"{{/if}}>{{system.loadout}}/{{loadoutCapacity}}</output>
+          <label class="loadout__level" for="character-{{_id}}-load-level">
+            <select id="character-{{_id}}-load-level" name="system.selected_load_level" aria-label="{{localize "BITD.Loadout"}}"{{#unless editable}} disabled{{/unless}}>
+                <option value="BITD.Light"{{#if (eq selectedLoadLevel "BITD.Light")}} selected{{/if}}>{{localize "BITD.Light"}}</option>
+                <option value="BITD.Normal"{{#if (eq selectedLoadLevel "BITD.Normal")}} selected{{/if}}>{{localize "BITD.Normal"}}</option>
+                <option value="BITD.Heavy"{{#if (eq selectedLoadLevel "BITD.Heavy")}} selected{{/if}}>{{localize "BITD.Heavy"}}</option>
+              </select>
+            </label>
+        </div>
+      </div>
+      {{#if loadoutCatalogueError}}
+      <p class="loadout__catalogue-error" role="status">{{localize "BITD.LoadoutCatalogueUnavailable"}}</p>
+      {{/if}}
+      <div class="loadout__categories" role="list" aria-label="{{localize "BITD.LoadoutCategories"}}">
+        {{#each loadoutGroups as |group|}}
+          <section class="loadout__category bw-ruled-card bw-ruled-card--trait-palette" role="listitem" aria-labelledby="character-{{../_id}}-loadout-category-{{@index}}">
+            <header class="loadout__category-header bw-ruled-card__title-band">
+              <h3 class="bw-ruled-card__title" id="character-{{../_id}}-loadout-category-{{@index}}">{{localize group.label}}</h3>
+            </header>
+            <div class="loadout__catalogue bw-ruled-card__body" role="list">
+              {{#each group.items as |item|}}
+            <article class="item loadout__item" data-item-id="{{item.actorItemId}}" role="listitem">
+            <input id="character-{{../../_id}}-loadout-{{item.sourceId}}" class="loadout-item-select bw-checkbox-x" data-loadout-source-id="{{item.sourceId}}" data-item-id="{{item.actorItemId}}" data-loadout-item-name="{{item.name}}" type="checkbox" aria-label="{{item.name}}"{{#if item.selected}} checked{{/if}}{{#unless ../../editable}} disabled{{/unless}}>
+              <button type="button" class="loadout-item-open" data-loadout-source-id="{{item.sourceId}}" data-item-id="{{item.actorItemId}}" aria-label="{{item.name}}">
+                <img class="loadout__item-image" src="{{item.img}}" alt="" loading="lazy" draggable="false">
+                <span class="loadout__item-name">{{item.name}}</span>
+              </button>
+            <input class="loadout-item-load" type="number" min="0" step="1" value="{{item.system.load}}" data-item-id="{{item.actorItemId}}" data-loadout-source-id="{{item.sourceId}}" data-loadout-item-name="{{item.name}}" aria-label="{{localize "BITD.Load"}}: {{item.name}}"{{#unless ../../isGM}} disabled{{/unless}}>
+            {{#if ../../isGM}}
+                {{#if item.isCustom}}
+                  {{#if item.actorItemId}}
+                    <button type="button" class="item-delete loadout__item-delete" title="{{localize 'BITD.TitleDeleteItem'}}" aria-label="{{localize 'BITD.TitleDeleteItem'}}: {{item.name}}"><span aria-hidden="true">&times;</span></button>
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+            </article>
+              {{/each}}
+            </div>
+          </section>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+    <div id="character-{{_id}}-notes" class="tab flex-vertical sheet-notes bw-rich-text-surface {{#if (eq tabs.primary "character-notes")}}active{{/if}}" role="tabpanel" aria-labelledby="character-{{_id}}-tab-notes" data-group="primary" data-tab="character-notes">
+      {{> "systems/brinkwood-reforged/templates/parts/sheet-notes.html"}}
+    </div>
+
+      {{!-- Active Effects --}}
+      {{#if isGM}}
+<div id="character-{{_id}}-effects" class="tab effects flex-vertical {{#if (eq tabs.primary "effects")}}active{{/if}}" role="tabpanel" aria-labelledby="character-{{_id}}-tab-effects" data-group="primary" data-tab="effects">
+{{> "systems/brinkwood-reforged/templates/parts/actor-active-effects.html"}}
+</div>
+      {{/if}}
+
+			{{!-- Downtime actions --}}
+<div id="character-{{_id}}-downtime" class="tab downtime flex-vertical {{#if (eq tabs.primary "downtime")}}active{{/if}}" role="tabpanel" aria-labelledby="character-{{_id}}-tab-downtime" data-group="primary" data-tab="downtime">
+	{{> "systems/brinkwood-reforged/templates/parts/actor/downtime.html" actor=actor}}
+			</div>
+
+
+
+    </div>
+  </section>
+
+</form>

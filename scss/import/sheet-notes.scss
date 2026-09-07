@@ -1,0 +1,53 @@
+// Shared rich-text surface. The sheet owns placement and height while the
+// component owns the Character-compatible frame, colour, and editor sizing.
+.bw-rich-text-surface {
+  min-width: 0;
+  min-height: 0;
+
+  > .editor,
+  > prose-mirror {
+    min-height: 260px;
+    border: 1px solid var(--bw-rule);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  // Foundry owns the prose-mirror host layout (`display: flex`). Overriding it
+  // breaks the normal editor while its independently laid-out HTML mode keeps
+  // working. Only the static preview needs an explicit display mode.
+  > prose-mirror {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // `prose-mirror` gains Foundry's `.editor` class at runtime, so this must
+  // target the preview class instead of the generic class.
+  > .sheet-notes__preview,
+  > .bw-rich-text-surface__preview {
+    display: block;
+  }
+
+  .editor-content,
+  prose-mirror .ProseMirror {
+    box-sizing: border-box;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    padding-inline: 5px;
+    color: var(--bw-ink);
+  }
+
+  .editor-content *,
+  prose-mirror .ProseMirror * {
+    max-inline-size: 100%;
+    color: inherit !important;
+    overflow-wrap: anywhere;
+  }
+
+  .editor-edit {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--bw-ink);
+  }
+}

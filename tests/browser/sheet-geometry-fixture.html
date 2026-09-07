@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../styles/blades.css">
+    <style>
+      html, body { margin: 0; padding: 0; }
+      #cases { display: grid; gap: 16px; padding: 16px; }
+      .geometry-case { box-sizing: border-box; height: 460px; overflow: hidden; border: 1px solid #888; }
+      .geometry-case > .application { display: flex; flex-direction: column; width: 100%; height: 100%; }
+      .geometry-case .window-header { flex: 0 0 28px; box-sizing: border-box; height: 28px; padding: 4px 8px; background: #211b1d; color: #fff; }
+      .geometry-case .window-content { flex: 1 1 auto; height: auto; min-height: 0; }
+      .geometry-case .fixture-filler { box-sizing: border-box; min-height: 900px; padding: 12px; }
+      .geometry-case .fixture-bottom { display: block; margin-top: 800px; }
+      .geometry-case .fixture-portrait { width: 88px; height: 88px; background: #d8cfbd; }
+      output { display: block; margin: 16px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Sheet responsive geometry</h1>
+    <div id="cases"></div>
+    <output id="sheet-geometry-results" aria-live="polite">Running…</output>
+    <script type="module" src="./sheet-geometry-fixture.mjs"></script>
+  </body>
+</html>

@@ -1,0 +1,537 @@
+& {
+  min-width: 0;
+  color: var(--bw-ink);
+
+  &.mask-sheet--attribute-resizing {
+    transition: width 180ms ease;
+  }
+
+  // A newly rendered Attribute column must not participate in header layout
+  // until the ApplicationV2 frame has finished expanding to its target width.
+  &.mask-sheet--attributes-entering {
+    .mask-sheet__identity-block {
+      grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+    }
+
+    .mask-attributes {
+      display: none;
+    }
+  }
+
+  .window-content {
+    padding: 0;
+  }
+
+  form.mask-sheet {
+    // A fixed ApplicationV2 frame keeps identity and tabs stationary; the
+    // active shared tab panel is the single vertical scroll owner.
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 0;
+    padding: 16px;
+    container-type: inline-size;
+    color: var(--bw-ink);
+
+    input[type="text"], textarea {
+      box-sizing: border-box;
+      border: 1px solid var(--bw-ink-soft);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--bw-ink);
+    }
+
+  button {
+      &:focus-visible {
+        outline: 3px solid var(--bw-focus);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  .mask-sheet__identity-block {
+    // Unconfigured Masks have no third column to reserve while the frame
+    // contracts. Configuration opts into the Attribute track below.
+    grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+    column-gap: 20px;
+    // Character identity frame: 200px portrait + 10px padding on each edge
+    // + the 1px frame border. Prevent shorter Mask content adding dead space.
+    block-size: 222px;
+  }
+
+  .mask-sheet__identity-block--with-attributes {
+    // Match one Character Attribute column at the Character sheet's 700px
+    // default: (700px - 40px padding - 24px grid gaps) / 3 = 212px.
+    grid-template-columns: minmax(150px, 200px) minmax(230px, 1fr) 212px;
+  }
+
+  .mask-sheet__identity {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .mask-sheet__trackers {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .mask-sheet__name-box {
+    display: grid;
+    gap: 4px;
+
+    label, .item-class-label {
+      color: var(--bw-ink-soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .name {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 1.35rem;
+    }
+  }
+
+
+  .mask-sheet__layout {
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    justify-self: stretch;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    padding-top: 16px;
+  }
+
+  .mask-sheet__main {
+    display: grid;
+    // The active tab panel must not determine the primary tabbar's inline
+    // size. An explicit flexible column keeps every primary tab state flush
+    // with the Mask workspace (Traits, Notes, and Effects alike).
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    box-sizing: border-box;
+    justify-self: stretch;
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  // Sheet-tabs owns the tabbar's appearance. Mask owns only the grid
+  // placement that makes the shared primitive span this sheet's workspace.
+  .mask-sheet__main > .sheet-tabs {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    inline-size: 100%;
+    max-inline-size: 100%;
+  }
+
+.mask-sheet__main > .sheet-tab-content {
+  grid-column: 1 / -1;
+  min-width: 0;
+  inline-size: 100%;
+}
+
+  .mask-sheet__panel {
+    display: none;
+    box-sizing: border-box;
+    min-width: 0;
+    padding-top: 12px;
+    width: 100%;
+
+    &.active {
+      display: block;
+    }
+
+    .effects-groups {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 0;
+    }
+
+    > h2 {
+      margin: 0 0 10px;
+      color: var(--bw-ink);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+  }
+
+  .mask-sheet__traits-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mask-sheet__trait-library {
+    grid-column: 1 / -1;
+    inline-size: 100%;
+    min-width: 0;
+  }
+
+  .mask-sheet__trait-add {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px dashed var(--bw-rule);
+    border-left: 5px solid var(--bw-accent);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--bw-ink);
+    font-family: "Crimson Text", serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(141, 98, 93, 0.14);
+      color: var(--bw-ink);
+    }
+  }
+
+  .mask-sheet__trait-add-content {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 8px;
+    min-width: 0;
+    height: 20px;
+  }
+
+  .mask-sheet__trait-add-icon {
+    position: relative;
+    display: block;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      width: 12px;
+      height: 1px;
+      background: currentColor;
+      transform: translate(-50%, -50%);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+  }
+
+  .mask-sheet__trait-add-label {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    height: 20px;
+    line-height: 20px;
+  }
+
+  .mask-sheet__traits {
+    display: grid;
+    gap: 8px;
+  }
+
+  // The shared Attribute presentation lives beside Mask identity details.
+  // This sheet owns only its header-grid placement and responsive stacking.
+  .mask-attributes {
+    align-self: start;
+    min-width: 0;
+    margin-block-start: 20px;
+  }
+
+  .mask-attribute-card {
+    overflow: hidden;
+    border-left: 1px solid var(--bw-ruled-card-rule);
+  }
+
+  .mask-attribute-card .attributes-exp {
+    margin: 0;
+    padding: 0;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .mask-attribute-card .stripe {
+    min-height: var(--bw-attribute-header-height);
+    padding: 0;
+    background: transparent;
+    color: var(--bw-ink);
+  }
+
+  .mask-attribute-card__body {
+    padding: 0;
+    min-width: 0;
+  }
+
+  .mask-attribute-card__body .flex-horizontal {
+    min-width: 0;
+    padding-block: 2px;
+  }
+
+  .mask-attribute-card__body .flex-horizontal + .flex-horizontal {
+    border-top: 1px solid color-mix(in srgb, var(--bw-rule) 42%, transparent);
+  }
+
+  .mask-attribute-card__body .attributes-container {
+    margin: 0;
+  }
+
+  .mask-attributes .attribute {
+    margin-bottom: 0;
+  }
+
+  .mask-attributes .flex-horizontal {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mask-attributes__skills {
+    display: grid;
+    gap: 0;
+  }
+
+  .mask-sheet__empty, .mask-attributes__empty {
+    margin: 10px 0;
+    color: var(--bw-ink-soft);
+    font-style: italic;
+  }
+
+  .mask-sheet__panel[data-tab="effects"] .effects-groups,
+  .mask-sheet__panel[data-tab="effects"] .effects-category {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mask-sheet__identity-block .sheet-identity__portrait {
+    --bw-portrait-size: 200px;
+    --bw-portrait-shadow-offset: 6px;
+  }
+
+  .mask-sheet__mask {
+    > * + * {
+      margin-block-start: 16px;
+    }
+  }
+
+  .mask-sheet__mask-overview {
+    padding: 0 14px 14px;
+
+    .bw-section-frame__header {
+      margin-inline: -14px;
+      padding: 10px 8px;
+      text-align: left;
+
+      h2 {
+        font-family: "Crimson Text", serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        text-transform: none;
+      }
+    }
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  .mask-sheet__mask-description {
+    padding-block-start: 12px;
+    font-family: "Crimson Text", serif;
+    font-size: 1.05rem;
+    line-height: 1.45;
+
+    > :first-child {
+      margin-block-start: 0;
+    }
+
+    > :last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  .mask-sheet__warning {
+    padding: 12px 14px;
+    border-left: 5px solid var(--bw-accent);
+    background: rgba(141, 98, 93, 0.14);
+  }
+
+  .mask-alchemic-blood {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0;
+    font-family: "Crimson Text", serif;
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .mask-alchemic-blood__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+
+    h3 {
+      margin: 0;
+      font-family: "Crimson Text", serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      text-align: left;
+      text-transform: none;
+    }
+  }
+
+  .mask-alchemic-blood__count {
+    color: var(--bw-inverse);
+    font-size: 0.9rem;
+    font-weight: 700;
+    justify-self: end;
+    opacity: 0.86;
+  }
+
+  .mask-alchemic-blood__body {
+    min-width: 0;
+    padding: 12px 14px 14px;
+
+    > p:first-child {
+      margin-block-start: 0;
+    }
+  }
+
+  .mask-alchemic-blood__guidance {
+    padding: 9px 11px;
+    background: rgba(141, 98, 93, 0.1);
+    color: var(--bw-ink-soft);
+  }
+
+  .mask-alchemic-blood__effects {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .mask-alchemic-blood__effect {
+    box-sizing: border-box;
+    width: 100%;
+
+    &:focus-visible {
+      outline: 3px solid var(--bw-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  .mask-alchemic-blood__effect-header {
+    align-items: start;
+  }
+
+  .mask-alchemic-blood__effect-title {
+    padding: 0;
+  }
+
+  .mask-alchemic-blood__effect-copy {
+    min-width: 0;
+  }
+
+  .mask-alchemic-blood__select {
+    flex: 0 0 auto;
+  }
+
+  .mask-essence .dot-value--additional-essence {
+    opacity: 0.5;
+
+    img.big-teeth {
+      filter: grayscale(1);
+      opacity: 0.72;
+      outline: 1px dotted var(--bw-ink-soft);
+      outline-offset: -2px;
+    }
+  }
+
+  // The query measures this form's content box, not the window frame.
+  // Configured sheets stack before the portrait, identity, Attribute, and
+  // two-gap tracks become cramped; unconfigured sheets already use two tracks.
+  @container (max-width: 650px) {
+    .mask-sheet__identity-block {
+      grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+      block-size: auto;
+    }
+
+    .mask-attributes {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @container (max-width: 620px) {
+    .mask-sheet__trackers { grid-column: 1 / -1; }
+  }
+
+  @container (max-width: 480px) {
+    .mask-sheet__identity-block {
+      grid-template-columns: 96px minmax(0, 1fr);
+    }
+
+    .mask-sheet__identity-block .sheet-identity__portrait {
+      --bw-portrait-size: 96px;
+      --bw-portrait-shadow-offset: 3px;
+      grid-row: span 3;
+    }
+
+    .mask-alchemic-blood__header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mask-alchemic-blood__header h3,
+    .mask-alchemic-blood__count {
+      grid-column: auto;
+    }
+
+    .mask-alchemic-blood__count { justify-self: end; }
+
+  }
+
+  @container (max-width: 410px) {
+    form.mask-sheet { padding: 10px; }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &.mask-sheet--attribute-resizing {
+      transition: none;
+    }
+  }
+}

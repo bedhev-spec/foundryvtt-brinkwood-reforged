@@ -97,5 +97,6 @@ Custom-content authoring is not supported for Upbringings, Professions, Classes,
 
 - This project is based on [megastruktur's Blades in the Dark system](https://github.com/megastruktur/foundryvtt-blades-in-the-dark) and [quadur's earlier Brinkwood work](https://github.com/quadur/foundryvtt-brinkwood).
 - The global clock overlay adapts the clock-only portion of [Carlos Fernandez's Global Progress Clocks](https://github.com/CarlosFdez/global-progress-clocks).
+- Loadout icons are adapted from [Game-Icons.net](https://game-icons.net/) under CC BY 3.0; see [third-party notices](THIRD_PARTY_NOTICES.md) for individual authors and sources.
 - This is an unofficial Brinkwood system. It is not associated with or endorsed by Far Horizons Co-op or any of Brinkwood's authors.
 - The project code is licensed under the GNU General Public License v3.0. The adapted Global Progress Clocks component retains its MIT licence.

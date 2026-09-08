@@ -18,6 +18,11 @@ The current release provides a strong pre-1.0 foundation for new campaigns. Furt
 </table>
 
 <p align="center">
+  <strong>Standalone Clock actor</strong><br>
+  <img src="assets/readme/clock-actor-sheet.png" alt="Brinkwood Reforged standalone Clock actor sheet" width="360">
+</p>
+
+<p align="center">
   <strong>Global progress-clock overlay</strong><br>
   <img src="assets/readme/clock-overlay.png" alt="Brinkwood Reforged global progress-clock overlay" width="520">
 </p>
@@ -29,6 +34,8 @@ Install or update the system with this manifest URL:
 ```text
 https://raw.githubusercontent.com/bedhev-spec/foundryvtt-brinkwood-reforged/main/system.json
 ```
+
+Maintainers can follow [RELEASING.md](RELEASING.md) for the branch, version, tag, and Foundry publication workflow.
 
 ## Features
 

@@ -56,6 +56,10 @@ $hover-brightness: 0.8;
     @import 'import/npc-sheet.scss';
   }
 
+  &.actor.clock {
+    @import 'import/clock-sheet.scss';
+  }
+
   &.item.sheet{
     @import 'import/item-sheet.scss';
   }

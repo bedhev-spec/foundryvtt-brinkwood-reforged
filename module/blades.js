@@ -16,6 +16,7 @@ import { BladesItemSheet } from "./blades-item-sheet.js";
 import { BladesActorSheet } from "./blades-actor-sheet.js";
 import { BladesActiveEffect } from "./blades-active-effect.js";
 import { BladesNPCSheet } from "./blades-npc-sheet.js";
+import { BladesClockSheet } from "./blades-clock-sheet.js";
 import { BladesMaskSheet } from "./blades-mask-sheet.js";
 import { BladesRebelionSheet } from "./blades-rebelion-sheet.js";
 import { showRollStatistics } from "./roll-statistics.js";
@@ -26,7 +27,7 @@ import { registerGlobalClockSystem, startGlobalClockSystem } from "./global-cloc
 
 import * as migrations from "./migration.js";
 import {
-  CharacterData, NpcData, MaskActorData, RebelionData
+  CharacterData, ClockData, NpcData, MaskActorData, RebelionData
 } from "./data/actor-data-models.js";
 import {
   ItemData, ClassData, TraitData, UpbringingData, ProfessionData,
@@ -52,6 +53,7 @@ Hooks.once("init", async function() {
   // access pattern (`game.system.model`) for type-specific data.
   CONFIG.Actor.dataModels = {
     "character":  CharacterData,
+    "clock":      ClockData,
     "npc":        NpcData,
     "mask":       MaskActorData,
     "rebelion":   RebelionData
@@ -83,6 +85,7 @@ Hooks.once("init", async function() {
     label: "Brinkwood Character Sheet",
   });
   DocumentSheetConfig.registerSheet(foundry.documents.Actor, "brinkwood-reforged", BladesNPCSheet, { types: ["npc"], makeDefault: true });
+  DocumentSheetConfig.registerSheet(foundry.documents.Actor, "brinkwood-reforged", BladesClockSheet, { types: ["clock"], makeDefault: true });
   DocumentSheetConfig.registerSheet(foundry.documents.Actor, "brinkwood-reforged", BladesMaskSheet, { types: ["mask"], makeDefault: true });
   DocumentSheetConfig.registerSheet(foundry.documents.Actor, "brinkwood-reforged", BladesRebelionSheet, { types: ["rebelion"], makeDefault: true });
   DocumentSheetConfig.unregisterSheet(foundry.documents.Item, "core", foundry.applications.sheets.ItemSheetV2);

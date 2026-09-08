@@ -1,0 +1,20 @@
+<form class="{{cssClass}} clock-block clock-sheet" autocomplete="off">
+  <header class="clock-sheet__identity bw-section-frame">
+    <div class="clock-sheet__field">
+      <label for="clock-{{_id}}-name">{{localize "BITD.Name"}}</label>
+      <input class="bw-text-field" id="clock-{{_id}}-name" name="name" type="text" value="{{name}}"{{#unless editable}} disabled{{/unless}}>
+    </div>
+    <div class="clock-sheet__field">
+      <label for="clock-{{_id}}-size">{{localize "BITD.Clock.Size"}}</label>
+      <select id="clock-{{_id}}-size" name="system.type"{{#unless editable}} disabled{{/unless}}>
+        <option value="4"{{#if (eq system.type 4)}} selected{{/if}}>4</option>
+        <option value="6"{{#if (eq system.type 6)}} selected{{/if}}>6</option>
+        <option value="8"{{#if (eq system.type 8)}} selected{{/if}}>8</option>
+      </select>
+    </div>
+  </header>
+
+  <section class="clocks clocks-{{system.type}}" aria-label="{{localize 'BITD.Clock.Progress'}}">
+    {{{blades-clock "system.value" system.type system.value _id (localize "BITD.Clock.Progress")}}}
+  </section>
+</form>

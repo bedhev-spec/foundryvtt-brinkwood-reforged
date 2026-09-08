@@ -1,6 +1,7 @@
 {
   "Actor": {
-		"types": ["character", "npc", "mask", "rebelion"],
+		"types": ["character", "clock", "npc", "mask", "rebelion"],
+		"clock": { "type": 4, "value": 0 },
   "character": {
     "alias": "",
     "look": "",

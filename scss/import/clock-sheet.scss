@@ -1,0 +1,85 @@
+// Standalone Clock geometry follows the legacy Clock actor's direct segmented
+// SVG control. The clock mixin owns segment hit areas; this sheet owns only
+// the actor layout, a 200px clock scale, and its root scroll surface.
+form.clock-sheet {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 320px;
+  height: 100%;
+  padding: 12px;
+  overflow: auto;
+  container-type: inline-size;
+
+  .clock-sheet__identity {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(96px, 132px);
+    gap: 12px;
+    align-items: end;
+    min-width: 0;
+  }
+
+  .clock-sheet__field {
+    display: grid;
+    grid-template-rows: auto minmax(30px, auto);
+    gap: 4px;
+    min-width: 0;
+
+    label {
+      color: var(--bw-ink-soft);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    input,
+    select {
+      min-width: 0;
+    }
+  }
+
+  .clocks {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    padding: 10px 0;
+
+    &.clocks-4 { @include clock(4, 200); }
+    &.clocks-6 { @include clock(6, 200); }
+    &.clocks-8 { @include clock(8, 200); }
+  }
+
+  .clock-zero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 6px;
+    color: var(--bw-ink);
+    cursor: pointer;
+  }
+
+  .blades-clock {
+    margin: 0 auto;
+  }
+
+  .clock-progress {
+    display: block;
+    margin-top: 8px;
+    color: var(--bw-ink-soft);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  @container (max-width: 420px) {
+    .clock-sheet__identity {
+      grid-template-columns: 1fr;
+    }
+
+    .clocks {
+      &.clocks-4 { @include clock(4, 160); }
+      &.clocks-6 { @include clock(6, 160); }
+      &.clocks-8 { @include clock(8, 160); }
+    }
+  }
+}

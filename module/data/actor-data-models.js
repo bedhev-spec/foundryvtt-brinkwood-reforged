@@ -198,6 +198,21 @@ export class NpcData extends TypeDataModel {
 }
 
 /* -------------------------------------------- */
+/*  Actor: clock                                */
+/* -------------------------------------------- */
+
+export class ClockData extends TypeDataModel {
+  /** @override */
+  static defineSchema() {
+    return {
+      // Artwork is shipped for these legacy-compatible segment counts only.
+      type: new fields.NumberField({ required: false, nullable: false, initial: 4, integer: true, choices: [4, 6, 8] }),
+      value: new fields.NumberField({ required: false, nullable: false, initial: 0, integer: true, min: 0, max: 8 }),
+    };
+  }
+}
+
+/* -------------------------------------------- */
 /*  Actor: mask                                 */
 /* -------------------------------------------- */
 

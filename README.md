@@ -95,6 +95,10 @@ Custom-content authoring is not supported for Upbringings, Professions, Classes,
 
 ## Credits and Licence
 
+This work is based on [Brinkwood: The Blood of Tyrants](https://www.brinkwood.net), product of Erik Bernhardt and Far Horizons Co-Op, and licensed for our use under the [Creative Commons Attribution 4.0 License](https://creativecommons.org/licenses/by/4.0/).
+
+[Brinkwood: The Blood of Tyrants](https://www.brinkwood.net) is based on [Blades in the Dark](http://www.bladesinthedark.com/), product of One Seven Design, developed and authored by John Harper, and licensed for our use under the [Creative Commons Attribution 3.0 Unported license](http://creativecommons.org/licenses/by/3.0/).
+
 - This project is based on [megastruktur's Blades in the Dark system](https://github.com/megastruktur/foundryvtt-blades-in-the-dark) and [quadur's earlier Brinkwood work](https://github.com/quadur/foundryvtt-brinkwood).
 - The global clock overlay adapts the clock-only portion of [Carlos Fernandez's Global Progress Clocks](https://github.com/CarlosFdez/global-progress-clocks).
 - Loadout icons are adapted from [Game-Icons.net](https://game-icons.net/) under CC BY 3.0; see [third-party notices](THIRD_PARTY_NOTICES.md) for individual authors and sources.

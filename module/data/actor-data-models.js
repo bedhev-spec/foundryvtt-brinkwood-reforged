@@ -210,6 +210,14 @@ export class ClockData extends TypeDataModel {
       value: new fields.NumberField({ required: false, nullable: false, initial: 0, integer: true, min: 0, max: 8 }),
     };
   }
+
+  /** @override */
+  static validateJoint(data) {
+    super.validateJoint(data);
+    if (data.value > data.type) {
+      throw new Error("Clock progress cannot exceed its segment count.");
+    }
+  }
 }
 
 /* -------------------------------------------- */

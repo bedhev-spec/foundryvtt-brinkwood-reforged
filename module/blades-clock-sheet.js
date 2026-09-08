@@ -20,6 +20,13 @@ export class BladesClockSheet extends BladesSheet {
     sheet: { template: "systems/brinkwood-reforged/templates/clock-sheet.html", scrollable: [""] },
   };
 
+  get title() {
+    const typeKey = "TYPES.Actor.clock";
+    const localizedType = globalThis.game?.i18n?.localize?.(typeKey) ?? typeKey;
+    const typeLabel = localizedType === typeKey ? "Clock" : localizedType;
+    return `${typeLabel}: ${this.document.name}`;
+  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     const clock = normalizeClockState(context.system.type, context.system.value);

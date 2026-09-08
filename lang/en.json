@@ -3,6 +3,7 @@
     "Actor": {
       "npc": "NPC",
       "character": "Character",
+      "clock": "Clock",
       "mask": "Mask",
       "rebelion": "Rebellion"
     },

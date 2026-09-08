@@ -4,7 +4,7 @@
 & {
   min-width: 290px;
   max-width: 560px;
-  min-height: 540px;
+  min-height: 420px;
   max-height: 680px;
 }
 
@@ -20,7 +20,7 @@ form.clock-sheet {
 
   .clock-sheet__card {
     display: grid;
-    grid-template-rows: auto minmax(300px, 1fr);
+    grid-template-rows: auto minmax(280px, 1fr);
     width: 100%;
     min-width: 0;
     max-width: 100%;
@@ -66,7 +66,7 @@ form.clock-sheet {
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
-    min-height: 300px;
+    min-height: 280px;
     padding: 16px;
     overflow: hidden;
   }

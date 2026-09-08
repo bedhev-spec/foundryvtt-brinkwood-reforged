@@ -1,4 +1,5 @@
 export const DEFAULT_CHARACTER_ACTOR_IMAGE = "systems/brinkwood-reforged/styles/assets/icons/character-actor-default.webp";
+export const DEFAULT_CLOCK_ACTOR_IMAGE = "systems/brinkwood-reforged/styles/assets/progressclocks-svg/Progress Clock 4-0.svg";
 export const DEFAULT_MASK_ACTOR_IMAGE = "systems/brinkwood-reforged/styles/assets/icons/mask-actor-default.webp";
 export const DEFAULT_NPC_ACTOR_IMAGE = "systems/brinkwood-reforged/styles/assets/icons/npc-actor-default.webp";
 export const DEFAULT_REBELION_ACTOR_IMAGE = "systems/brinkwood-reforged/styles/assets/icons/rebelion-actor-default.webp";
@@ -13,6 +14,11 @@ function actorImageOrDefault(image, fallback) {
 /** Preserve custom portraits while replacing Foundry's generic Character image. */
 export function characterActorImage(image) {
   return actorImageOrDefault(image, DEFAULT_CHARACTER_ACTOR_IMAGE);
+}
+
+/** Preserve custom portraits while replacing Foundry's generic Clock image. */
+export function clockActorImage(image) {
+  return actorImageOrDefault(image, DEFAULT_CLOCK_ACTOR_IMAGE);
 }
 
 /** Preserve custom portraits while replacing Foundry's generic Actor image. */

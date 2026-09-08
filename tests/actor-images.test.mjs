@@ -3,10 +3,12 @@ import test from "node:test";
 
 import {
   DEFAULT_CHARACTER_ACTOR_IMAGE,
+  DEFAULT_CLOCK_ACTOR_IMAGE,
   DEFAULT_MASK_ACTOR_IMAGE,
   DEFAULT_NPC_ACTOR_IMAGE,
   DEFAULT_REBELION_ACTOR_IMAGE,
   characterActorImage,
+  clockActorImage,
   maskActorImage,
   npcActorImage,
   rebelionActorImage,
@@ -15,6 +17,7 @@ import {
 test("actor image helpers replace only Foundry's generic portrait", () => {
   for (const emptyImage of [undefined, null, "", "   ", "icons/svg/mystery-man.svg"]) {
     assert.equal(characterActorImage(emptyImage), DEFAULT_CHARACTER_ACTOR_IMAGE);
+    assert.equal(clockActorImage(emptyImage), DEFAULT_CLOCK_ACTOR_IMAGE);
     assert.equal(maskActorImage(emptyImage), DEFAULT_MASK_ACTOR_IMAGE);
     assert.equal(npcActorImage(emptyImage), DEFAULT_NPC_ACTOR_IMAGE);
     assert.equal(rebelionActorImage(emptyImage), DEFAULT_REBELION_ACTOR_IMAGE);
@@ -22,14 +25,16 @@ test("actor image helpers replace only Foundry's generic portrait", () => {
 
   const customPortrait = "worlds/test/images/custom-npc.webp";
   assert.equal(characterActorImage(customPortrait), customPortrait);
+  assert.equal(clockActorImage(customPortrait), customPortrait);
   assert.equal(maskActorImage(customPortrait), customPortrait);
   assert.equal(npcActorImage(customPortrait), customPortrait);
   assert.equal(rebelionActorImage(customPortrait), customPortrait);
   assert.equal(new Set([
     DEFAULT_CHARACTER_ACTOR_IMAGE,
+    DEFAULT_CLOCK_ACTOR_IMAGE,
     DEFAULT_MASK_ACTOR_IMAGE,
     DEFAULT_NPC_ACTOR_IMAGE,
     DEFAULT_REBELION_ACTOR_IMAGE,
-  ]).size, 4);
+  ]).size, 5);
   assert.notEqual(DEFAULT_NPC_ACTOR_IMAGE, DEFAULT_MASK_ACTOR_IMAGE);
 });

@@ -698,6 +698,7 @@
   "BITD.SaveFailed": "Could not save changes.",
   "BITD.TrackerUpdateFailed": "Could not update this tracker. Please try again.",
   "BITD.ClockUpdateFailed": "Could not update this clock. Please try again.",
+  "BITD.Clock.Details": "Clock details",
   "BITD.Clock.Progress": "Clock progress",
   "BITD.Clock.Size": "Clock size",
   "BITD.Retry": "Retry",

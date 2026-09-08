@@ -11,7 +11,7 @@ import { queueDocumentPathUpdate, reportSheetInteractionFailure } from "./sheet-
 export class BladesClockSheet extends BladesSheet {
   static DEFAULT_OPTIONS = {
     classes: ["brinkwood", "sheet", "actor", "clock"],
-    position: { width: 420, height: 460 },
+    position: { width: 520, height: 640 },
     form: { closeOnSubmit: false, submitOnChange: false },
     window: { resizable: true },
   };
@@ -39,6 +39,9 @@ export class BladesClockSheet extends BladesSheet {
 
     html.querySelectorAll('input[name="system.value"], select[name="system.type"]').forEach(control => {
       control.addEventListener("change", event => void this._persistClockChange(event), listenerOptions);
+    });
+    html.querySelectorAll('input[type="radio"][name="system.value"][value="1"]').forEach(control => {
+      control.addEventListener("click", event => void this._clearSingleClockSegment(event), listenerOptions);
     });
     html.querySelector('input[name="name"]')?.addEventListener(
       "change",
@@ -68,6 +71,13 @@ export class BladesClockSheet extends BladesSheet {
     const selected = Number(control.value);
     if (!Number.isFinite(selected)) return false;
     return this._persistClock(path === "system.type" ? { type: selected } : { value: selected });
+  }
+
+  async _clearSingleClockSegment(event) {
+    const control = event.currentTarget;
+    const currentValue = Number(this.document.system.value);
+    if (!this.isEditable || !control?.checked || control.value !== "1" || currentValue !== 1) return false;
+    return this._persistClock({ value: 0 });
   }
 
   async _persistClock({ type, value } = {}) {

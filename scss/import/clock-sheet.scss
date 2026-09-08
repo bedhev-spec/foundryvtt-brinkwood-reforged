@@ -1,6 +1,13 @@
 // Standalone Clock geometry follows the legacy Clock actor's direct segmented
 // SVG control. The clock mixin owns segment hit areas; this sheet owns only
 // the actor layout, a 200px clock scale, and its root scroll surface.
+& {
+  min-width: 290px;
+  max-width: 560px;
+  min-height: 540px;
+  max-height: 680px;
+}
+
 form.clock-sheet {
   box-sizing: border-box;
   width: 100%;
@@ -11,12 +18,24 @@ form.clock-sheet {
   overflow: auto;
   container-type: inline-size;
 
-  .clock-sheet__identity {
+  .clock-sheet__card {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(96px, 132px);
-    gap: 12px;
-    align-items: end;
+    grid-template-rows: auto minmax(300px, 1fr);
+    width: 100%;
     min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .clock-sheet__header {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) 132px;
+    gap: 10px 12px;
+    align-items: end;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
   }
 
   .clock-sheet__field {
@@ -35,32 +54,89 @@ form.clock-sheet {
 
     input,
     select {
+      width: 100%;
       min-width: 0;
     }
   }
 
+  .clock-sheet__body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 300px;
+    padding: 16px;
+    overflow: hidden;
+  }
+
   .clocks {
     display: grid;
-    place-items: center;
-    min-width: 0;
-    padding: 10px 0;
+    width: 200px;
+    grid-template-rows: 200px auto;
+    align-content: center;
+    justify-items: center;
+    justify-self: center;
+    min-height: 230px;
+    margin-inline: auto;
+    padding: 0;
 
-    &.clocks-4 { @include clock(4, 200); }
-    &.clocks-6 { @include clock(6, 200); }
-    &.clocks-8 { @include clock(8, 200); }
+    &.clocks-4 { @include clock(4, 200, var(--bw-paper-deep), var(--bw-accent)); }
+    &.clocks-6 { @include clock(6, 200, var(--bw-paper-deep), var(--bw-accent)); }
+    &.clocks-8 { @include clock(8, 200, var(--bw-paper-deep), var(--bw-accent)); }
   }
 
   .clock-zero-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 6px;
-    color: var(--bw-ink);
-    cursor: pointer;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .blades-clock {
     margin: 0 auto;
+    border: 2px solid var(--bw-ink);
+    background-color: var(--bw-paper-deep);
+
+    &::after {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      content: "";
+    }
+
+    &:has(input:focus-visible) {
+      outline: 3px solid var(--bw-focus);
+      outline-offset: 3px;
+    }
+  }
+
+  .clocks-4 .blades-clock::after {
+    background:
+      linear-gradient(to right, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(to bottom, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px));
+  }
+
+  .clocks-6 .blades-clock::after {
+    background:
+      linear-gradient(90deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(30deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(150deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px));
+  }
+
+  .clocks-8 .blades-clock::after {
+    background:
+      linear-gradient(90deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(45deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(0deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(135deg, transparent calc(50% - 1px), var(--bw-ink) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px));
   }
 
   .clock-progress {
@@ -72,14 +148,19 @@ form.clock-sheet {
   }
 
   @container (max-width: 420px) {
-    .clock-sheet__identity {
-      grid-template-columns: 1fr;
+    .clock-sheet__header {
+      grid-template-columns: minmax(0, 1fr) minmax(88px, 112px);
+      gap: 10px;
     }
 
     .clocks {
-      &.clocks-4 { @include clock(4, 160); }
-      &.clocks-6 { @include clock(6, 160); }
-      &.clocks-8 { @include clock(8, 160); }
+      width: 160px;
+      grid-template-rows: 160px auto;
+      min-height: 190px;
+
+      &.clocks-4 { @include clock(4, 160, var(--bw-paper-deep), var(--bw-accent)); }
+      &.clocks-6 { @include clock(6, 160, var(--bw-paper-deep), var(--bw-accent)); }
+      &.clocks-8 { @include clock(8, 160, var(--bw-paper-deep), var(--bw-accent)); }
     }
   }
 }

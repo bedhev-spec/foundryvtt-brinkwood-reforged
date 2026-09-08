@@ -3,6 +3,7 @@ import { readRollDialogValues } from "./roll-resolution.js";
 import { BladesHelpers } from "./blades-helpers.js";
 import {
   characterActorImage,
+  clockActorImage,
   maskActorImage,
   npcActorImage,
   rebelionActorImage,
@@ -120,6 +121,12 @@ export class BladesActor extends foundry.documents.Actor {
 
     if (data.type === "rebelion") {
       data.img = rebelionActorImage(data.img);
+    }
+
+    if (data.type === "clock") {
+      data.img = clockActorImage(data.img);
+      data.prototypeToken.texture = data.prototypeToken.texture || {};
+      data.prototypeToken.texture.src = clockActorImage(data.prototypeToken.texture.src);
     }
 
     // Characters use linked tokens so their token and sheet stay in sync.

@@ -28,7 +28,7 @@ export class BladesNPCSheet extends BladesSheet {
   /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.npcDetailsTab = this.tabGroups.npcDetails;
+    this._ensureValidNpcDetailsTab(context);
     context.img = npcActorImage(context.img);
     context.linkedJournal = await prepareLinkedJournalContext(this.document, { editable: this.isEditable });
 
@@ -46,6 +46,15 @@ export class BladesNPCSheet extends BladesSheet {
     );
 
     return context;
+  }
+
+  _ensureValidNpcDetailsTab(context) {
+    const validTabs = ["description", "abilities", "schemes"];
+    if (!validTabs.includes(this.tabGroups.npcDetails)) {
+      this.tabGroups.npcDetails = "description";
+    }
+
+    context.npcDetailsTab = this.tabGroups.npcDetails;
   }
 
   /** @override */

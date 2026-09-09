@@ -127,7 +127,7 @@ export class BladesMaskSheet extends BladesSheet {
     classes: ["brinkwood", "sheet", "actor", "pc", "mask"],
     // An unconfigured Mask keeps the compact initial sheet. Its selected Mask
     // Type adds Attribute UI and expands the already-open ApplicationV2 frame.
-    position: { width: MASK_SHEET_DEFAULT_WIDTH, height: 840 },
+    position: { width: MASK_SHEET_DEFAULT_WIDTH, height: 680 },
     // Explicit change handlers below are the only Mask persistence path.
     form: { submitOnChange: false },
     tabGroups: { primary: "traits" },

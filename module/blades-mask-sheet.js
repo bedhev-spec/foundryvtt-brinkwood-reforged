@@ -241,13 +241,9 @@ export class BladesMaskSheet extends BladesSheet {
     return context;
   }
 
-  /** Keep a remembered Mask tab when available; otherwise use its first tab. */
+  /** Keep remembered Mask tabs when available; otherwise use the first tab. */
   _ensureValidPrimaryTab(context) {
-    if (this.tabGroups.primary === "mask-notes") {
-      this.tabGroups.primary = "mask";
-      context.tabs.primary = "mask";
-    }
-    const validTabs = ["traits", "mask"];
+    const validTabs = ["traits", "mask", "mask-notes"];
     if (context.isGM) validTabs.push("effects");
     if (validTabs.includes(this.tabGroups.primary)) return;
     this.tabGroups.primary = "traits";

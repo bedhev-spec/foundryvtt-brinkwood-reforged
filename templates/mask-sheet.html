@@ -32,6 +32,7 @@
       <nav class="tabs sheet-tabs mask-sheet__tabs" aria-label="{{localize 'BITD.Mask'}}" data-group="primary" role="tablist">
     <button type="button" id="mask-{{_id}}-tab-traits" class="item {{#if (eq tabs.primary "traits")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="traits" role="tab" tabindex="{{#if (eq tabs.primary "traits")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-traits" aria-selected="{{#if (eq tabs.primary "traits")}}true{{else}}false{{/if}}">{{localize "Mask.Abilities"}}</button>
     <button type="button" id="mask-{{_id}}-tab-mask" class="item {{#if (eq tabs.primary "mask")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="mask" role="tab" tabindex="{{#if (eq tabs.primary "mask")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-mask" aria-selected="{{#if (eq tabs.primary "mask")}}true{{else}}false{{/if}}">{{localize "Mask.Tab"}}</button>
+    <button type="button" id="mask-{{_id}}-tab-notes" class="item {{#if (eq tabs.primary "mask-notes")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="mask-notes" role="tab" tabindex="{{#if (eq tabs.primary "mask-notes")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-notes" aria-selected="{{#if (eq tabs.primary "mask-notes")}}true{{else}}false{{/if}}">{{localize "BITD.Background"}}</button>
         {{#if isGM}}
       <button type="button" id="mask-{{_id}}-tab-effects" class="item {{#if (eq tabs.primary "effects")}}active{{/if}}" data-action="tab" data-group="primary" data-tab="effects" role="tab" tabindex="{{#if (eq tabs.primary "effects")}}0{{else}}-1{{/if}}" aria-controls="mask-{{_id}}-panel-effects" aria-selected="{{#if (eq tabs.primary "effects")}}true{{else}}false{{/if}}">{{localize "BITD.Effects"}}</button>
         {{/if}}
@@ -73,6 +74,10 @@
         {{else}}
         <p class="mask-sheet__empty">{{localize "Mask.SelectForDetails"}}</p>
         {{/if}}
+      </section>
+
+      <section id="mask-{{_id}}-panel-notes" class="tab mask-sheet__panel mask-sheet__notes flex-vertical sheet-notes bw-rich-text-surface {{#if (eq tabs.primary "mask-notes")}}active{{/if}}" data-group="primary" data-tab="mask-notes" role="tabpanel" aria-labelledby="mask-{{_id}}-tab-notes">
+        {{> "systems/brinkwood-reforged/templates/parts/sheet-notes.html"}}
       </section>
 
       {{#if isGM}}

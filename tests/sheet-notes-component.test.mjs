@@ -7,7 +7,7 @@ import { bindRichTextPersistence, persistRichTextChange } from "../module/sheet-
 const root = new URL("../", import.meta.url);
 const read = file => readFile(new URL(file, root), "utf8");
 
-test("Character alone consumes the shared Notes component", async () => {
+test("Character and Mask consume the shared Notes component", async () => {
   const [character, mask, partial, templates] = await Promise.all([
     read("templates/actor-sheet.html"),
     read("templates/mask-sheet.html"),
@@ -17,9 +17,9 @@ test("Character alone consumes the shared Notes component", async () => {
   const reference = /systems\/brinkwood-reforged\/templates\/parts\/sheet-notes\.html/;
 
   assert.match(character, reference);
-  assert.doesNotMatch(mask, reference);
+  assert.match(mask, reference);
   assert.match(character, /class="tab flex-vertical sheet-notes bw-rich-text-surface/);
-  assert.doesNotMatch(mask, /mask-sheet__notes sheet-notes/);
+  assert.match(mask, /mask-sheet__notes flex-vertical sheet-notes bw-rich-text-surface/);
   assert.match(partial, /<prose-mirror class="sheet-notes__editor" name="system\.description" value="\{\{system\.description\}\}" data-document-uuid="\{\{actor\.uuid\}\}" collaborate toggled>/);
   assert.doesNotMatch(partial, /fieldName|fieldValue|documentUuid|enrichedContent/);
   assert.match(partial, /class="editor editor-content sheet-notes__preview"/);

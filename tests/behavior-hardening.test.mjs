@@ -69,8 +69,8 @@ test("Mask primary tabs default to Traits and preserve valid remembered selectio
   sheet.tabGroups.primary = "mask-notes";
   const notesContext = { isGM: false, tabs: { primary: "mask-notes" } };
   BladesMaskSheet.prototype._ensureValidPrimaryTab.call(sheet, notesContext);
-  assert.equal(sheet.tabGroups.primary, "mask");
-  assert.equal(notesContext.tabs.primary, "mask");
+  assert.equal(sheet.tabGroups.primary, "mask-notes");
+  assert.equal(notesContext.tabs.primary, "mask-notes");
 
   // Effects is a remembered tab only while that tab is available to a GM.
   sheet.tabGroups.primary = "effects";

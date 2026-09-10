@@ -170,7 +170,7 @@
 			}
 		},
 		"XP": {
-			"Tooltip": "At the end of each session, mark 1 Mask XP (or 2 if performed multiple times)...<ul><li>If you fulfilled your oath.</li><li>If you defeated a vampire of a higher tier than your highest aspect.</li><li>If you fulfilled the condition unique to your mask.</li>",
+			"Tooltip": "At the end of each session, mark 1 Mask XP (or 2 if performed multiple times)...<ul><li>If you fulfilled your oath.</li><li>If you defeated a vampire of a higher tier than your highest aspect.</li>",
 			"Lies": "<li>You taught someone else something or learned something important.</li></ul>",
 			"Ruin": "<li>You strengthened or reinforced an ally.</li></ul>",
 			"Terror": "<li>You instilled terror into the heart of an oppressor.</li></ul>",

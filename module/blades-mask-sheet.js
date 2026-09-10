@@ -127,7 +127,7 @@ export class BladesMaskSheet extends BladesSheet {
     classes: ["brinkwood", "sheet", "actor", "pc", "mask"],
     // An unconfigured Mask keeps the compact initial sheet. Its selected Mask
     // Type adds Attribute UI and expands the already-open ApplicationV2 frame.
-    position: { width: MASK_SHEET_DEFAULT_WIDTH, height: 840 },
+    position: { width: MASK_SHEET_DEFAULT_WIDTH, height: 680 },
     // Explicit change handlers below are the only Mask persistence path.
     form: { submitOnChange: false },
     tabGroups: { primary: "traits" },
@@ -241,13 +241,9 @@ export class BladesMaskSheet extends BladesSheet {
     return context;
   }
 
-  /** Keep a remembered Mask tab when available; otherwise use its first tab. */
+  /** Keep remembered Mask tabs when available; otherwise use the first tab. */
   _ensureValidPrimaryTab(context) {
-    if (this.tabGroups.primary === "mask-notes") {
-      this.tabGroups.primary = "mask";
-      context.tabs.primary = "mask";
-    }
-    const validTabs = ["traits", "mask"];
+    const validTabs = ["traits", "mask", "mask-notes"];
     if (context.isGM) validTabs.push("effects");
     if (validTabs.includes(this.tabGroups.primary)) return;
     this.tabGroups.primary = "traits";

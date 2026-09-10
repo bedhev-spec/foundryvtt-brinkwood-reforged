@@ -70,10 +70,10 @@ test("Mask navigation stays stable and the focused partial is accessible", async
     read("module/blades-mask-sheet.js"),
   ]);
   assert.match(sheet, /data-tab="mask"[\s\S]*?\{\{localize "Mask\.Tab"\}\}/);
-  assert.doesNotMatch(sheet, /data-tab="mask-notes"/);
-  assert.doesNotMatch(sheet, /parts\/sheet-notes\.html|mask-sheet__notes/);
+  assert.match(sheet, /data-tab="mask-notes"[\s\S]*?\{\{localize "BITD\.Background"\}\}/);
+  assert.match(sheet, /mask-sheet__notes[\s\S]*?parts\/sheet-notes\.html/);
   assert.match(sheet, /\{\{\{maskDescriptionHtml\}\}\}/);
-  assert.match(controller, /this\.tabGroups\.primary === "mask-notes"[\s\S]*?context\.tabs\.primary = "mask"/);
+  assert.match(controller, /const validTabs = \["traits", "mask", "mask-notes"\]/);
   assert.match(partial, /aria-labelledby="mask-\{\{_id\}\}-alchemic-blood-heading"/);
   assert.match(partial, /role="list"[\s\S]*?role="listitem"/);
   assert.match(partial, /type="checkbox"[^>]*class="mask-alchemic-blood__select trait-card__purchase bw-checkbox-x"[^>]*data-alchemic-blood-effect/);

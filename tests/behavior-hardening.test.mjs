@@ -8,9 +8,13 @@ globalThis.foundry = {
   applications: {
     api: { HandlebarsApplicationMixin: Base => Base },
     sheets: {
-      ActorSheetV2: class {
-        async _onRender() {}
-        async _processSubmitData(event, form, submitData, options) {
+        ActorSheetV2: class {
+          async _onRender() {}
+          setPosition(position) {
+            this.appliedPosition = position;
+            return position;
+          }
+          async _processSubmitData(event, form, submitData, options) {
           return { event, form, submitData, options };
         }
       },
@@ -38,8 +42,10 @@ const {
   BladesMaskSheet,
   getEligibleMaskTraits,
   getMaskTraitsForSource,
+  getMultifacetedGrantedTraits,
   getMaskTypePresentation,
   MASK_SHEET_DEFAULT_WIDTH,
+  MASK_SHEET_MIN_HEIGHT,
   maskSheetWidthForAttributes,
   updateMaskDotDisplay,
 } = await import("../module/blades-mask-sheet.js");
@@ -183,6 +189,127 @@ test("Mask Traits stay scoped to their source while picker offers every missing 
 
   assert.deepEqual(getMaskTraitsForSource(actorItems, mask), [matchingGrant]);
   assert.deepEqual(getEligibleMaskTraits(candidates, actorItems, mask), [candidates[1], candidates[2]]);
+});
+
+test("Multifaceted grants include only foreign abilities linked to the current Mask", () => {
+  const mask = { id: "mask-terror", type: "mask", name: "Terror" };
+  const grant = (id, name, className, sourceItemId = mask.id) => ({
+    id,
+    type: "trait",
+    name,
+    system: { class: className, purchased: true },
+    flags: {
+      "brinkwood-reforged": {
+        traitGrant: { sourceItemType: "mask", sourceItemId },
+      },
+    },
+  });
+  const multifaceted = grant("trait-multifaceted", "Multifaceted", "Terror");
+  const nativeAbility = grant("trait-native", "Fear Your Slaves", "Terror");
+  const foreignAbility = grant("trait-foreign", "Taunt", "Violence");
+  const unclassifiedGrant = grant("trait-unclassified", "Custom", "");
+  const otherMaskGrant = grant("trait-other-mask", "Lead from the Front", "Violence", "mask-other");
+
+  assert.deepEqual(
+    getMultifacetedGrantedTraits(
+      [multifaceted, nativeAbility, foreignAbility, unclassifiedGrant, otherMaskGrant],
+      mask,
+    ),
+    [foreignAbility],
+  );
+});
+
+test("Mask resizing clamps only finite heights and preserves width-only positioning", () => {
+  const sheet = new BladesMaskSheet();
+
+  assert.deepEqual(sheet.setPosition({ height: 400, width: 720 }), {
+    height: MASK_SHEET_MIN_HEIGHT,
+    width: 720,
+  });
+  assert.deepEqual(sheet.setPosition({ height: 840, width: 740 }), {
+    height: 840,
+    width: 740,
+  });
+  assert.deepEqual(sheet.setPosition({ width: 760 }), { width: 760 });
+  assert.deepEqual(sheet.setPosition({ height: "auto", width: 780 }), {
+    height: "auto",
+    width: 780,
+  });
+});
+
+test("unchecking Multifaceted confirms before deleting its foreign abilities", async () => {
+  const originalDialog = foundry.applications.api.DialogV2;
+  const originalI18n = game.i18n;
+  const mask = { id: "mask-terror", type: "mask", name: "Terror" };
+  const traitGrant = className => ({
+    sourceItemType: "mask",
+    sourceItemId: mask.id,
+    traitSourceId: `source-${className}`,
+  });
+  const multifaceted = {
+    id: "trait-multifaceted",
+    type: "trait",
+    name: "Multifaceted",
+    system: { class: "Terror", purchased: true },
+    flags: { "brinkwood-reforged": { traitGrant: traitGrant("multifaceted") } },
+    async update(update) {
+      this.system.purchased = update["system.purchased"];
+    },
+  };
+  const nativeAbility = {
+    id: "trait-native",
+    type: "trait",
+    name: "Fear Your Slaves",
+    system: { class: "Terror", purchased: true },
+    flags: { "brinkwood-reforged": { traitGrant: traitGrant("terror") } },
+  };
+  const foreignAbility = {
+    id: "trait-foreign",
+    type: "trait",
+    name: "Taunt",
+    system: { class: "Violence", purchased: true },
+    flags: { "brinkwood-reforged": { traitGrant: traitGrant("violence") } },
+  };
+  const deleted = [];
+  const addAbility = { hidden: false };
+  let confirmed = false;
+  const actor = {
+    items: [mask, multifaceted, nativeAbility, foreignAbility],
+    getEmbeddedDocument: (_type, id) => id === multifaceted.id ? multifaceted : null,
+    async deleteEmbeddedDocuments(type, ids) {
+      deleted.push([type, ids]);
+    },
+  };
+  const sheet = Object.assign(Object.create(BladesMaskSheet.prototype), {
+    isEditable: true,
+    actor,
+    element: { querySelector: () => addAbility },
+  });
+  const control = { checked: false, dataset: { itemId: multifaceted.id } };
+
+  foundry.applications.api.DialogV2 = {
+    async confirm() {
+      return confirmed;
+    },
+  };
+  game.i18n = { localize: key => key };
+
+  try {
+    assert.equal(await sheet._onTraitPurchaseChange({ currentTarget: control }), false);
+    assert.equal(control.checked, true);
+    assert.equal(multifaceted.system.purchased, true);
+    assert.deepEqual(deleted, []);
+
+    confirmed = true;
+    control.checked = false;
+    assert.equal(await sheet._onTraitPurchaseChange({ currentTarget: control }), true);
+    assert.equal(multifaceted.system.purchased, false);
+    assert.equal(addAbility.hidden, true);
+    assert.deepEqual(deleted, [["Item", [foreignAbility.id]]]);
+  } finally {
+    foundry.applications.api.DialogV2 = originalDialog;
+    game.i18n = originalI18n;
+  }
 });
 
 test("Mask Trait picker delegates selected source IDs to the actor repair command", async () => {

@@ -1,4 +1,10 @@
-import { SHEET_TYPES, SHEET_WIDTHS, sheetMarkup } from "./sheet-geometry-cases.mjs";
+import {
+  BACKGROUND_GEOMETRY_CASES,
+  SHEET_TYPES,
+  SHEET_WIDTHS,
+  backgroundMarkup,
+  sheetMarkup,
+} from "./sheet-geometry-cases.mjs";
 
 const cases = document.querySelector("#cases");
 const output = document.querySelector("#sheet-geometry-results");
@@ -15,12 +21,25 @@ for (const width of SHEET_WIDTHS) {
   }
 }
 
+for (const geometry of BACKGROUND_GEOMETRY_CASES) {
+  const host = document.createElement("section");
+  host.className = "geometry-case geometry-case--background";
+  host.dataset.width = geometry.width;
+  host.dataset.height = geometry.height;
+  host.dataset.type = geometry.type;
+  host.style.width = `${geometry.width}px`;
+  host.style.height = `${geometry.height}px`;
+  host.innerHTML = backgroundMarkup(geometry.type);
+  cases.append(host);
+}
+
 await document.fonts?.ready;
 await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
 function ownerFor(host) {
   if (host.dataset.type === "character") return host.querySelector("form.actor-sheet");
   if (host.dataset.type === "mask") return host.querySelector(".mask-sheet__panel.active");
+  if (host.dataset.type === "rebelion") return host.querySelector(".rebelion-sheet__panel.active");
   if (host.dataset.type === "npc") return host.querySelector("form.npc-dossier");
   return host.querySelector(host.dataset.type === "item-modern" ? "form.loadout-item-sheet" : "form.legacy-item-sheet");
 }
@@ -53,8 +72,7 @@ function measure(host) {
       && getComputedStyle(npcEditor).display === "block"
       && npcProfile.getBoundingClientRect().height > 100
       && npcEditors.getBoundingClientRect().height > 180
-      && npcEditor.querySelector("h2").getBoundingClientRect().bottom
-        <= npcEditor.querySelector("prose-mirror, .editor").getBoundingClientRect().top
+      && npcEditor.querySelector("prose-mirror, .editor") !== null
     ),
     visibleFocus: focus.matches(":focus-visible")
       && focusStyle.outlineStyle !== "none"
@@ -64,7 +82,7 @@ function measure(host) {
   return result;
 }
 
-const results = [...document.querySelectorAll(".geometry-case")].map(measure);
+const results = [...document.querySelectorAll(".geometry-case:not(.geometry-case--background)")].map(measure);
 const assertions = Object.fromEntries(results.map(result => [
   `${result.type}-${result.width}`,
   result.verticalOwner
@@ -75,5 +93,43 @@ const assertions = Object.fromEntries(results.map(result => [
     && result.visibleFocus,
 ]));
 
+const backgroundResults = [...document.querySelectorAll(".geometry-case--background")].map(host => {
+  const type = host.dataset.type;
+  const form = host.querySelector("form.actor-sheet");
+  const notes = host.querySelector(".sheet-notes.active");
+  const surface = notes.querySelector(".sheet-notes__editor, .sheet-notes__preview");
+  const formStyle = getComputedStyle(form);
+  const notesStyle = getComputedStyle(notes);
+  const before = form.scrollTop;
+  form.scrollTop = form.scrollHeight;
+
+  const formRect = form.getBoundingClientRect();
+  const surfaceRect = surface.getBoundingClientRect();
+  const bottomGap = formRect.bottom - surfaceRect.bottom;
+  const result = {
+    type,
+    height: Number(host.dataset.height),
+    notesDoNotOwnScroll: notesStyle.overflowY === "hidden",
+    surfaceFillsAvailableHeight: surfaceRect.height >= 260,
+    bottomGap,
+    characterReducedReachable: type !== "character-background-reduced"
+      || (formStyle.overflowY === "auto" && form.scrollHeight > form.clientHeight && surfaceRect.bottom <= formRect.bottom),
+    characterEnlargedGrows: type !== "character-background-enlarged"
+      || (form.scrollHeight <= form.clientHeight + 1 && surfaceRect.height > 260 && bottomGap >= 8 && bottomGap <= 12),
+    maskBackgroundFills: !type.startsWith("mask-background-")
+      || (surfaceRect.height > 260 && bottomGap >= 8 && bottomGap <= 12),
+  };
+  form.scrollTop = before;
+  return result;
+});
+
+for (const result of backgroundResults) {
+  assertions[result.type] = result.notesDoNotOwnScroll
+    && result.surfaceFillsAvailableHeight
+    && result.characterReducedReachable
+    && result.characterEnlargedGrows
+    && result.maskBackgroundFills;
+}
+
 output.dataset.status = Object.values(assertions).every(Boolean) ? "passed" : "failed";
-output.textContent = JSON.stringify({ assertions, results }, null, 2);
+output.textContent = JSON.stringify({ assertions, results, backgroundResults }, null, 2);

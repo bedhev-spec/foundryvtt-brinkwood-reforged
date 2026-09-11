@@ -28,7 +28,7 @@ test("Mask Attributes live in the identity header and share Character presentati
 
   assert.match(controller, /MASK_SHEET_DEFAULT_WIDTH\s*=\s*680/);
   assert.match(controller, /MASK_SHEET_ATTRIBUTES_WIDTH\s*=\s*760/);
-  assert.match(controller, /position:\s*\{\s*width:\s*MASK_SHEET_DEFAULT_WIDTH,\s*height:\s*680\s*\}/);
+  assert.match(controller, /position:\s*\{\s*width:\s*MASK_SHEET_DEFAULT_WIDTH,\s*height:\s*MASK_SHEET_MIN_HEIGHT\s*\}/);
   assert.match(controller, /async _syncMaskAttributeAvailability\(hasMaskType\)[\s\S]*?const becameAvailable = available && !this\._maskAttributesAvailable;[\s\S]*?if \(becameAvailable\) await this\._expandForMaskAttributes\(\);[\s\S]*?else if \(!available && wasAvailable\) await this\._shrinkForMaskAttributes\(\);/);
   assert.match(controller, /await this\._syncMaskAttributeAvailability\(Boolean\(context\.maskItem\)\);/);
   assert.match(maskStyles, /\.mask-sheet__identity-block\s*\{[\s\S]*?grid-template-columns:\s*minmax\(150px, 200px\) minmax\(0, 1fr\);[\s\S]*?column-gap:\s*20px;[\s\S]*?block-size:\s*222px;/);

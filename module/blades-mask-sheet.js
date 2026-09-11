@@ -17,6 +17,7 @@ import {
 export { handleActorNameEnter as handleMaskNameEnter };
 
 export const MASK_SHEET_DEFAULT_WIDTH = 680;
+export const MASK_SHEET_MIN_HEIGHT = 680;
 // A Character sheet at its 700px default has a 212px Attribute column:
 // (700px - 40px form padding - 24px inter-column gaps) / 3.
 // Foundry's ApplicationV2 inner frame also consumes horizontal space, so the
@@ -39,6 +40,17 @@ export function getMaskTraitsForSource(items, maskItem) {
     && item.flags?.["brinkwood-reforged"]?.traitGrant?.sourceItemType === "mask"
     && item.flags?.["brinkwood-reforged"]?.traitGrant?.sourceItemId === sourceItemId
   );
+}
+
+/** Return cross-Mask abilities granted to the current Mask through Multifaceted. */
+export function getMultifacetedGrantedTraits(items, maskItem) {
+  const maskType = canonicalTraitSourceName(maskItem?.name);
+  if (!maskType) return [];
+
+  return getMaskTraitsForSource(items, maskItem).filter(trait => {
+    const traitType = canonicalTraitSourceName(trait.system?.class);
+    return Boolean(traitType) && traitType !== maskType;
+  });
 }
 
 /** Return ungranted compendium Traits that can be linked to the selected Mask. */
@@ -127,7 +139,8 @@ export class BladesMaskSheet extends BladesSheet {
     classes: ["brinkwood", "sheet", "actor", "pc", "mask"],
     // An unconfigured Mask keeps the compact initial sheet. Its selected Mask
     // Type adds Attribute UI and expands the already-open ApplicationV2 frame.
-    position: { width: MASK_SHEET_DEFAULT_WIDTH, height: 680 },
+    position: { width: MASK_SHEET_DEFAULT_WIDTH, height: MASK_SHEET_MIN_HEIGHT },
+    window: { resizable: true },
     // Explicit change handlers below are the only Mask persistence path.
     form: { submitOnChange: false },
     tabGroups: { primary: "traits" },
@@ -136,6 +149,17 @@ export class BladesMaskSheet extends BladesSheet {
   static PARTS = {
     sheet: { template: "systems/brinkwood-reforged/templates/mask-sheet.html" },
   };
+
+  /* -------------------------------------------- */
+
+  /** @override */
+  setPosition(position = {}) {
+    if (!Number.isFinite(position?.height)) return super.setPosition(position);
+    return super.setPosition({
+      ...position,
+      height: Math.max(position.height, MASK_SHEET_MIN_HEIGHT),
+    });
+  }
 
   /* -------------------------------------------- */
 
@@ -203,7 +227,11 @@ export class BladesMaskSheet extends BladesSheet {
     // Mask configuration is actor-owned and enforces a single embedded source.
     // Keep a dedicated presentation object so templates never infer it from an
     // arbitrary item loop.
-    context.canAddMaskTraits = Boolean(context.maskItem) && context.editable;
+    const hasSelectedMultifacetedAbility = context.traits.some(
+      trait => trait.name === "Multifaceted" && Boolean(trait.system?.purchased),
+    );
+    context.canManageMaskTraits = Boolean(context.maskItem) && context.editable;
+    context.canAddMaskTraits = context.canManageMaskTraits && hasSelectedMultifacetedAbility;
     context.maskTypeLabel = context.maskItem?.name ?? "";
     context.identityRows = [{
       itemType: "mask",
@@ -370,6 +398,58 @@ export class BladesMaskSheet extends BladesSheet {
         () => BladesActiveEffect.onManageActiveEffect(ev, this.actor, { gmOnly: true }),
       ), listenerOptions)
     );
+  }
+
+  _syncMultifacetedAddAction(visible) {
+    const addAbility = this.element?.querySelector(".mask-sheet__trait-add");
+    if (addAbility) addAbility.hidden = !visible;
+  }
+
+  /** Confirm and remove cross-Mask abilities when Multifaceted is unchecked. */
+  async _onTraitPurchaseChange(event) {
+    const control = event.currentTarget;
+    const item = this.actor.getEmbeddedDocument("Item", control.dataset.itemId);
+    if (item?.type !== "trait" || item.name !== "Multifaceted") {
+      return super._onTraitPurchaseChange(event);
+    }
+
+    const unchecking = !control.checked;
+    const maskItem = this.actor.items.find(candidate => candidate.type === "mask");
+    const grantedTraits = unchecking
+      ? getMultifacetedGrantedTraits(this.actor.items, maskItem)
+      : [];
+
+    if (grantedTraits.length) {
+      const confirmed = await foundry.applications.api.DialogV2.confirm({
+        window: { title: game.i18n.localize("Mask.Multifaceted.RemoveTitle") },
+        content: `<p>${game.i18n.localize("Mask.Multifaceted.RemovePrompt")}</p>`,
+      });
+      if (!confirmed) {
+        control.checked = true;
+        return false;
+      }
+    }
+
+    const saved = await super._onTraitPurchaseChange(event);
+    if (!saved) return false;
+
+    this._syncMultifacetedAddAction(!unchecking);
+    if (!grantedTraits.length) return true;
+
+    try {
+      await this.actor.deleteEmbeddedDocuments("Item", grantedTraits.map(itemId));
+      return true;
+    } catch (error) {
+      reportSheetInteractionFailure(error, "Mask.Multifaceted.UpdateFailed");
+      control.checked = true;
+      this._syncMultifacetedAddAction(true);
+      try {
+        await item.update({ "system.purchased": true });
+      } catch (rollbackError) {
+        reportSheetInteractionFailure(rollbackError, "Mask.Multifaceted.UpdateFailed");
+      }
+      return false;
+    }
   }
 
   async _onAlchemicBloodEffect(event) {

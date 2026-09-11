@@ -2753,6 +2753,7 @@
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) {
   flex: 1 0 300px;
+  min-block-size: 320px;
   grid-template-rows: auto minmax(0, 1fr);
   margin-block-end: -10px;
 }
@@ -2809,6 +2810,24 @@
 .brinkwood.actor.pc.character .character-sheet__workspace > .tab-content > .tab[data-tab=loadout].active {
   position: relative;
   z-index: 0;
+}
+.brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) {
+  min-block-size: 320px;
+}
+.brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content {
+  grid-template-rows: minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
+}
+.brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes[data-tab=character-notes].active {
+  flex: 1 1 auto;
+  height: 100%;
+  overflow: hidden;
+}
+.brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes[data-tab=character-notes].active > .sheet-notes__editor,
+.brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes[data-tab=character-notes].active > .sheet-notes__preview {
+  flex: 1 1 auto;
+  height: 100%;
 }
 .brinkwood.actor.pc.character input[type=text],
 .brinkwood.actor.pc.character select,
@@ -3384,6 +3403,9 @@
   container-type: inline-size;
   color: var(--bw-ink);
 }
+.brinkwood.actor.mask form.mask-sheet:has(.mask-sheet__notes.active) {
+  padding-block-end: 10px;
+}
 .brinkwood.actor.mask form.mask-sheet input[type=text], .brinkwood.actor.mask form.mask-sheet textarea {
   box-sizing: border-box;
   border: 1px solid var(--bw-ink-soft);
@@ -3461,8 +3483,24 @@
 }
 .brinkwood.actor.mask .mask-sheet__main > .sheet-tab-content {
   grid-column: 1/-1;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   min-width: 0;
+  min-height: 0;
+  height: 100%;
   inline-size: 100%;
+  overflow: hidden;
+}
+.brinkwood.actor.mask .mask-sheet__main:has(> .sheet-tab-content > .mask-sheet__notes.active) > .sheet-tab-content > .mask-sheet__notes.active {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+.brinkwood.actor.mask .mask-sheet__main:has(> .sheet-tab-content > .mask-sheet__notes.active) > .sheet-tab-content > .mask-sheet__notes.active > .sheet-notes__editor,
+.brinkwood.actor.mask .mask-sheet__main:has(> .sheet-tab-content > .mask-sheet__notes.active) > .sheet-tab-content > .mask-sheet__notes.active > .sheet-notes__preview {
+  flex: 1 1 auto;
+  height: 100%;
 }
 .brinkwood.actor.mask .mask-sheet__panel {
   display: none;
@@ -3520,6 +3558,9 @@
   line-height: 1;
   text-align: left;
   cursor: pointer;
+}
+.brinkwood.actor.mask .mask-sheet__trait-add[hidden] {
+  display: none;
 }
 .brinkwood.actor.mask .mask-sheet__trait-add:hover, .brinkwood.actor.mask .mask-sheet__trait-add:focus-visible {
   background: rgba(141, 98, 93, 0.14);

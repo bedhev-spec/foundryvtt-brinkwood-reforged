@@ -3,8 +3,10 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
+  BACKGROUND_GEOMETRY_CASES,
   SHEET_TYPES,
   SHEET_WIDTHS,
+  backgroundMarkup,
   sheetMarkup,
 } from "./browser/sheet-geometry-cases.mjs";
 
@@ -17,6 +19,12 @@ test("browser geometry matrix covers production sheet roots at release widths", 
 
   assert.deepEqual(SHEET_WIDTHS, [700, 480, 410]);
   assert.deepEqual(SHEET_TYPES, ["character", "mask", "rebelion", "npc", "item-modern", "item-legacy"]);
+  assert.deepEqual(BACKGROUND_GEOMETRY_CASES, [
+    { type: "character-background-reduced", width: 700, height: 560 },
+    { type: "character-background-enlarged", width: 700, height: 820 },
+    { type: "mask-background-editable", width: 700, height: 680 },
+    { type: "mask-background-readonly", width: 700, height: 680 },
+  ]);
   assert.equal(geometry?.resultElement, "#sheet-geometry-results");
 
   for (const type of SHEET_TYPES) {
@@ -51,6 +59,18 @@ test("browser geometry matrix covers production sheet roots at release widths", 
   assert.ok(sheetMarkup("item-modern").includes('class="editable loadout-item-sheet"'));
   assert.ok(sheetMarkup("item-legacy").includes('class="editable legacy-item-sheet"'));
   assert.throws(() => sheetMarkup("unknown"), /Unknown sheet fixture type/);
+
+  const characterReduced = backgroundMarkup("character-background-reduced");
+  const characterEnlarged = backgroundMarkup("character-background-enlarged");
+  const maskEditable = backgroundMarkup("mask-background-editable");
+  const maskReadonly = backgroundMarkup("mask-background-readonly");
+  assert.ok(characterReduced.includes('data-tab="character-notes"'));
+  assert.ok(characterEnlarged.includes('class="sheet-notes__editor fixture-focus"'));
+  assert.ok(maskEditable.includes('class="sheet-notes__editor fixture-focus"'));
+  assert.ok(maskEditable.includes('class="editable actor-sheet mask-sheet"'));
+  assert.ok(maskReadonly.includes('class="editor editor-content sheet-notes__preview fixture-focus"'));
+  assert.ok(maskReadonly.includes('class="locked actor-sheet mask-sheet"'));
+  assert.throws(() => backgroundMarkup("unknown"), /Unknown background geometry fixture type/);
 });
 
 test("browser geometry fixture executes every scroll, containment, reachability, and focus check", async () => {
@@ -62,6 +82,10 @@ test("browser geometry fixture executes every scroll, containment, reachability,
     "reachable",
     "npcSectionsDoNotCollapse",
     "visibleFocus",
+    "backgroundResults",
+    "characterReducedReachable",
+    "characterEnlargedGrows",
+    "maskBackgroundFills",
   ]) {
     assert.ok(source.includes(check), `fixture measures ${check}`);
   }

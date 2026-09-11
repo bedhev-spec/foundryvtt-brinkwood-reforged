@@ -508,6 +508,7 @@
   // half the form's 20px bottom padding leaves 10px before the sheet edge.
   .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab="character-notes"].active) {
     flex: 1 0 300px;
+    min-block-size: 320px;
     grid-template-rows: auto minmax(0, 1fr);
     margin-block-end: -10px;
 
@@ -574,6 +575,31 @@
   .character-sheet__workspace > .tab-content > .tab[data-tab="loadout"].active {
     position: relative;
     z-index: 0;
+  }
+
+  // Keep this after the generic active-panel rule above: Background must
+  // contribute its editor minimum to the form scroll height when reduced,
+  // while retaining the grow-to-bottom layout at larger window heights.
+  .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab="character-notes"].active) {
+    min-block-size: 320px;
+
+    > .tab-content {
+      grid-template-rows: minmax(0, 1fr);
+      height: 100%;
+      overflow: hidden;
+    }
+
+    > .tab-content > .sheet-notes[data-tab="character-notes"].active {
+      flex: 1 1 auto;
+      height: 100%;
+      overflow: hidden;
+
+      > .sheet-notes__editor,
+      > .sheet-notes__preview {
+        flex: 1 1 auto;
+        height: 100%;
+      }
+    }
   }
 
   input[type="text"],

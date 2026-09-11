@@ -10,6 +10,13 @@ test("Character ApplicationV2 window is resizable", async () => {
   assert.match(source, /position:\s*\{\s*width:\s*700,\s*height:\s*1170\s*\},[\s\S]*?window:\s*\{\s*resizable:\s*true\s*\}/);
 });
 
+test("Mask ApplicationV2 window is resizable and clamps only finite heights", async () => {
+  const source = await read("module/blades-mask-sheet.js");
+  assert.match(source, /export const MASK_SHEET_MIN_HEIGHT = 680;/);
+  assert.match(source, /position:\s*\{\s*width:\s*MASK_SHEET_DEFAULT_WIDTH,\s*height:\s*MASK_SHEET_MIN_HEIGHT\s*\},[\s\S]*?window:\s*\{\s*resizable:\s*true\s*\}/);
+  assert.match(source, /setPosition\(position = \{\}\)\s*\{[\s\S]*?!Number\.isFinite\(position\?\.height\)[\s\S]*?super\.setPosition\(position\)[\s\S]*?height:\s*Math\.max\(position\.height, MASK_SHEET_MIN_HEIGHT\)/);
+});
+
 const lifecycleControllers = [
   "module/blades-sheet.js",
   "module/blades-actor-sheet.js",

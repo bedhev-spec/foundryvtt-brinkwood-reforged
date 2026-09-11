@@ -22,7 +22,7 @@
     padding: 0;
   }
 
-  form.mask-sheet {
+form.mask-sheet {
     // A fixed ApplicationV2 frame keeps identity and tabs stationary; the
     // active shared tab panel is the single vertical scroll owner.
     display: grid;
@@ -34,7 +34,11 @@
     min-height: 0;
     padding: 16px;
     container-type: inline-size;
-    color: var(--bw-ink);
+  color: var(--bw-ink);
+
+  &:has(.mask-sheet__notes.active) {
+    padding-block-end: 10px;
+  }
 
     input[type="text"], textarea {
       box-sizing: border-box;
@@ -140,9 +144,31 @@
 
 .mask-sheet__main > .sheet-tab-content {
   grid-column: 1 / -1;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
   min-width: 0;
+  min-height: 0;
+  height: 100%;
   inline-size: 100%;
+  overflow: hidden;
 }
+
+  // Background alone fills the bounded Mask workspace. Ordinary panels keep
+  // the shared active-panel scroll ownership from sheet-tabs.scss.
+  .mask-sheet__main:has(> .sheet-tab-content > .mask-sheet__notes.active) {
+    > .sheet-tab-content > .mask-sheet__notes.active {
+      display: flex;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+
+      > .sheet-notes__editor,
+      > .sheet-notes__preview {
+        flex: 1 1 auto;
+        height: 100%;
+      }
+    }
+  }
 
   .mask-sheet__panel {
     display: none;
@@ -206,6 +232,10 @@
     line-height: 1;
     text-align: left;
     cursor: pointer;
+
+    &[hidden] {
+      display: none;
+    }
 
     &:hover,
     &:focus-visible {

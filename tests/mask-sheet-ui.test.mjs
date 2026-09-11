@@ -64,7 +64,7 @@ test("Mask retains the shared production tab workspace contract", async () => {
   assert.match(sheet, /class="mask-sheet__tab-content sheet-tab-content"/);
 });
 
-test("Mask Ability CTA is gated by a configured Mask and uses the shared Trait Card", async () => {
+test("Mask Ability CTA requires a selected Multifaceted ability and uses the shared Trait Card", async () => {
   const [template, controller, sharedSheet] = await Promise.all([
     read("templates/mask-sheet.html"),
     read("module/blades-mask-sheet.js"),
@@ -74,7 +74,7 @@ test("Mask Ability CTA is gated by a configured Mask and uses the shared Trait C
   const traitsPanel = template.match(/data-tab="traits"[\s\S]*?<\/section>/)?.[0] ?? "";
   assert.match(template, />\{\{localize "Mask\.Abilities"\}\}<\/button>/);
   assert.doesNotMatch(template, />\{\{localize "BITD\.Traits"\}\}<\/button>/);
-  assert.match(traitsPanel, /\{\{#if canAddMaskTraits\}\}[\s\S]*?class="mask-sheet__trait-add item-add-popup"[\s\S]*?data-item-type="trait"/);
+  assert.match(traitsPanel, /\{\{#if canManageMaskTraits\}\}[\s\S]*?class="mask-sheet__trait-add item-add-popup"[\s\S]*?data-item-type="trait"\{\{#unless canAddMaskTraits\}\} hidden\{\{\/unless\}\}/);
   assert.match(traitsPanel, /parts\/actor\/trait-card\.html/);
   assert.ok(traitsPanel.indexOf("mask-sheet__trait-add") < traitsPanel.indexOf("parts/actor/trait-card.html"));
   assert.doesNotMatch(traitsPanel, /<h2>\{\{localize "BITD\.Traits"\}\}<\/h2>/);
@@ -83,12 +83,16 @@ test("Mask Ability CTA is gated by a configured Mask and uses the shared Trait C
   assert.match(traitsPanel, /class="mask-sheet__trait-add-label">\{\{localize "Add"\}\} \{\{localize "Mask\.Ability"\}\}/);
   assert.match(await read("scss/import/mask-sheet.scss"), /\.mask-sheet__trait-add\s*\{[\s\S]*?width:\s*100%;[\s\S]*?min-height:\s*40px;[\s\S]*?border:\s*1px dashed var\(--bw-rule\);[\s\S]*?border-left:\s*5px solid var\(--bw-accent\)/);
   assert.match(await read("scss/import/mask-sheet.scss"), /\.mask-sheet__trait-add\s*\{[\s\S]*?display:\s*flex;[\s\S]*?align-items:\s*center;[\s\S]*?justify-content:\s*start/);
+  assert.match(await read("scss/import/mask-sheet.scss"), /\.mask-sheet__trait-add\s*\{[\s\S]*?&\[hidden\]\s*\{[\s\S]*?display:\s*none;/);
   assert.match(await read("scss/import/mask-sheet.scss"), /\.mask-sheet__trait-add-content\s*\{[\s\S]*?display:\s*inline-flex;[\s\S]*?align-items:\s*center;[\s\S]*?height:\s*20px/);
   assert.match(await read("scss/import/mask-sheet.scss"), /\.mask-sheet__trait-add-icon\s*\{[\s\S]*?&::before,[\s\S]*?&::after[\s\S]*?inset-block-start:\s*50%;[\s\S]*?inset-inline-start:\s*50%/);
   assert.doesNotMatch(await read("scss/import/mask-sheet.scss"), /\.mask-sheet__trait-add-content\s*\{[\s\S]*?translateY/);
   assert.match(controller, /context\.maskItem = context\.items\.find\(item => item\.type === "mask"\) \?\? null;/);
   assert.match(controller, /context\.traits = this\._prepareTraitDisplayOrder\(getMaskTraitsForSource\(context\.items, context\.maskItem\)/);
-  assert.match(controller, /context\.canAddMaskTraits = Boolean\(context\.maskItem\) && context\.editable;/);
+  assert.match(controller, /const hasSelectedMultifacetedAbility = context\.traits\.some\([\s\S]*?trait\.name === "Multifaceted" && Boolean\(trait\.system\?\.purchased\)[\s\S]*?\);/);
+  assert.match(controller, /context\.canManageMaskTraits = Boolean\(context\.maskItem\) && context\.editable;/);
+  assert.match(controller, /context\.canAddMaskTraits = context\.canManageMaskTraits && hasSelectedMultifacetedAbility;/);
+  assert.match(controller, /async _onTraitPurchaseChange\(event\)[\s\S]*?Mask\.Multifaceted\.RemovePrompt[\s\S]*?deleteEmbeddedDocuments\("Item", grantedTraits\.map\(itemId\)\)/);
   assert.match(controller, /async _getItemPickerItems\(itemType\)[\s\S]*?getEligibleMaskTraits\(items, this\.actor\.items, maskItem\)/);
   assert.match(controller, /repairTraitGrantsForSourceIds\(\[itemId\(maskItem\)\], false, traitSourceIds\)/);
   assert.match(sharedSheet, /async _getItemPickerItems\(itemType\)[\s\S]*?getItemsByType\(itemType, game\)/);

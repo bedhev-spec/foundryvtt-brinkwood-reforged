@@ -1,5 +1,11 @@
 export const SHEET_WIDTHS = Object.freeze([700, 480, 410]);
 export const SHEET_TYPES = Object.freeze(["character", "mask", "rebelion", "npc", "item-modern", "item-legacy"]);
+export const BACKGROUND_GEOMETRY_CASES = Object.freeze([
+  { type: "character-background-reduced", width: 700, height: 560 },
+  { type: "character-background-enlarged", width: 700, height: 820 },
+  { type: "mask-background-editable", width: 700, height: 680 },
+  { type: "mask-background-readonly", width: 700, height: 680 },
+]);
 
 const filler = label => `
   <div class="fixture-filler">
@@ -206,4 +212,73 @@ export function sheetMarkup(type) {
     </article>`;
 
   throw new TypeError(`Unknown sheet fixture type: ${type}`);
+}
+
+export function backgroundMarkup(type) {
+  if (type.startsWith("character-background-")) return `
+    <article class="application brinkwood sheet actor pc character">
+      <header class="window-header">Character</header>
+      <div class="window-content">
+        <form class="editable actor-sheet character-sheet" autocomplete="off">
+          <header class="name-alias sheet-identity bw-section-frame">
+            <div class="grow-two sheet-identity__portrait"><div class="sheet-identity__portrait-frame"></div></div>
+            <section class="grow-two sheet-identity__details">
+              <div class="sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Mara"></div>
+              <div class="sheet-identity__rows character-identity-choices"></div>
+            </section>
+            <section class="grow-two sheet-identity__trackers"></section>
+          </header>
+          <section class="character-attributes sheet-attribute-presentation" aria-label="Attributes"></section>
+          <section class="bans-armor bw-section-frame" aria-label="Bans and armor"></section>
+          <section class="character-sheet__workspace sheet-tab-workspace">
+            <nav class="tabs sheet-tabs" data-group="primary" aria-label="Character tabs">
+              <button type="button" class="item active" role="tab" tabindex="0" aria-selected="true"
+                aria-controls="fixture-character-background" data-action="tab" data-group="primary" data-tab="character-notes">Background</button>
+            </nav>
+            <div class="tab-content sheet-tab-content flex-vertical grow-two">
+              <section id="fixture-character-background" class="tab sheet-notes bw-rich-text-surface active flex-vertical"
+                data-group="primary" data-tab="character-notes">
+                <prose-mirror class="sheet-notes__editor fixture-focus" tabindex="0"><div class="ProseMirror">${filler("Character Background")}</div></prose-mirror>
+              </section>
+            </div>
+          </section>
+        </form>
+      </div>
+    </article>`;
+
+  if (type === "mask-background-editable" || type === "mask-background-readonly") {
+    const readonly = type.endsWith("readonly");
+    const notes = readonly
+      ? `<div class="editor editor-content sheet-notes__preview fixture-focus" tabindex="0">${filler("Mask Background preview")}</div>`
+      : `<prose-mirror class="sheet-notes__editor fixture-focus" tabindex="0"><div class="ProseMirror">${filler("Mask Background editor")}</div></prose-mirror>`;
+    return `
+      <article class="application brinkwood sheet actor mask">
+        <header class="window-header">Mask</header>
+        <div class="window-content">
+          <form class="${readonly ? "locked" : "editable"} actor-sheet mask-sheet" autocomplete="off">
+            <header class="mask-sheet__identity-block sheet-identity bw-section-frame">
+              <div class="sheet-identity__portrait"><div class="sheet-identity__portrait-frame"></div></div>
+              <section class="mask-sheet__identity sheet-identity__details">
+                <div class="mask-sheet__name-box sheet-identity__field-box sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Briar"></div>
+                <div class="sheet-identity__rows"></div>
+              </section>
+            </header>
+            <div class="mask-sheet__layout">
+              <section class="mask-sheet__main sheet-tab-workspace">
+                <nav class="tabs sheet-tabs mask-sheet__tabs" data-group="primary" aria-label="Mask tabs">
+                  <button type="button" class="item active" role="tab" tabindex="0" aria-selected="true"
+                    aria-controls="fixture-mask-background" data-action="tab" data-group="primary" data-tab="mask-notes">Background</button>
+                </nav>
+                <div class="mask-sheet__tab-content sheet-tab-content">
+                  <section id="fixture-mask-background" class="tab mask-sheet__panel mask-sheet__notes flex-vertical sheet-notes bw-rich-text-surface active"
+                    data-group="primary" data-tab="mask-notes" role="tabpanel">${notes}</section>
+                </div>
+              </section>
+            </div>
+          </form>
+        </div>
+      </article>`;
+  }
+
+  throw new TypeError(`Unknown background geometry fixture type: ${type}`);
 }

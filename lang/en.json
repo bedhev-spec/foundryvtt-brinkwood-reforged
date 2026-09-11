@@ -146,6 +146,11 @@
 			"Ruin": "Represents slow decay and inevitable destruction through which rebirth becomes possible."
 		},
 		"SelectForDetails": "Select a Mask type to see its description and rules.",
+		"Multifaceted": {
+			"RemoveTitle": "Uncheck Multifaceted?",
+			"RemovePrompt": "If you uncheck Multifaceted, any abilities added through it will be removed.",
+			"UpdateFailed": "The Multifaceted selection could not be updated. Please retry."
+		},
 		"AlchemicBlood": {
 			"Name": "Alchemic Blood",
 			"Description": "You may infuse your blood with one of the following powers and use its power to augment your magic. You may unlock additional effects by spending additional advancements.",

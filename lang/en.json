@@ -146,6 +146,11 @@
 			"Ruin": "Represents slow decay and inevitable destruction through which rebirth becomes possible."
 		},
 		"SelectForDetails": "Select a Mask type to see its description and rules.",
+		"Multifaceted": {
+			"RemoveTitle": "Uncheck Multifaceted?",
+			"RemovePrompt": "If you uncheck Multifaceted, any abilities added through it will be removed.",
+			"UpdateFailed": "The Multifaceted selection could not be updated. Please retry."
+		},
 		"AlchemicBlood": {
 			"Name": "Alchemic Blood",
 			"Description": "You may infuse your blood with one of the following powers and use its power to augment your magic. You may unlock additional effects by spending additional advancements.",
@@ -170,7 +175,7 @@
 			}
 		},
 		"XP": {
-			"Tooltip": "At the end of each session, mark 1 Mask XP (or 2 if performed multiple times)...<ul><li>If you fulfilled your oath.</li><li>If you defeated a vampire of a higher tier than your highest aspect.</li><li>If you fulfilled the condition unique to your mask.</li>",
+			"Tooltip": "At the end of each session, mark 1 Mask XP (or 2 if performed multiple times)...<ul><li>If you fulfilled your oath.</li><li>If you defeated a vampire of a higher tier than your highest aspect.</li>",
 			"Lies": "<li>You taught someone else something or learned something important.</li></ul>",
 			"Ruin": "<li>You strengthened or reinforced an ally.</li></ul>",
 			"Terror": "<li>You instilled terror into the heart of an oppressor.</li></ul>",
@@ -673,6 +678,9 @@
   "BITD.DarkServants": "Dark Servants",
   "BITD.StrangeFriends": "Strange Friends",
   "BITD.GlobalClock.Add": "Add clock",
+  "BITD.GlobalClock.Reorder": "Reorder clock",
+  "BITD.GlobalClock.ReorderHelp": "Drag to reorder. On this handle, use Up/Down to move one place or Home/End to move first/last.",
+  "BITD.GlobalClock.Reordered": "{name}, position {position} of {total}.",
   "BITD.GlobalClock.Name": "Name",
   "BITD.GlobalClock.Value": "Progress",
   "BITD.GlobalClock.Size": "Segments",

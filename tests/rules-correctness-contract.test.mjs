@@ -17,6 +17,8 @@ test("resistance and Character labels retain corrected rules wording", async () 
   assert.doesNotMatch(localization["BITD.RollResistanceCritical"], /clear\s+1\s+stress/i);
   assert.doesNotMatch(localization["BITD.RollResistance"], /clear\s+1\s+stress/i);
   assert.equal(localization.Actor.XP.Tooltip.includes("Mask XP"), false);
+  assert.doesNotMatch(localization.Mask.XP.Tooltip, /condition unique to your mask/i);
+  assert.match(localization.Mask.XP.Lies, /learned something important/i);
   assert.match(characterTemplate, /tooltip="Actor\.XP\.Tooltip"/);
   assert.match(attributesTemplate, />\{\{localize attribute\.label\}\}<\/button>/);
 });

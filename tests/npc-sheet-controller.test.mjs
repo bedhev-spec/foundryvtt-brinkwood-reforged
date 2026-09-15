@@ -46,6 +46,22 @@ function sheetRoot(controls) {
 
 const flushSaveQueue = () => new Promise(resolve => setImmediate(resolve));
 
+test("NPC details default to the first tab and preserve a valid selection", () => {
+  const context = {};
+  const sheet = Object.assign(Object.create(BladesNPCSheet.prototype), {
+    tabGroups: { npcDetails: undefined },
+  });
+
+  sheet._ensureValidNpcDetailsTab(context);
+  assert.equal(sheet.tabGroups.npcDetails, "description");
+  assert.equal(context.npcDetailsTab, "description");
+
+  sheet.tabGroups.npcDetails = "abilities";
+  sheet._ensureValidNpcDetailsTab(context);
+  assert.equal(sheet.tabGroups.npcDetails, "abilities");
+  assert.equal(context.npcDetailsTab, "abilities");
+});
+
 test("NPC rich-text fields hydrate, save once, and replace render-owned listeners", async () => {
   assert.equal(BladesNPCSheet.DEFAULT_OPTIONS.form.submitOnChange, false);
   assert.deepEqual(BladesNPCSheet.DEFAULT_OPTIONS.tabGroups, { npcDetails: "description" });

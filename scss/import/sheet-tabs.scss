@@ -81,7 +81,9 @@
   }
 
   .sheet-tabs .item {
-    flex: 0 0 auto;
+    // Grow short tab sets to fill the bar, but retain each label's intrinsic
+    // minimum so longer sets fall back to horizontal scrolling.
+    flex: 1 0 max-content;
   }
 }
 

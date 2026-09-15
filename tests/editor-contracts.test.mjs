@@ -37,7 +37,7 @@ test("v13 image actions and editors are editable-only", async () => {
     assert.doesNotMatch(template, /data-action="editImage"/);
   }
   assert.match(templates[6], /\{\{#if editable\}\}\s*data-action="editImage" data-edit="img"/);
-  assert.doesNotMatch(templates[0], /parts\/sheet-notes\.html/);
+  assert.match(templates[0], /parts\/sheet-notes\.html/);
   assert.match(templates[0], /parts\/mask\/alchemic-blood\.html/);
   assert.match(templates[7], /\{\{#if editable\}\}[\s\S]*?<prose-mirror class="sheet-notes__editor" name="system\.description"[^>]*value="\{\{system\.description\}\}"[^>]*data-document-uuid="\{\{actor\.uuid\}\}"[^>]*collaborate toggled>/);
   assert.match(templates[1], /<prose-mirror name="system\.description"[^>]*data-document-uuid="\{\{actor\.uuid\}\}"[^>]*collaborate toggled>/);

@@ -10,6 +10,13 @@ test("Character ApplicationV2 window is resizable", async () => {
   assert.match(source, /position:\s*\{\s*width:\s*700,\s*height:\s*1170\s*\},[\s\S]*?window:\s*\{\s*resizable:\s*true\s*\}/);
 });
 
+test("Mask ApplicationV2 window is resizable and clamps only finite heights", async () => {
+  const source = await read("module/blades-mask-sheet.js");
+  assert.match(source, /export const MASK_SHEET_MIN_HEIGHT = 680;/);
+  assert.match(source, /position:\s*\{\s*width:\s*MASK_SHEET_DEFAULT_WIDTH,\s*height:\s*MASK_SHEET_MIN_HEIGHT\s*\},[\s\S]*?window:\s*\{\s*resizable:\s*true\s*\}/);
+  assert.match(source, /setPosition\(position = \{\}\)\s*\{[\s\S]*?!Number\.isFinite\(position\?\.height\)[\s\S]*?super\.setPosition\(position\)[\s\S]*?height:\s*Math\.max\(position\.height, MASK_SHEET_MIN_HEIGHT\)/);
+});
+
 const lifecycleControllers = [
   "module/blades-sheet.js",
   "module/blades-actor-sheet.js",
@@ -105,13 +112,10 @@ test("each Actor HTML editor has its own enriched context and template target", 
       for (const field of fields) {
         const enrichedField = field === "description" ? "enrichedDescription" : `enriched${field[0].toUpperCase()}${field.slice(1)}`;
         assert.match(controller, new RegExp(`context\\.${enrichedField}\\s*=\\s*await[\\s\\S]*?enrichHTML`));
-        if (name === "character" && field === "description") {
+        if ((name === "character" || name === "mask") && field === "description") {
           assert.match(template, /parts\/sheet-notes\.html"\s*\}\}/);
           assert.match(notesPartial, new RegExp(`<prose-mirror class="sheet-notes__editor" name="system\\.${field}" value="\\{\\{system\\.${field}\\}\\}" data-document-uuid="\\{\\{actor\\.uuid\\}\\}" collaborate toggled>`));
           assert.match(notesPartial, new RegExp(`\\{\\{\\{${enrichedField}\\}\\}\\}`));
-        } else if (name === "mask" && field === "description") {
-          assert.doesNotMatch(template, /parts\/sheet-notes\.html/);
-          assert.match(template, /\{\{\{maskDescriptionHtml\}\}\}/);
         } else {
           assert.match(template, new RegExp(`<prose-mirror name="system\\.${field}" value="\\{\\{system\\.${field}\\}\\}" data-document-uuid="\\{\\{actor\\.uuid\\}\\}" collaborate toggled>`));
           assert.match(template, new RegExp(`\\{\\{\\{${enrichedField}\\}\\}`));

@@ -13,6 +13,7 @@
   --global-clock-toolbar-center-offset: calc(var(--global-clock-toolbar-padding) + 1px);
   --global-clock-controls-min-width: calc(
     var(--global-clock-control-size) + var(--global-clock-control-size) + var(--global-clock-control-size)
+    + var(--global-clock-control-size) + var(--global-clock-control-gap)
     + var(--global-clock-control-gap) + var(--global-clock-control-gap)
     + var(--global-clock-control-padding) + var(--global-clock-control-padding)
   );
@@ -149,6 +150,23 @@
 .global-clock-entry:focus-within .global-clock__controls {
   opacity: 1;
   pointer-events: auto;
+}
+
+#brinkwood-global-clock-overlay {
+  button:focus:not(:focus-visible) {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  .global-clock__drag { cursor: grab; }
+  .global-clock__drag:active { cursor: grabbing; }
+  .global-clock__drag:focus-visible {
+    outline: 2px solid var(--bw-focus, #e8b65c);
+    outline-offset: -2px;
+  }
+  .global-clock-entry.is-dragging { opacity: 0.45; }
+  .global-clock-entry[data-drop-position="before"] { border-top: 3px solid var(--bw-focus, #e8b65c); }
+  .global-clock-entry[data-drop-position="after"] { border-bottom: 3px solid var(--bw-focus, #e8b65c); }
 }
 
 .global-clock__visually-hidden {

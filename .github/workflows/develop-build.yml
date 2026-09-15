@@ -1,0 +1,156 @@
+name: Develop build
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Test and package development build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: develop-build
+      cancel-in-progress: true
+    env:
+      PACKAGE_NAME: brinkwood-reforged-dev-${{ github.run_id }}-${{ github.run_attempt }}.zip
+      ARTIFACT_NAME: develop-package-${{ github.run_id }}-${{ github.run_attempt }}
+    outputs:
+      package-name: ${{ steps.package.outputs.package-name }}
+      artifact-name: ${{ steps.package.outputs.artifact-name }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Validate system files
+        run: pnpm run validate
+
+      - name: Build development package
+        id: package
+        shell: bash
+        run: |
+          mkdir -p dist/package
+          git archive HEAD | tar -x -C dist/package
+
+          node --input-type=module <<'NODE'
+          import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+          import { createDevelopVersion } from "./scripts/develop-version.mjs";
+
+          const manifest = JSON.parse(await readFile("system.json", "utf8"));
+          const releaseUrl = `https://github.com/${process.env.GITHUB_REPOSITORY}/releases/download/develop-latest`;
+
+          manifest.version = createDevelopVersion(
+            manifest.version,
+            process.env.GITHUB_RUN_NUMBER,
+            process.env.GITHUB_RUN_ATTEMPT,
+          );
+          manifest.manifest = `${releaseUrl}/system-dev.json`;
+          manifest.download = `${releaseUrl}/${process.env.PACKAGE_NAME}`;
+
+          await mkdir("dist", { recursive: true });
+          await writeFile("dist/system-dev.json", `${JSON.stringify(manifest, null, 2)}\n`);
+          await copyFile("dist/system-dev.json", "dist/package/system.json");
+          NODE
+
+          (cd dist/package && zip -qr "../$PACKAGE_NAME" .)
+          echo "package-name=$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
+          echo "artifact-name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Save tested development package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: |
+            dist/system-dev.json
+            dist/${{ env.PACKAGE_NAME }}
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish development build
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    # A push may replace a queued publisher, but must never interrupt an active one.
+    concurrency:
+      group: develop-publish
+      cancel-in-progress: false
+    steps:
+      - name: Check out repository for release publication
+        uses: actions/checkout@v4
+
+      - name: Download tested development package
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+          path: dist
+
+      - name: Update rolling development release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_NAME: ${{ needs.build.outputs.package-name }}
+        shell: bash
+        run: |
+          # Recheck before every remote mutation, including reruns of older commits.
+          publish_if_current() {
+            local develop_sha
+            develop_sha="$(git ls-remote --exit-code origin refs/heads/develop | cut -f1)"
+            if [[ "$develop_sha" != "$GITHUB_SHA" ]]; then
+              echo "Skipping publication: this commit is no longer the develop head."
+              exit 0
+            fi
+            "$@"
+          }
+
+          git tag --force develop-latest "$GITHUB_SHA"
+          publish_if_current git push --force origin refs/tags/develop-latest
+
+          if gh release view develop-latest >/dev/null 2>&1; then
+            publish_if_current gh release edit develop-latest \
+              --title "Latest development build" \
+              --notes "Automated development build from commit $GITHUB_SHA." \
+              --prerelease
+          else
+            publish_if_current gh release create develop-latest \
+              --verify-tag \
+              --title "Latest development build" \
+              --notes "Automated development build from commit $GITHUB_SHA." \
+              --prerelease
+          fi
+
+          # Keep previous ZIPs so old/cached manifests still resolve their exact build.
+          # A publication-only rerun may already have uploaded this immutable ZIP.
+          asset_names="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/develop-latest" \
+            --jq '.assets[] | select(.state == "uploaded") | .name')"
+          if ! grep -Fxq "$PACKAGE_NAME" <<< "$asset_names"; then
+            publish_if_current gh release upload develop-latest "dist/$PACKAGE_NAME"
+          fi
+
+          # Expose the new version only after its uniquely named ZIP is available.
+          publish_if_current gh release upload develop-latest dist/system-dev.json --clobber

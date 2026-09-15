@@ -1,6 +1,8 @@
 /* Compact NPC dossier. Imported under .brinkwood.actor.npc. */
 & {
   min-width: 320px;
+  min-height: 420px;
+  max-height: calc(100vh - 32px);
   color: var(--bw-ink);
 
   // The part root form owns vertical scrolling; the window wrapper only clips
@@ -167,6 +169,7 @@
   }
 
   .npc-dossier__editor-tabs {
+    gap: 4px;
     width: 100%;
     border-radius: 8px 8px 0 0;
   }

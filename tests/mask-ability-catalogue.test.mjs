@@ -1,6 +1,6 @@
 import { extractPack } from "@foundryvtt/foundryvtt-cli";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
+import { cp, mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -91,7 +91,10 @@ test("the shipped LevelDB pack contains every corrected canonical record", async
   const workspace = await mkdtemp(path.join(tmpdir(), "brinkwood-mask-abilities-"));
   try {
     const extracted = path.join(workspace, "documents");
-    await extractPack(fileURLToPath(new URL("../packs/traits/", import.meta.url)), extracted);
+    const packCopy = path.join(workspace, "pack");
+    // Opening LevelDB can update its journal; never open the tracked pack.
+    await cp(fileURLToPath(new URL("../packs/traits/", import.meta.url)), packCopy, { recursive: true });
+    await extractPack(packCopy, extracted);
     const activeRecords = await Promise.all((await readdir(extracted)).map(async file => {
       const document = JSON.parse(await readFile(path.join(extracted, file), "utf8"));
       delete document._key;

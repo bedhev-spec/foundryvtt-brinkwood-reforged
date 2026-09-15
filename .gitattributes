@@ -1,0 +1,3 @@
+# LevelDB directories are byte-sensitive, including the plain-text CURRENT
+# pointer. CRLF conversion makes LevelDB look for a filename ending in CR.
+packs/*/** -text

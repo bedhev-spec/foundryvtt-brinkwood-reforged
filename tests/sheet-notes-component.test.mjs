@@ -7,7 +7,7 @@ import { bindRichTextPersistence, persistRichTextChange } from "../module/sheet-
 const root = new URL("../", import.meta.url);
 const read = file => readFile(new URL(file, root), "utf8");
 
-test("Character alone consumes the shared Notes component", async () => {
+test("Character and Mask consume the shared Notes component", async () => {
   const [character, mask, partial, templates] = await Promise.all([
     read("templates/actor-sheet.html"),
     read("templates/mask-sheet.html"),
@@ -17,9 +17,9 @@ test("Character alone consumes the shared Notes component", async () => {
   const reference = /systems\/brinkwood-reforged\/templates\/parts\/sheet-notes\.html/;
 
   assert.match(character, reference);
-  assert.doesNotMatch(mask, reference);
+  assert.match(mask, reference);
   assert.match(character, /class="tab flex-vertical sheet-notes bw-rich-text-surface/);
-  assert.doesNotMatch(mask, /mask-sheet__notes sheet-notes/);
+  assert.match(mask, /mask-sheet__notes flex-vertical sheet-notes bw-rich-text-surface/);
   assert.match(partial, /<prose-mirror class="sheet-notes__editor" name="system\.description" value="\{\{system\.description\}\}" data-document-uuid="\{\{actor\.uuid\}\}" collaborate toggled>/);
   assert.doesNotMatch(partial, /fieldName|fieldValue|documentUuid|enrichedContent/);
   assert.match(partial, /class="editor editor-content sheet-notes__preview"/);
@@ -44,6 +44,8 @@ test("the design system owns Notes styling once", async () => {
     "the preview rule must not override Foundry's runtime .editor class on prose-mirror");
   assert.match(shared, /prose-mirror \.ProseMirror\s*\{[\s\S]*?min-inline-size:\s*0[\s\S]*?color:\s*var\(--bw-ink\)/);
   assert.match(character, /\.character-sheet__workspace:has\(> \.tab-content > \.sheet-notes\[data-tab="character-notes"\]\.active\)/);
+  assert.match(mask, /mask-sheet__notes\.active\s*\{[\s\S]*?overflow:\s*hidden;[\s\S]*?scrollbar-gutter:\s*auto/,
+    "Mask Background must not reserve the shared active-panel scrollbar gutter outside its editor border");
   assert.doesNotMatch(mask, /mask-sheet__notes[\s\S]*?prose-mirror/);
   assert.doesNotMatch(tabs, /mask-sheet__panel prose-mirror/);
 });

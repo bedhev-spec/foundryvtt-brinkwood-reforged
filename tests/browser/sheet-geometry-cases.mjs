@@ -1,5 +1,15 @@
-export const SHEET_WIDTHS = Object.freeze([700, 480, 410]);
+export const SHEET_WIDTHS = Object.freeze([700, 680, 660, 640, 600, 480, 410]);
 export const SHEET_TYPES = Object.freeze(["character", "mask", "rebelion", "npc", "item-modern", "item-legacy"]);
+export const BACKGROUND_GEOMETRY_CASES = Object.freeze([
+  { type: "character-background-reduced", width: 700, height: 560 },
+  { type: "character-background-enlarged", width: 700, height: 820 },
+  { type: "character-background-empty-editable", width: 700, height: 560 },
+  { type: "character-background-empty-readonly", width: 700, height: 560 },
+  { type: "character-background-long-editable", width: 700, height: 560 },
+  { type: "character-background-long-readonly", width: 700, height: 560 },
+  { type: "mask-background-editable", width: 700, height: 680 },
+  { type: "mask-background-readonly", width: 700, height: 680 },
+]);
 
 const filler = label => `
   <div class="fixture-filler">
@@ -16,10 +26,14 @@ export function sheetMarkup(type) {
           <header class="name-alias sheet-identity bw-section-frame">
             <div class="grow-two sheet-identity__portrait"><div class="sheet-identity__portrait-frame"></div></div>
             <section class="grow-two sheet-identity__details">
-              <div class="sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Mara"></div>
-              <div class="sheet-identity__rows character-identity-choices"></div>
+              <div class="sheet-identity__field-box sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Mara"></div>
+              <div class="sheet-identity__rows character-identity-choices"><div class="sheet-identity__row">Pact</div></div>
             </section>
-            <section class="grow-two sheet-identity__trackers"></section>
+            <section class="grow-two sheet-identity__trackers">
+              <div class="sheet-identity__field-box sheet-identity__alias-box"><label>Alias</label><input class="alias bw-text-field" name="system.alias" value="Fox"></div>
+              <div class="big-teeth-section character-xp-section">XP</div>
+              <div class="big-teeth-section">Stress</div>
+            </section>
           </header>
           <section class="character-attributes sheet-attribute-presentation" aria-label="Attributes"></section>
           <section class="bans-armor bw-section-frame" aria-label="Bans and armor"></section>
@@ -206,4 +220,104 @@ export function sheetMarkup(type) {
     </article>`;
 
   throw new TypeError(`Unknown sheet fixture type: ${type}`);
+}
+
+export function backgroundMarkup(type) {
+  if (type.startsWith("character-background-")) {
+    const readonly = type.endsWith("readonly");
+    const empty = type.includes("-empty-");
+    const content = empty ? "" : type.includes("-long-")
+      ? `${Array.from({ length: 12 }, (_, index) =>
+        `<p>Character Background paragraph ${index + 1} exercises content-aware sheet sizing.</p>`).join("")}<button type="button" class="fixture-bottom">Reachable end control</button>`
+      : filler("Character Background");
+    const notes = readonly
+      ? `<div class="editor editor-content sheet-notes__preview fixture-focus" tabindex="0">${content}</div>`
+      : `<prose-mirror class="sheet-notes__editor fixture-focus" tabindex="0"><div class="ProseMirror">${content}</div></prose-mirror>`;
+
+    return `
+    <article class="application brinkwood sheet actor pc character">
+      <header class="window-header">Character</header>
+      <div class="window-content">
+        <form class="editable actor-sheet character-sheet" autocomplete="off">
+          <header class="name-alias sheet-identity bw-section-frame">
+            <div class="grow-two sheet-identity__portrait"><div class="sheet-identity__portrait-frame"></div></div>
+            <section class="grow-two sheet-identity__details">
+              <div class="sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Mara"></div>
+            <div class="sheet-identity__rows character-identity-choices">
+              <div class="sheet-identity__row"><span>Upbringing</span><strong>Woodwise</strong></div>
+              <div class="sheet-identity__row"><span>Profession</span><strong>Hunter</strong></div>
+            </div>
+          </section>
+          <section class="grow-two sheet-identity__trackers">
+            <div class="big-teeth-section"><span class="black-label">Stress</span></div>
+            <div class="big-teeth-section"><span class="black-label">Essence</span></div>
+          </section>
+        </header>
+        <section class="character-attributes sheet-attribute-presentation" aria-label="Attributes">
+          <div class="attributes">
+            <article class="character-attribute-card bw-section-frame"><h2 class="bw-section-frame__header">Insight</h2></article>
+            <article class="character-attribute-card bw-section-frame"><h2 class="bw-section-frame__header">Prowess</h2></article>
+            <article class="character-attribute-card bw-section-frame"><h2 class="bw-section-frame__header">Resolve</h2></article>
+          </div>
+        </section>
+        <section class="bans-armor bw-section-frame" aria-label="Bans and armor">
+          <div class="character-bans"><table><tbody><tr><th>Ban</th><td>Never refuse hospitality</td></tr></tbody></table></div>
+          <div class="character-armor-uses"><div>Armor</div></div>
+        </section>
+        <section class="character-sheet__workspace sheet-tab-workspace">
+          <nav class="tabs sheet-tabs" data-group="primary" aria-label="Character tabs">
+            <button type="button" class="item" role="tab" tabindex="-1" aria-selected="false" data-action="tab" data-group="primary" data-tab="traits">Traits</button>
+            <button type="button" class="item" role="tab" tabindex="-1" aria-selected="false" data-action="tab" data-group="primary" data-tab="loadout">Loadout</button>
+            <button type="button" class="item active" role="tab" tabindex="0" aria-selected="true"
+              aria-controls="fixture-character-background" data-action="tab" data-group="primary" data-tab="character-notes">Background</button>
+            <button type="button" class="item" role="tab" tabindex="-1" aria-selected="false" data-action="tab" data-group="primary" data-tab="downtime">Downtime</button>
+            <button type="button" class="item" role="tab" tabindex="-1" aria-selected="false" data-action="tab" data-group="primary" data-tab="effects">Effects</button>
+          </nav>
+            <div class="tab-content sheet-tab-content flex-vertical grow-two">
+              <section id="fixture-character-background" class="tab sheet-notes bw-rich-text-surface active flex-vertical"
+                data-group="primary" data-tab="character-notes">
+              ${notes}
+              </section>
+            </div>
+          </section>
+        </form>
+      </div>
+    </article>`;
+  }
+
+  if (type === "mask-background-editable" || type === "mask-background-readonly") {
+    const readonly = type.endsWith("readonly");
+    const notes = readonly
+      ? `<div class="editor editor-content sheet-notes__preview fixture-focus" tabindex="0">${filler("Mask Background preview")}</div>`
+      : `<prose-mirror class="sheet-notes__editor fixture-focus" tabindex="0"><div class="ProseMirror">${filler("Mask Background editor")}</div></prose-mirror>`;
+    return `
+      <article class="application brinkwood sheet actor mask">
+        <header class="window-header">Mask</header>
+        <div class="window-content">
+          <form class="${readonly ? "locked" : "editable"} actor-sheet mask-sheet" autocomplete="off">
+            <header class="mask-sheet__identity-block sheet-identity bw-section-frame">
+              <div class="sheet-identity__portrait"><div class="sheet-identity__portrait-frame"></div></div>
+              <section class="mask-sheet__identity sheet-identity__details">
+                <div class="mask-sheet__name-box sheet-identity__field-box sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Briar"></div>
+                <div class="sheet-identity__rows"></div>
+              </section>
+            </header>
+            <div class="mask-sheet__layout">
+              <section class="mask-sheet__main sheet-tab-workspace">
+                <nav class="tabs sheet-tabs mask-sheet__tabs" data-group="primary" aria-label="Mask tabs">
+                  <button type="button" class="item active" role="tab" tabindex="0" aria-selected="true"
+                    aria-controls="fixture-mask-background" data-action="tab" data-group="primary" data-tab="mask-notes">Background</button>
+                </nav>
+                <div class="mask-sheet__tab-content sheet-tab-content">
+                  <section id="fixture-mask-background" class="tab mask-sheet__panel mask-sheet__notes flex-vertical sheet-notes bw-rich-text-surface active"
+                    data-group="primary" data-tab="mask-notes" role="tabpanel">${notes}</section>
+                </div>
+              </section>
+            </div>
+          </form>
+        </div>
+      </article>`;
+  }
+
+  throw new TypeError(`Unknown background geometry fixture type: ${type}`);
 }

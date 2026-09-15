@@ -75,3 +75,11 @@ baseline is supplied by the test server as `styles/baseline.css`; the
 optional Foundry v13 stylesheet comes from the live test world at
 `localhost:30000`. This is a CSS comparison fixture, not an ApplicationV2
 rendering substitute.
+
+## Sheet opening size regression
+
+`sheet-opening-size-fixture.html` checks the production Clock and NPC sheet
+geometry contracts in a browser. It verifies that the Clock opens around its
+card and remains resizable, while the NPC opens with a usable scrolling body.
+Live Foundry validation is still required for the ApplicationV2 window-sizing
+lifecycle.

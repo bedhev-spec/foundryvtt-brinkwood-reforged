@@ -5,6 +5,12 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = file => readFile(new URL(file, root), "utf8");
 
+test("Character spacing transitions respect reduced motion and preserve discrete layout states", async () => {
+  const styles = await read("scss/import/character-sheet.scss");
+  assert.match(styles, /@media \(prefers-reduced-motion: no-preference\)\s*\{[\s\S]*?transition: padding 140ms ease-out;[\s\S]*?transition: padding 140ms ease-out, row-gap 140ms ease-out;/);
+  assert.doesNotMatch(styles, /transition:\s*(?:all|grid-template|display|height)/);
+});
+
 test("Character sheet supports a 700px maximum and 480px responsive minimum", async () => {
   const [controller, styles, tabs] = await Promise.all([
     read("module/blades-actor-sheet.js"),

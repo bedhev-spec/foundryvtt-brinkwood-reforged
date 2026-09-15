@@ -11,7 +11,7 @@ import { queueDocumentPathUpdate, reportSheetInteractionFailure } from "./sheet-
 export class BladesClockSheet extends BladesSheet {
   static DEFAULT_OPTIONS = {
     classes: ["brinkwood", "sheet", "actor", "clock"],
-    position: { width: 520, height: 640 },
+    position: { width: 520, height: "auto" },
     form: { closeOnSubmit: false, submitOnChange: false },
     window: { resizable: true },
   };

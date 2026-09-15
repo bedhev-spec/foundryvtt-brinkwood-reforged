@@ -3,6 +3,10 @@
   "fixturePath": "tests/browser/browser-regression-fixture.html",
   "geometryFixtures": [
     {
+      "path": "tests/browser/sheet-opening-size-fixture.html",
+      "resultElement": "#sheet-opening-size-results"
+    },
+    {
       "path": "tests/browser/character-sheet-scroll-geometry-fixture.html",
       "resultElement": "#character-scroll-geometry-results"
     },

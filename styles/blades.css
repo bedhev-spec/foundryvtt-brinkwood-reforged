@@ -6210,6 +6210,7 @@ aside#tooltip.brinkwood-item-tooltip-shell {
   --global-clock-toolbar-center-offset: calc(var(--global-clock-toolbar-padding) + 1px);
   --global-clock-controls-min-width: calc(
     var(--global-clock-control-size) + var(--global-clock-control-size) + var(--global-clock-control-size)
+    + var(--global-clock-control-size) + var(--global-clock-control-gap)
     + var(--global-clock-control-gap) + var(--global-clock-control-gap)
     + var(--global-clock-control-padding) + var(--global-clock-control-padding)
   );
@@ -6338,6 +6339,26 @@ aside#tooltip.brinkwood-item-tooltip-shell {
 .global-clock-entry:focus-within .global-clock__controls {
   opacity: 1;
   pointer-events: auto;
+}
+
+#brinkwood-global-clock-overlay .global-clock__drag {
+  cursor: grab;
+}
+#brinkwood-global-clock-overlay .global-clock__drag:active {
+  cursor: grabbing;
+}
+#brinkwood-global-clock-overlay .global-clock__drag:focus-visible {
+  outline: 2px solid var(--bw-focus, #e8b65c);
+  outline-offset: -2px;
+}
+#brinkwood-global-clock-overlay .global-clock-entry.is-dragging {
+  opacity: 0.45;
+}
+#brinkwood-global-clock-overlay .global-clock-entry[data-drop-position=before] {
+  border-top: 3px solid var(--bw-focus, #e8b65c);
+}
+#brinkwood-global-clock-overlay .global-clock-entry[data-drop-position=after] {
+  border-bottom: 3px solid var(--bw-focus, #e8b65c);
 }
 
 .global-clock__visually-hidden {

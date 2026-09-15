@@ -9,6 +9,7 @@ import {
   nextGlobalClockValue,
   normalizeGlobalClock,
   previousGlobalClockValue,
+  orderedGlobalClocks,
 } from "../module/global-clock-utils.js";
 
 class TestCollection extends Map {
@@ -314,4 +315,57 @@ test("the integrated overlay contains clocks only and retains attribution", asyn
   assert.match(notices, /Carlos Fernandez/);
   assert.match(panel, /global-clock__face/);
   assert.match(bootstrap, /registerGlobalClockSystem\(\)/);
+});
+
+test('reordering persists across refresh, preserves edits and appends new clocks', async () => {
+  let clocks = Object.fromEntries(['a', 'b', 'c'].map(id => [id, { id, name: id, max: 4, value: 0 }]));
+  let writes = 0;
+  game.user = { isGM: true };
+  game.settings = { get: () => clocks, set: async (_scope, _key, value) => { writes++; clocks = value; } };
+  const store = new GlobalClockStore();
+  store.refresh();
+  assert.deepEqual(store.contents.map(c => c.id), ['a', 'b', 'c']);
+  assert.equal(await store.move('c', 'a'), true);
+  await Promise.all([store.step('c', 1), store.togglePrivate('c'), store.update('c', { name: 'Changed' })]);
+  store.refresh();
+  assert.deepEqual(store.contents.map(c => c.id), ['c', 'a', 'b']);
+  assert.equal(store.get('c').value, 1);
+  assert.equal(store.get('c').private, true);
+  assert.equal(store.get('c').name, 'Changed');
+  await store.create({ name: 'New' });
+  assert.deepEqual(store.contents.map(c => c.id), ['c', 'a', 'b', 'new-clock']);
+  const before = writes;
+  assert.equal(await store.move('c', 'a'), false);
+  assert.equal(await store.move('c', 'missing'), false);
+  game.user.isGM = false;
+  assert.equal(store.move('c', 'b', true), false);
+  assert.equal(writes, before);
+});
+
+test('failed reorder leaves order intact and the mutation queue allows retry', async () => {
+  let clocks = { a: { id: 'a', name: 'A' }, b: { id: 'b', name: 'B' } };
+  let fail = true;
+  game.user = { isGM: true };
+  game.settings = { get: () => clocks, set: async (_scope, _key, value) => {
+    if (fail) throw new Error('reorder failed');
+    clocks = value;
+  } };
+  const store = new GlobalClockStore();
+  store.refresh();
+  await assert.rejects(store.move('b', 'a'), /reorder failed/);
+  assert.deepEqual(store.contents.map(c => c.id), ['a', 'b']);
+  fail = false;
+  assert.equal(await store.move('b', 'a'), true);
+  store.refresh();
+  assert.deepEqual(store.contents.map(c => c.id), ['b', 'a']);
+});
+
+test('sort ties and legacy clocks keep stable order, including numeric IDs', () => {
+  assert.deepEqual(orderedGlobalClocks({
+    10: { id: '10', sort: 1 },
+    20: { id: '20', sort: 0 },
+    z: { id: 'z', sort: 1 },
+    legacy: { id: 'legacy' },
+    other: { id: 'other' },
+  }).map(clock => clock.id), ['20', '10', 'z', 'legacy', 'other']);
 });

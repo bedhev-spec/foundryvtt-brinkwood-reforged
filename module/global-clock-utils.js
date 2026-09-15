@@ -26,7 +26,14 @@ export function normalizeGlobalClock(data = {}) {
       ? GLOBAL_CLOCK_FACE_BACKGROUND
       : String(data.backgroundColor),
     private: Boolean(data.private),
+    ...(Number.isFinite(data.sort) ? { sort: data.sort } : {}),
   };
+}
+
+/** Stable sorting preserves legacy insertion order; unsorted new records append. */
+export function orderedGlobalClocks(clocks) {
+  return Object.values(clocks).sort((a, b) =>
+    (Number.isFinite(a.sort) ? a.sort : Infinity) - (Number.isFinite(b.sort) ? b.sort : Infinity));
 }
 
 export function nextGlobalClockValue(value, maximum) {

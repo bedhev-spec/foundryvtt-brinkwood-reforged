@@ -309,6 +309,8 @@ test("the integrated overlay contains clocks only and retains attribution", asyn
   assert.match(panel, /--clock-background: \{\{clock\.backgroundColor\}\}/);
   assert.match(panel, /data-action="toggleVisibility"/);
   assert.match(panel, /data-tooltip=/);
+  assert.doesNotMatch(panel, /class="global-clock__drag"[^>]*data-tooltip=/);
+  assert.match(panel, /class="global-clock__drag"[^>]*aria-describedby="global-clock-reorder-help"/);
   assert.match(panel, /BITD\.GlobalClock\.(?:Hide|Show)/);
   assert.match(controller, /bottomRight: "BITD\.GlobalClock\.LocationBottomRight"/);
   assert.match(controller, /default: "topRight"/);

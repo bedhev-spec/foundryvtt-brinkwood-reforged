@@ -5,6 +5,12 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = file => readFile(new URL(file, root), "utf8");
 
+test("NPC initially fits its complete dossier while retaining manual resizing", async () => {
+  const source = await read("module/blades-npc-sheet.js");
+  assert.match(source, /position:\s*\{\s*width:\s*640,\s*height:\s*"auto"\s*\}/);
+  assert.match(source, /window:\s*\{\s*resizable:\s*true\s*\}/);
+});
+
 test("NPC dossier keeps its rules fields and ApplicationV2 editor bindings", async () => {
   const template = await read("templates/npc-sheet.html");
   assert.match(template, /class="\{\{cssClass\}\} actor-sheet npc-dossier"/);

@@ -43,8 +43,8 @@
         <div class="mask-sheet__traits-workspace">
       <div class="mask-sheet__trait-library">
         <div class="mask-sheet__traits">
-          {{#if canAddMaskTraits}}
-          <button type="button" class="mask-sheet__trait-add item-add-popup" data-item-type="trait">
+          {{#if canManageMaskTraits}}
+          <button type="button" class="mask-sheet__trait-add item-add-popup" data-item-type="trait"{{#unless canAddMaskTraits}} hidden{{/unless}}>
             <span class="mask-sheet__trait-add-content">
                   <span class="mask-sheet__trait-add-icon" aria-hidden="true"></span>
               <span class="mask-sheet__trait-add-label">{{localize "Add"}} {{localize "Mask.Ability"}}</span>

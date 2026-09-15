@@ -44,6 +44,8 @@ test("the design system owns Notes styling once", async () => {
     "the preview rule must not override Foundry's runtime .editor class on prose-mirror");
   assert.match(shared, /prose-mirror \.ProseMirror\s*\{[\s\S]*?min-inline-size:\s*0[\s\S]*?color:\s*var\(--bw-ink\)/);
   assert.match(character, /\.character-sheet__workspace:has\(> \.tab-content > \.sheet-notes\[data-tab="character-notes"\]\.active\)/);
+  assert.match(mask, /mask-sheet__notes\.active\s*\{[\s\S]*?overflow:\s*hidden;[\s\S]*?scrollbar-gutter:\s*auto/,
+    "Mask Background must not reserve the shared active-panel scrollbar gutter outside its editor border");
   assert.doesNotMatch(mask, /mask-sheet__notes[\s\S]*?prose-mirror/);
   assert.doesNotMatch(tabs, /mask-sheet__panel prose-mirror/);
 });

@@ -504,27 +504,28 @@
     overflow: visible;
   }
 
-  // Background alone fills the remaining window height. Extending through
-  // half the form's 20px bottom padding leaves 10px before the sheet edge.
+  // Background alone fills the remaining window height. Its intrinsic editor
+  // minimum contributes to form height, so the form remains the sole scroll
+  // owner without a fixed block-size or negative-margin compensation.
   .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab="character-notes"].active) {
-    flex: 1 0 300px;
-    grid-template-rows: auto minmax(0, 1fr);
-    margin-block-end: -10px;
+    flex: 1 0 auto;
+    min-block-size: 0;
+    grid-template-rows: auto minmax(min-content, 1fr);
 
     > .tab-content {
-      grid-template-rows: minmax(0, 1fr);
-      height: 100%;
-      overflow: hidden;
+      grid-template-rows: minmax(min-content, 1fr);
+      height: auto;
+      overflow: visible;
     }
 
     > .tab-content > .sheet-notes.active {
-      height: 100%;
-      overflow: hidden;
+      height: auto;
+      overflow: visible;
 
       > .sheet-notes__editor,
       > .sheet-notes__preview {
         flex: 1 1 auto;
-        height: 100%;
+        height: auto;
       }
     }
   }
@@ -574,6 +575,31 @@
   .character-sheet__workspace > .tab-content > .tab[data-tab="loadout"].active {
     position: relative;
     z-index: 0;
+  }
+
+  // Keep this after the generic active-panel rule above: Background must
+  // contribute its editor minimum to the form scroll height when reduced,
+  // while retaining the grow-to-bottom layout at larger window heights.
+  .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab="character-notes"].active) {
+    min-block-size: 0;
+
+    > .tab-content {
+      grid-template-rows: minmax(min-content, 1fr);
+      height: auto;
+      overflow: visible;
+    }
+
+    > .tab-content > .sheet-notes[data-tab="character-notes"].active {
+      flex: 1 1 auto;
+      height: auto;
+      overflow: visible;
+
+      > .sheet-notes__editor,
+      > .sheet-notes__preview {
+        flex: 1 1 auto;
+        height: auto;
+      }
+    }
   }
 
   input[type="text"],

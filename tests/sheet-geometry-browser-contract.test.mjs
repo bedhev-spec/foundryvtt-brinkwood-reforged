@@ -22,6 +22,10 @@ test("browser geometry matrix covers production sheet roots at release widths", 
   assert.deepEqual(BACKGROUND_GEOMETRY_CASES, [
     { type: "character-background-reduced", width: 700, height: 560 },
     { type: "character-background-enlarged", width: 700, height: 820 },
+    { type: "character-background-empty-editable", width: 700, height: 560 },
+    { type: "character-background-empty-readonly", width: 700, height: 560 },
+    { type: "character-background-long-editable", width: 700, height: 560 },
+    { type: "character-background-long-readonly", width: 700, height: 560 },
     { type: "mask-background-editable", width: 700, height: 680 },
     { type: "mask-background-readonly", width: 700, height: 680 },
   ]);
@@ -66,6 +70,14 @@ test("browser geometry matrix covers production sheet roots at release widths", 
   const maskReadonly = backgroundMarkup("mask-background-readonly");
   assert.ok(characterReduced.includes('data-tab="character-notes"'));
   assert.ok(characterEnlarged.includes('class="sheet-notes__editor fixture-focus"'));
+  assert.equal((characterReduced.match(/class="item/g) ?? []).length, 5,
+    "Character Background fixture uses the production-height five-tab bar");
+  assert.ok(characterReduced.includes("character-attribute-card"));
+  assert.ok(characterReduced.includes("character-bans"));
+  assert.ok(backgroundMarkup("character-background-empty-editable").includes('class="sheet-notes__editor fixture-focus"'));
+  assert.ok(backgroundMarkup("character-background-empty-readonly").includes('class="editor editor-content sheet-notes__preview fixture-focus"'));
+  assert.ok(backgroundMarkup("character-background-long-editable").includes("paragraph 12"));
+  assert.ok(backgroundMarkup("character-background-long-readonly").includes("paragraph 12"));
   assert.ok(maskEditable.includes('class="sheet-notes__editor fixture-focus"'));
   assert.ok(maskEditable.includes('class="editable actor-sheet mask-sheet"'));
   assert.ok(maskReadonly.includes('class="editor editor-content sheet-notes__preview fixture-focus"'));
@@ -79,6 +91,7 @@ test("browser geometry fixture executes every scroll, containment, reachability,
     "verticalOwner",
     "singleVerticalOwner",
     "noHorizontalOverflow",
+    "responsiveTabsFillBar",
     "reachable",
     "npcSectionsDoNotCollapse",
     "visibleFocus",
@@ -86,6 +99,8 @@ test("browser geometry fixture executes every scroll, containment, reachability,
     "characterReducedReachable",
     "characterEnlargedGrows",
     "maskBackgroundFills",
+    "notClippedByAncestors",
+    "outerGutterRemoved",
   ]) {
     assert.ok(source.includes(check), `fixture measures ${check}`);
   }

@@ -17,13 +17,15 @@ test("character notes keep rich text readable and inset from their frame", async
   }
 });
 
-test("Character Background fills remaining height and stops 10px before the frame edge", async () => {
+test("Character Background grows from its content while the form owns reduced-height scrolling", async () => {
   const [source, compiled] = await Promise.all([
     read("scss/import/character-sheet.scss"),
     read("styles/blades.css"),
   ]);
   for (const styles of [source, compiled]) {
-    assert.match(styles, /character-sheet__workspace:has\([^)]*character-notes[^)]*\)\s*\{[\s\S]*?flex:\s*1 0 300px;[\s\S]*?grid-template-rows:\s*auto minmax\(0, 1fr\);[\s\S]*?margin-block-end:\s*-10px/);
-    assert.match(styles, /sheet-notes\.active\s*\{[\s\S]*?height:\s*100%;[\s\S]*?overflow:\s*hidden;[\s\S]*?> \.sheet-notes__editor,[\s\S]*?> \.sheet-notes__preview\s*\{[\s\S]*?flex:\s*1 1 auto;[\s\S]*?height:\s*100%/);
+    assert.match(styles, /character-sheet__workspace:has\([^)]*character-notes[^)]*\)\s*\{[\s\S]*?flex:\s*1 0 auto;[\s\S]*?min-block-size:\s*0;[\s\S]*?grid-template-rows:\s*auto minmax\(min-content, 1fr\)/);
+    assert.match(styles, /sheet-notes\.active\s*\{[\s\S]*?height:\s*auto;[\s\S]*?overflow:\s*visible;[\s\S]*?> \.sheet-notes__editor,[\s\S]*?> \.sheet-notes__preview\s*\{[\s\S]*?flex:\s*1 1 auto;[\s\S]*?height:\s*auto/);
+    assert.doesNotMatch(styles, /character-notes[^}]*min-block-size:\s*320px/);
+    assert.doesNotMatch(styles, /character-notes[^}]*margin-block-end:\s*-/);
   }
 });

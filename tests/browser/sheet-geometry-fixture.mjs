@@ -57,6 +57,8 @@ function measure(host) {
   const npcEditors = host.querySelector(".npc-dossier__editors");
   const npcEditor = host.querySelector(".npc-dossier__editor-panel");
   const activePanel = host.querySelector(".sheet-tab-content > .tab.active");
+  const tabbar = host.querySelector(".sheet-tabs");
+  const lastTab = tabbar?.querySelector(".item:last-child");
   const before = owner.scrollTop;
   owner.scrollTop = owner.scrollHeight;
 
@@ -66,6 +68,9 @@ function measure(host) {
     verticalOwner: ["auto", "scroll"].includes(ownerStyle.overflowY) && owner.scrollHeight > owner.clientHeight,
     singleVerticalOwner: !activePanel || activePanel === owner || activePanel.scrollHeight <= activePanel.clientHeight,
     noHorizontalOverflow: content.scrollWidth <= content.clientWidth + 1,
+    responsiveTabsFillBar: !["mask", "npc"].includes(host.dataset.type)
+      || Number(host.dataset.width) > 480
+      || Math.abs(lastTab.getBoundingClientRect().right - (tabbar.getBoundingClientRect().right - 4)) <= 2,
     reachable: bottom.getBoundingClientRect().bottom <= owner.getBoundingClientRect().bottom + 2,
     npcSectionsDoNotCollapse: host.dataset.type !== "npc" || (
       getComputedStyle(npcProfile).display === "block"
@@ -88,6 +93,7 @@ const assertions = Object.fromEntries(results.map(result => [
   result.verticalOwner
     && result.singleVerticalOwner
     && result.noHorizontalOverflow
+    && result.responsiveTabsFillBar
     && result.reachable
     && result.npcSectionsDoNotCollapse
     && result.visibleFocus,
@@ -106,16 +112,33 @@ const backgroundResults = [...document.querySelectorAll(".geometry-case--backgro
   const formRect = form.getBoundingClientRect();
   const surfaceRect = surface.getBoundingClientRect();
   const bottomGap = formRect.bottom - surfaceRect.bottom;
+  const clippingAncestors = [];
+  for (let ancestor = surface.parentElement; ancestor && ancestor !== host; ancestor = ancestor.parentElement) {
+    const style = getComputedStyle(ancestor);
+    if (!["hidden", "clip", "auto", "scroll"].includes(style.overflowY)) continue;
+    const rect = ancestor.getBoundingClientRect();
+    clippingAncestors.push({
+      className: ancestor.className,
+      overflowY: style.overflowY,
+      containsSurfaceBottom: surfaceRect.bottom <= rect.bottom + 1,
+    });
+  }
+  const notClippedByAncestors = clippingAncestors.every(ancestor => ancestor.containsSurfaceBottom);
   const result = {
     type,
     height: Number(host.dataset.height),
-    notesDoNotOwnScroll: notesStyle.overflowY === "hidden",
+    notesDoNotOwnScroll: !["auto", "scroll"].includes(notesStyle.overflowY),
     surfaceFillsAvailableHeight: surfaceRect.height >= 260,
     bottomGap,
+    clippingAncestors,
+    notClippedByAncestors,
+    outerGutterRemoved: !type.startsWith("mask-background-")
+      || notesStyle.scrollbarGutter === "auto",
     characterReducedReachable: type !== "character-background-reduced"
-      || (formStyle.overflowY === "auto" && form.scrollHeight > form.clientHeight && surfaceRect.bottom <= formRect.bottom),
+      || (formStyle.overflowY === "auto" && form.scrollHeight > form.clientHeight && notClippedByAncestors),
     characterEnlargedGrows: type !== "character-background-enlarged"
-      || (form.scrollHeight <= form.clientHeight + 1 && surfaceRect.height > 260 && bottomGap >= 8 && bottomGap <= 12),
+      || (formStyle.overflowY === "auto" && form.scrollHeight > form.clientHeight
+        && surfaceRect.height > 260 && notClippedByAncestors && bottomGap >= 18 && bottomGap <= 22),
     maskBackgroundFills: !type.startsWith("mask-background-")
       || (surfaceRect.height > 260 && bottomGap >= 8 && bottomGap <= 12),
   };
@@ -124,8 +147,10 @@ const backgroundResults = [...document.querySelectorAll(".geometry-case--backgro
 });
 
 for (const result of backgroundResults) {
-  assertions[result.type] = result.notesDoNotOwnScroll
-    && result.surfaceFillsAvailableHeight
+    assertions[result.type] = result.notesDoNotOwnScroll
+      && result.surfaceFillsAvailableHeight
+      && result.notClippedByAncestors
+      && result.outerGutterRemoved
     && result.characterReducedReachable
     && result.characterEnlargedGrows
     && result.maskBackgroundFills;

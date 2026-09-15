@@ -1540,7 +1540,7 @@
     justify-content: flex-start;
   }
   .brinkwood .sheet-tabs .item {
-    flex: 0 0 auto;
+    flex: 1 0 max-content;
   }
 }
 .brinkwood .sheet-tabs button.item {
@@ -2752,24 +2752,23 @@
   overflow: visible;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) {
-  flex: 1 0 300px;
-  min-block-size: 320px;
-  grid-template-rows: auto minmax(0, 1fr);
-  margin-block-end: -10px;
+  flex: 1 0 auto;
+  min-block-size: 0;
+  grid-template-rows: auto minmax(min-content, 1fr);
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content {
-  grid-template-rows: minmax(0, 1fr);
-  height: 100%;
-  overflow: hidden;
+  grid-template-rows: minmax(min-content, 1fr);
+  height: auto;
+  overflow: visible;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes.active {
-  height: 100%;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes.active > .sheet-notes__editor,
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes.active > .sheet-notes__preview {
   flex: 1 1 auto;
-  height: 100%;
+  height: auto;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace > .sheet-tabs {
   position: sticky;
@@ -2812,22 +2811,22 @@
   z-index: 0;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) {
-  min-block-size: 320px;
+  min-block-size: 0;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content {
-  grid-template-rows: minmax(0, 1fr);
-  height: 100%;
-  overflow: hidden;
+  grid-template-rows: minmax(min-content, 1fr);
+  height: auto;
+  overflow: visible;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes[data-tab=character-notes].active {
   flex: 1 1 auto;
-  height: 100%;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
 }
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes[data-tab=character-notes].active > .sheet-notes__editor,
 .brinkwood.actor.pc.character .character-sheet__workspace:has(> .tab-content > .sheet-notes[data-tab=character-notes].active) > .tab-content > .sheet-notes[data-tab=character-notes].active > .sheet-notes__preview {
   flex: 1 1 auto;
-  height: 100%;
+  height: auto;
 }
 .brinkwood.actor.pc.character input[type=text],
 .brinkwood.actor.pc.character select,
@@ -3496,6 +3495,7 @@
   height: 100%;
   min-height: 0;
   overflow: hidden;
+  scrollbar-gutter: auto;
 }
 .brinkwood.actor.mask .mask-sheet__main:has(> .sheet-tab-content > .mask-sheet__notes.active) > .sheet-tab-content > .mask-sheet__notes.active > .sheet-notes__editor,
 .brinkwood.actor.mask .mask-sheet__main:has(> .sheet-tab-content > .mask-sheet__notes.active) > .sheet-tab-content > .mask-sheet__notes.active > .sheet-notes__preview {

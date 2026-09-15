@@ -161,6 +161,9 @@ form.mask-sheet {
       height: 100%;
       min-height: 0;
       overflow: hidden;
+      // The panel itself never scrolls. Cancel the shared active-panel gutter
+      // so the bordered editor aligns with the tab bar's right edge.
+      scrollbar-gutter: auto;
 
       > .sheet-notes__editor,
       > .sheet-notes__preview {

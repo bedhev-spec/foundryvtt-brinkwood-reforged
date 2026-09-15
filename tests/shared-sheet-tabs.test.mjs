@@ -58,7 +58,7 @@ test("shared tab component is the only primary tabbar visual and responsive owne
   assert.match(component, /\.sheet-tabs\s*\{[\s\S]*?--bw-tab-frame:\s*#e0d7c5[\s\S]*?--bw-tab-surface:\s*#e9e2d5[\s\S]*?--bw-tab-active:\s*#f0ece3[\s\S]*?width:\s*100%[\s\S]*?background:\s*var\(--bw-tab-frame\)/);
   assert.match(component, /\.sheet-tabs \.item\s*\{[\s\S]*?flex:\s*1 1 0[\s\S]*?min-height:\s*40px[\s\S]*?padding:\s*10px 12px[\s\S]*?text-align:\s*center/);
   assert.match(component, /\.sheet-tabs \.item[\s\S]*?&\.active\s*\{[\s\S]*?border-bottom-color:\s*var\(--bw-accent\)/);
-  assert.match(component, /@container \(max-width: 480px\)\s*\{[\s\S]*?\.sheet-tabs\s*\{[\s\S]*?overflow-x:\s*auto[\s\S]*?\.sheet-tabs \.item\s*\{[\s\S]*?flex:\s*0 0 auto/);
+  assert.match(component, /@container \(max-width: 480px\)\s*\{[\s\S]*?\.sheet-tabs\s*\{[\s\S]*?overflow-x:\s*auto[\s\S]*?\.sheet-tabs \.item\s*\{[\s\S]*?flex:\s*1 0 max-content/);
 
   // These selectors caught the previous late Character override and the former
   // Mask-only narrow rule. Sheet files may own panels, but not primary tabbar

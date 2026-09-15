@@ -2885,12 +2885,6 @@
     min-height: 0;
     padding: 14px;
   }
-  .brinkwood.actor.pc.character .name-alias {
-    grid-template-columns: minmax(110px, 150px) minmax(0, 1fr);
-  }
-  .brinkwood.actor.pc.character .name-alias > .grow-two:first-child {
-    grid-row: span 3;
-  }
 }
 @container (max-width: 620px) {
   .brinkwood.actor.pc.character .character-sheet__workspace {
@@ -2915,9 +2909,12 @@
     min-width: 0;
     padding-inline: 6px;
   }
+}
+@container (max-width: 640px) {
   .brinkwood.actor.pc.character .name-alias {
     grid-template-columns: minmax(0, 1fr);
   }
+  .brinkwood.actor.pc.character .name-alias > .grow-two:first-child,
   .brinkwood.actor.pc.character .sheet-identity__portrait {
     grid-column: 1;
     grid-row: 1;
@@ -2925,18 +2922,44 @@
     --bw-portrait-shadow-offset: 3px;
   }
   .brinkwood.actor.pc.character .name-alias > .sheet-identity__details {
-    grid-column: 1;
-    grid-row: 2;
-    width: 100%;
+    display: contents;
   }
   .brinkwood.actor.pc.character .name-alias > .sheet-identity__trackers {
-    grid-column: 1;
-    grid-row: 3;
-    box-sizing: border-box;
-    width: 100%;
-    margin-top: 10px;
-    padding-bottom: 10px;
+    display: contents;
   }
+  .brinkwood.actor.pc.character .name-alias {
+    row-gap: 10px;
+    padding-bottom: 20px;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__name-box {
+    grid-row: 2;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__alias-box {
+    grid-row: 3;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__rows {
+    grid-row: 4;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__details > *,
+  .brinkwood.actor.pc.character .sheet-identity__trackers > * {
+    grid-column: 1;
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__details > .sheet-identity__rows,
+  .brinkwood.actor.pc.character .sheet-identity__trackers > .big-teeth-section {
+    transform: none;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__trackers > .character-xp-section {
+    grid-row: 5;
+    margin-bottom: -10px;
+  }
+  .brinkwood.actor.pc.character .sheet-identity__trackers > .big-teeth-section:last-child {
+    grid-row: 6;
+  }
+}
+@container (max-width: 480px) {
   .brinkwood.actor.pc.character > .window-content > form.actor-sheet > .flex-horizontal:last-child {
     flex-direction: column;
   }

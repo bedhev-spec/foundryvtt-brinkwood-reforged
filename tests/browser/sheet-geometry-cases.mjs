@@ -1,4 +1,4 @@
-export const SHEET_WIDTHS = Object.freeze([700, 480, 410]);
+export const SHEET_WIDTHS = Object.freeze([700, 680, 660, 640, 600, 480, 410]);
 export const SHEET_TYPES = Object.freeze(["character", "mask", "rebelion", "npc", "item-modern", "item-legacy"]);
 export const BACKGROUND_GEOMETRY_CASES = Object.freeze([
   { type: "character-background-reduced", width: 700, height: 560 },
@@ -26,10 +26,14 @@ export function sheetMarkup(type) {
           <header class="name-alias sheet-identity bw-section-frame">
             <div class="grow-two sheet-identity__portrait"><div class="sheet-identity__portrait-frame"></div></div>
             <section class="grow-two sheet-identity__details">
-              <div class="sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Mara"></div>
-              <div class="sheet-identity__rows character-identity-choices"></div>
+              <div class="sheet-identity__field-box sheet-identity__name-box"><label>Name</label><input class="name bw-text-field" value="Mara"></div>
+              <div class="sheet-identity__rows character-identity-choices"><div class="sheet-identity__row">Pact</div></div>
             </section>
-            <section class="grow-two sheet-identity__trackers"></section>
+            <section class="grow-two sheet-identity__trackers">
+              <div class="sheet-identity__field-box sheet-identity__alias-box"><label>Alias</label><input class="alias bw-text-field" name="system.alias" value="Fox"></div>
+              <div class="big-teeth-section character-xp-section">XP</div>
+              <div class="big-teeth-section">Stress</div>
+            </section>
           </header>
           <section class="character-attributes sheet-attribute-presentation" aria-label="Attributes"></section>
           <section class="bans-armor bw-section-frame" aria-label="Bans and armor"></section>

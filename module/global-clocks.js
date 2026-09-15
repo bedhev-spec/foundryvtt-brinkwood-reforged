@@ -12,8 +12,10 @@ import {
   nextGlobalClockValue,
   normalizeGlobalClock,
   previousGlobalClockValue,
+  orderedGlobalClocks,
 } from "./global-clock-utils.js";
 import { escapeHTML } from "./html-utils.js";
+import { bindGlobalClockReorder } from "./global-clock-reorder.js";
 
 const SYSTEM_ID = "brinkwood-reforged";
 const SETTING_KEYS = Object.freeze({
@@ -103,7 +105,7 @@ export class GlobalClockStore extends Collection {
 
   #replace(clocks) {
     this.clear();
-    for (const data of Object.values(clocks)) {
+    for (const data of orderedGlobalClocks(clocks)) {
       const clock = normalizeGlobalClock(data);
       if (clock.id && clock.name) this.set(clock.id, clock);
     }
@@ -122,7 +124,26 @@ export class GlobalClockStore extends Collection {
     if (!clock.name) return false;
     return this.#enqueue(async () => {
       const clocks = foundry.utils.deepClone(game.settings.get(SYSTEM_ID, SETTING_KEYS.clocks) ?? {});
+      const ordered = orderedGlobalClocks(clocks);
+      ordered.forEach((data, index) => { data.sort = index; });
+      clock.sort = ordered.length;
       clocks[clock.id] = clock;
+      return this.#commit(clocks);
+    });
+  }
+
+  move(id, targetId, after = false) {
+    if (!game.user.isGM) return false;
+    return this.#enqueue(async () => {
+      if (!game.user.isGM) return false;
+      const clocks = foundry.utils.deepClone(game.settings.get(SYSTEM_ID, SETTING_KEYS.clocks) ?? {});
+      const ordered = orderedGlobalClocks(clocks);
+      const source = ordered.find(clock => clock.id === id);
+      if (!source || id === targetId || !ordered.some(clock => clock.id === targetId)) return false;
+      const next = ordered.filter(clock => clock.id !== id);
+      next.splice(next.findIndex(clock => clock.id === targetId) + (after ? 1 : 0), 0, source);
+      if (next.every((clock, index) => clock === ordered[index])) return false;
+      next.forEach((clock, index) => { clock.sort = index; });
       return this.#commit(clocks);
     });
   }
@@ -239,6 +260,7 @@ class GlobalClockOverlay extends HandlebarsApplicationMixin(ApplicationV2) {
   #positionMutationObserver;
   #positionController;
   #placementFrame;
+  #reorderFocus;
 
   static DEFAULT_OPTIONS = {
     id: "brinkwood-global-clock-overlay",
@@ -334,6 +356,22 @@ class GlobalClockOverlay extends HandlebarsApplicationMixin(ApplicationV2) {
     this.#watchPosition();
 
     if (!game.user.isGM) return;
+    bindGlobalClockReorder(html, {
+      signal: this.#clockListenerController.signal,
+      canReorder: () => game.user.isGM,
+      move: async (id, target, after) => {
+        const changed = await this.#runStoreMutation(this.store.move(id, target, after));
+        if (changed) this.#reorderFocus = id;
+        return changed;
+      },
+      format: (key, data) => game.i18n.format(key, data),
+    });
+    if (this.#reorderFocus) {
+      const row = [...html.querySelectorAll('.global-clock-entry')]
+        .find(entry => entry.dataset.clockId === this.#reorderFocus);
+      row?.querySelector('.global-clock__drag')?.focus();
+      this.#reorderFocus = undefined;
+    }
     html.querySelectorAll(".global-clock__face[data-clock-id]").forEach(face => {
       face.addEventListener("click", event => {
         void this.#runStoreMutation(this.store.step(event.currentTarget.dataset.clockId, 1));

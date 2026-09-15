@@ -18,7 +18,7 @@ const infoBackground = getComputedStyle(firstEntry).backgroundColor;
 const overlayMaxWidth = getComputedStyle(document.querySelector("#brinkwood-global-clock-overlay")).maxWidth;
 const faceBackground = getComputedStyle(firstFace).backgroundImage;
 const addBackgrounds = addButtons.map(button => getComputedStyle(button).backgroundColor);
-const expectedControlsWidth = 3 * 28 + 2 * 3 + 2 * 8;
+const expectedControlsWidth = 4 * 28 + 3 * 3 + 2 * 8;
 
 const firstLabelRect = rect(firstLabel);
 const firstProgressRect = rect(firstProgress);
@@ -69,7 +69,7 @@ const assertions = {
   hiddenClockProgressStaysVerticallyCentered:
     closeTo(midpoint(privateLabelRect), midpoint(privateFaceRect)) &&
     closeTo(midpoint(privateProgressRect), midpoint(privateFaceRect)),
-  entryMinimumWidthFitsThreeControls: entries.every(entryFitsControls),
+  entryMinimumWidthFitsFourControls: entries.every(entryFitsControls),
   clockInfoBlocksKeepIndependentWidths: topEntries[0].offsetWidth < topEntries[1].offsetWidth,
   topAddAlignsWithFirstClock: closeTo(topAddRect.top, rect(topEntries[0]).top),
   bottomAddAlignsWithLastClock: closeTo(bottomAddRect.bottom, rect(bottomEntries.at(-1)).bottom),

@@ -15,6 +15,10 @@
       "resultElement": "#clock-layout-results"
     },
     {
+      "path": "tests/browser/clock-reorder-fixture.html",
+      "resultElement": "#clock-reorder-results"
+    },
+    {
       "path": "tests/browser/rebellion-alignment-fixture.html",
       "resultElement": "#rebellion-alignment-results"
     }
@@ -27,7 +31,8 @@
       "Replacement-DOM scroll restoration through the production view-state helpers",
       "Current-versus-baseline computed identity-row geometry at release widths",
       "Character, Mask, NPC, modern Item, and legacy Item scroll ownership, horizontal containment, reachable content, and keyboard focus at 700px, 480px, and 410px",
-      "Global clock face, add control, capsule, row alignment, control capacity, and vertical add alignment through rendered CSS"
+      "Global clock face, add control, capsule, row alignment, control capacity, and vertical add alignment through rendered CSS",
+      "Global clock drag/drop ordering, keyboard movement, focus and live announcements, GM permissions, and render-owned listener cleanup through production reorder binding"
     ],
     "liveFoundryV13": [
       "ApplicationV2 render and replacement lifecycle",

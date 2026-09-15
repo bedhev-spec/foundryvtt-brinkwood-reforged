@@ -60,13 +60,21 @@ function measure(host) {
   const tabbar = host.querySelector(".sheet-tabs");
   const lastTab = tabbar?.querySelector(".item:last-child");
   const portrait = host.querySelector(".sheet-identity__portrait-frame");
-  const identityRegions = host.querySelectorAll(".sheet-identity__details, .sheet-identity__trackers");
+  const identityRegions = host.querySelectorAll(".sheet-identity__details > *, .sheet-identity__trackers > *");
   const portraitBounds = portrait?.getBoundingClientRect();
   const characterIdentityDoesNotOverlap = host.dataset.type !== "character" || [...identityRegions].every(region => {
     const bounds = region.getBoundingClientRect();
     return portraitBounds.right <= bounds.left || portraitBounds.left >= bounds.right
       || portraitBounds.bottom <= bounds.top || portraitBounds.top >= bounds.bottom;
   });
+  const identityDetails = host.querySelector(".sheet-identity__details");
+  const stackedCharacter = host.dataset.type === "character" && getComputedStyle(identityDetails).display === "contents";
+  const characterAliasFollowsName = !stackedCharacter || (() => {
+    const name = host.querySelector(".sheet-identity__name-box").getBoundingClientRect();
+    const alias = host.querySelector(".sheet-identity__alias-box").getBoundingClientRect();
+    const rows = host.querySelector(".sheet-identity__rows").getBoundingClientRect();
+    return name.bottom <= alias.top && alias.bottom <= rows.top;
+  })();
   const before = owner.scrollTop;
   owner.scrollTop = owner.scrollHeight;
 
@@ -74,6 +82,7 @@ function measure(host) {
     type: host.dataset.type,
     width: Number(host.dataset.width),
     characterIdentityDoesNotOverlap,
+    characterAliasFollowsName,
     verticalOwner: ["auto", "scroll"].includes(ownerStyle.overflowY) && owner.scrollHeight > owner.clientHeight,
     singleVerticalOwner: !activePanel || activePanel === owner || activePanel.scrollHeight <= activePanel.clientHeight,
     noHorizontalOverflow: content.scrollWidth <= content.clientWidth + 1,
@@ -104,6 +113,7 @@ const assertions = Object.fromEntries(results.map(result => [
     && result.noHorizontalOverflow
     && result.responsiveTabsFillBar
     && result.characterIdentityDoesNotOverlap
+    && result.characterAliasFollowsName
     && result.reachable
     && result.npcSectionsDoNotCollapse
     && result.visibleFocus,

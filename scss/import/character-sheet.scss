@@ -716,18 +716,52 @@
     }
 
     .name-alias > .sheet-identity__details {
-      grid-column: 1;
-      grid-row: 2;
-      width: 100%;
+      display: contents;
     }
 
     .name-alias > .sheet-identity__trackers {
-      grid-column: 1;
+      display: contents;
+    }
+
+    // Expose the existing controls to the stacked grid without duplicating
+    // named inputs or changing their wide-layout grouping.
+    .name-alias {
+      row-gap: 10px;
+      padding-bottom: 20px;
+    }
+
+    .sheet-identity__name-box {
+      grid-row: 2;
+    }
+
+    .sheet-identity__alias-box {
       grid-row: 3;
+    }
+
+    .sheet-identity__rows {
+      grid-row: 4;
+    }
+
+    .sheet-identity__details > *,
+    .sheet-identity__trackers > * {
+      grid-column: 1;
       box-sizing: border-box;
+      min-width: 0;
       width: 100%;
-      margin-top: 10px;
-      padding-bottom: 10px;
+    }
+
+    .sheet-identity__details > .sheet-identity__rows,
+    .sheet-identity__trackers > .big-teeth-section {
+      transform: none;
+    }
+
+    .sheet-identity__trackers > .character-xp-section {
+      grid-row: 5;
+      margin-bottom: -10px;
+    }
+
+    .sheet-identity__trackers > .big-teeth-section:last-child {
+      grid-row: 6;
     }
 
   }

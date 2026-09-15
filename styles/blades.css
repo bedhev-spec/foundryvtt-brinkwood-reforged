@@ -2885,12 +2885,6 @@
     min-height: 0;
     padding: 14px;
   }
-  .brinkwood.actor.pc.character .name-alias {
-    grid-template-columns: minmax(110px, 150px) minmax(0, 1fr);
-  }
-  .brinkwood.actor.pc.character .name-alias > .grow-two:first-child {
-    grid-row: span 3;
-  }
 }
 @container (max-width: 620px) {
   .brinkwood.actor.pc.character .character-sheet__workspace {
@@ -2915,6 +2909,8 @@
     min-width: 0;
     padding-inline: 6px;
   }
+}
+@container (max-width: 640px) {
   .brinkwood.actor.pc.character .name-alias {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2937,6 +2933,8 @@
     margin-top: 10px;
     padding-bottom: 10px;
   }
+}
+@container (max-width: 480px) {
   .brinkwood.actor.pc.character > .window-content > form.actor-sheet > .flex-horizontal:last-child {
     flex-direction: column;
   }

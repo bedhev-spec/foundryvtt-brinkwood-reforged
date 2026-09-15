@@ -17,7 +17,7 @@ test("browser geometry matrix covers production sheet roots at release widths", 
   const manifest = JSON.parse(await read("tests/browser/manifest.json"));
   const geometry = manifest.geometryFixtures.find(entry => entry.path === "tests/browser/sheet-geometry-fixture.html");
 
-  assert.deepEqual(SHEET_WIDTHS, [700, 480, 410]);
+  assert.deepEqual(SHEET_WIDTHS, [700, 680, 660, 640, 600, 480, 410]);
   assert.deepEqual(SHEET_TYPES, ["character", "mask", "rebelion", "npc", "item-modern", "item-legacy"]);
   assert.deepEqual(BACKGROUND_GEOMETRY_CASES, [
     { type: "character-background-reduced", width: 700, height: 560 },

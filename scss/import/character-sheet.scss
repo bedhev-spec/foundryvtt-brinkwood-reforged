@@ -669,13 +669,6 @@
       padding: 14px;
     }
 
-    .name-alias {
-      grid-template-columns: minmax(110px, 150px) minmax(0, 1fr);
-    }
-
-    .name-alias > .grow-two:first-child {
-      grid-row: span 3;
-    }
   }
 
   @container (max-width: 620px) {
@@ -706,6 +699,11 @@
       padding-inline: 6px;
     }
 
+  }
+
+  // The portrait remains 200px wide. Stack before the intermediate grid's
+  // 150px portrait track would let it overlap the identity fields.
+  @container (max-width: 640px) {
     .name-alias {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -732,6 +730,9 @@
       padding-bottom: 10px;
     }
 
+  }
+
+  @container (max-width: 480px) {
     > .window-content > form.actor-sheet > .flex-horizontal:last-child {
       flex-direction: column;
     }

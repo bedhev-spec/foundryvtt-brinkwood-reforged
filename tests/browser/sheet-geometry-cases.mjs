@@ -1,4 +1,4 @@
-export const SHEET_WIDTHS = Object.freeze([700, 480, 410]);
+export const SHEET_WIDTHS = Object.freeze([700, 680, 660, 640, 600, 480, 410]);
 export const SHEET_TYPES = Object.freeze(["character", "mask", "rebelion", "npc", "item-modern", "item-legacy"]);
 export const BACKGROUND_GEOMETRY_CASES = Object.freeze([
   { type: "character-background-reduced", width: 700, height: 560 },

@@ -6364,6 +6364,10 @@ aside#tooltip.brinkwood-item-tooltip-shell {
   pointer-events: auto;
 }
 
+#brinkwood-global-clock-overlay button:focus:not(:focus-visible) {
+  outline: 0;
+  box-shadow: none;
+}
 #brinkwood-global-clock-overlay .global-clock__drag {
   cursor: grab;
 }

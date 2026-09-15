@@ -69,6 +69,8 @@ function measure(host) {
   });
   const identityDetails = host.querySelector(".sheet-identity__details");
   const stackedCharacter = host.dataset.type === "character" && getComputedStyle(identityDetails).display === "contents";
+  const characterPortraitPrecedesName = !stackedCharacter
+    || portraitBounds.bottom <= host.querySelector(".sheet-identity__name-box").getBoundingClientRect().top;
   const characterAliasFollowsName = !stackedCharacter || (() => {
     const name = host.querySelector(".sheet-identity__name-box").getBoundingClientRect();
     const alias = host.querySelector(".sheet-identity__alias-box").getBoundingClientRect();
@@ -83,6 +85,7 @@ function measure(host) {
     width: Number(host.dataset.width),
     characterIdentityDoesNotOverlap,
     characterAliasFollowsName,
+    characterPortraitPrecedesName,
     verticalOwner: ["auto", "scroll"].includes(ownerStyle.overflowY) && owner.scrollHeight > owner.clientHeight,
     singleVerticalOwner: !activePanel || activePanel === owner || activePanel.scrollHeight <= activePanel.clientHeight,
     noHorizontalOverflow: content.scrollWidth <= content.clientWidth + 1,
@@ -114,6 +117,7 @@ const assertions = Object.fromEntries(results.map(result => [
     && result.responsiveTabsFillBar
     && result.characterIdentityDoesNotOverlap
     && result.characterAliasFollowsName
+    && result.characterPortraitPrecedesName
     && result.reachable
     && result.npcSectionsDoNotCollapse
     && result.visibleFocus,

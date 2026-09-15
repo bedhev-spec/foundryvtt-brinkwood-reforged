@@ -2914,6 +2914,7 @@
   .brinkwood.actor.pc.character .name-alias {
     grid-template-columns: minmax(0, 1fr);
   }
+  .brinkwood.actor.pc.character .name-alias > .grow-two:first-child,
   .brinkwood.actor.pc.character .sheet-identity__portrait {
     grid-column: 1;
     grid-row: 1;

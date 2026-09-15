@@ -11,7 +11,9 @@ export class BladesNPCSheet extends BladesSheet {
 
   static DEFAULT_OPTIONS = {
     classes: ["brinkwood", "sheet", "actor", "npc"],
-    position: { width: 640, height: 700 },
+    // Fit the profile and complete notes editor on first open; subsequent
+    // user resizing still supplies an explicit height through ApplicationV2.
+    position: { width: 640, height: "auto" },
     // Named controls below are the sole persistence path. ApplicationV2's
     // native submit-on-change would otherwise race the direct document update.
     form: { closeOnSubmit: false, submitOnChange: false },

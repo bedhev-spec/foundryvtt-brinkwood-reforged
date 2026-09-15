@@ -17,6 +17,7 @@ import {
 export { handleActorNameEnter as handleMaskNameEnter };
 
 export const MASK_SHEET_DEFAULT_WIDTH = 680;
+export const MASK_SHEET_MIN_WIDTH = 430;
 export const MASK_SHEET_MIN_HEIGHT = 680;
 // A Character sheet at its 700px default has a 212px Attribute column:
 // (700px - 40px form padding - 24px inter-column gaps) / 3.
@@ -154,10 +155,11 @@ export class BladesMaskSheet extends BladesSheet {
 
   /** @override */
   setPosition(position = {}) {
-    if (!Number.isFinite(position?.height)) return super.setPosition(position);
+    if (!Number.isFinite(position?.height) && !Number.isFinite(position?.width)) return super.setPosition(position);
     return super.setPosition({
       ...position,
-      height: Math.max(position.height, MASK_SHEET_MIN_HEIGHT),
+      ...(Number.isFinite(position?.height) ? { height: Math.max(position.height, MASK_SHEET_MIN_HEIGHT) } : {}),
+      ...(Number.isFinite(position?.width) ? { width: Math.max(position.width, MASK_SHEET_MIN_WIDTH) } : {}),
     });
   }
 

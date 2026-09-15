@@ -45,10 +45,22 @@ const {
   getMultifacetedGrantedTraits,
   getMaskTypePresentation,
   MASK_SHEET_DEFAULT_WIDTH,
+  MASK_SHEET_MIN_WIDTH,
   MASK_SHEET_MIN_HEIGHT,
   maskSheetWidthForAttributes,
   updateMaskDotDisplay,
 } = await import("../module/blades-mask-sheet.js");
+
+test("Mask clamps narrow windows without changing height-only or automatic dimensions", () => {
+  const sheet = new BladesMaskSheet();
+  assert.equal(MASK_SHEET_MIN_WIDTH, 430);
+  assert.deepEqual(sheet.setPosition({ width: 300 }), { width: 430 });
+  assert.deepEqual(sheet.setPosition({ width: 430, height: 800 }), { width: 430, height: 800 });
+  assert.deepEqual(sheet.setPosition({ width: 300, height: 400 }), { width: 430, height: MASK_SHEET_MIN_HEIGHT });
+  assert.deepEqual(sheet.setPosition({ width: 300, height: "auto" }), { width: 430, height: "auto" });
+  assert.deepEqual(sheet.setPosition({ height: 800 }), { height: 800 });
+  assert.deepEqual(sheet.setPosition({ width: "auto", height: "auto" }), { width: "auto", height: "auto" });
+});
 const { editDocumentImage, formControlUpdate, persistActorNameChange, persistFormControlChange, queueDocumentPathUpdate, retryFailedFormSave } = await import("../module/sheet-dom.js");
 const { syncOpenActorTrackers } = await import("../module/sheet-tracker-sync.js");
 const { BladesRebelionSheet } = await import("../module/blades-rebelion-sheet.js");

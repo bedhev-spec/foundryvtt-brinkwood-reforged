@@ -146,7 +146,7 @@ form.mask-sheet {
   grid-column: 1 / -1;
   display: grid;
   grid-template-rows: minmax(0, 1fr);
-  min-width: 0;
+  min-width: 430px;
   min-height: 0;
   height: 100%;
   inline-size: 100%;

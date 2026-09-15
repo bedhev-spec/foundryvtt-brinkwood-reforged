@@ -779,6 +779,18 @@
     }
   }
 
+  // Ease spacing changes without interpolating the discrete grid/contents
+  // switches that keep portraits and fields in their responsive rows.
+  @media (prefers-reduced-motion: no-preference) {
+    form.actor-sheet {
+      transition: padding 140ms ease-out;
+    }
+
+    .name-alias {
+      transition: padding 140ms ease-out, row-gap 140ms ease-out;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

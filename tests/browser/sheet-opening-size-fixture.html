@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Sheet opening heights</title>
+<link rel="stylesheet" href="../../styles/blades.css">
+<style>
+  .application { display: flex; flex-direction: column; box-sizing: border-box; }
+  .window-header { flex: 0 0 36px; }
+</style>
+<article class="application brinkwood sheet actor clock" style="width:520px;height:auto">
+  <header class="window-header">Clock</header>
+  <div class="window-content">
+    <form class="clock-sheet">
+      <section class="clock-sheet__card bw-ruled-card">
+        <header class="clock-sheet__header">
+          <label class="clock-sheet__field">Name<input value="Progress"></label>
+          <label class="clock-sheet__field">Segments<select><option>4</option></select></label>
+        </header>
+        <div class="clock-sheet__body"><div class="clocks"><div style="width:200px;height:200px">Clock face</div><span class="clock-progress">0 / 4</span></div></div>
+      </section>
+    </form>
+  </div>
+</article>
+<div id="npc"></div>
+<output id="sheet-opening-size-results">Running...</output>
+<script type="module">
+  import { sheetMarkup } from './sheet-geometry-cases.mjs';
+  document.querySelector('#npc').innerHTML = sheetMarkup('npc');
+  const npc = document.querySelector('.npc');
+  npc.style.cssText = 'width:640px;height:760px';
+  await document.fonts.ready;
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  const clock = document.querySelector('.clock');
+  const card = clock.querySelector('.clock-sheet__card');
+  const form = npc.querySelector('form');
+  const assertions = {
+    clockFitsCard: clock.getBoundingClientRect().bottom - card.getBoundingClientRect().bottom < 40,
+    clockContentVisible: card.clientHeight >= 280,
+    npcOpensWithUsableBody: form.clientHeight >= 300,
+    npcScrolls: getComputedStyle(form).overflowY === 'auto' && form.scrollHeight > form.clientHeight,
+  };
+  clock.style.height = '520px';
+  await new Promise(resolve => requestAnimationFrame(resolve));
+  assertions.clockCanResize = Math.abs(clock.getBoundingClientRect().height - 520) <= 1;
+  const output = document.querySelector('#sheet-opening-size-results');
+  output.dataset.status = Object.values(assertions).every(Boolean) ? 'passed' : 'failed';
+  output.textContent = JSON.stringify(assertions, null, 2);
+</script>
+</html>

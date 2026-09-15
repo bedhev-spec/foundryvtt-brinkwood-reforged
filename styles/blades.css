@@ -2969,6 +2969,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .brinkwood.actor.pc.character form.actor-sheet {
+    transition: padding 140ms ease-out;
+  }
+  .brinkwood.actor.pc.character .name-alias {
+    transition: padding 140ms ease-out, row-gap 140ms ease-out;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .brinkwood.actor.pc.character *,
   .brinkwood.actor.pc.character *::before,
@@ -4782,6 +4790,8 @@
 }
 .brinkwood.actor.npc {
   min-width: 320px;
+  min-height: 420px;
+  max-height: calc(100vh - 32px);
   color: var(--bw-ink);
 }
 .brinkwood.actor.npc .window-content {
@@ -4925,6 +4935,7 @@
   align-self: stretch;
 }
 .brinkwood.actor.npc .npc-dossier__editor-tabs {
+  gap: 4px;
   width: 100%;
   border-radius: 8px 8px 0 0;
 }
@@ -4975,14 +4986,23 @@
   min-width: 290px;
   max-width: 560px;
   min-height: 420px;
-  max-height: 680px;
+  max-height: min(680px, 100vh - 32px);
+}
+.brinkwood.actor.clock .window-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
 }
 .brinkwood.actor.clock form.clock-sheet {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
   min-height: 320px;
-  height: 100%;
+  height: auto;
+  flex: 1 1 auto;
   padding: 12px;
   overflow: auto;
   container-type: inline-size;

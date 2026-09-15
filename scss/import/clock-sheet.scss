@@ -5,7 +5,18 @@
   min-width: 290px;
   max-width: 560px;
   min-height: 420px;
-  max-height: 680px;
+  max-height: min(680px, calc(100vh - 32px));
+
+  // Let the card supply the first-open height while a resized window still
+  // constrains the form's scroll surface.
+  .window-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
 }
 
 form.clock-sheet {
@@ -13,7 +24,8 @@ form.clock-sheet {
   width: 100%;
   min-width: 0;
   min-height: 320px;
-  height: 100%;
+  height: auto;
+  flex: 1 1 auto;
   padding: 12px;
   overflow: auto;
   container-type: inline-size;

@@ -87,7 +87,7 @@ test("Clock data rejects progress beyond its size at create and update boundarie
 test("Clock sheet keeps v13 lifecycle and one serialized persistence path", async () => {
   const source = await read("module/blades-clock-sheet.js");
   assert.match(source, /static DEFAULT_OPTIONS/);
-  assert.match(source, /position: \{ width: 520, height: 640 \}/);
+  assert.match(source, /position: \{ width: 520, height: "auto" \}/);
   assert.match(source, /form: \{ closeOnSubmit: false, submitOnChange: false \}/);
   assert.match(source, /static PARTS[\s\S]*?scrollable: \[""\]/);
   assert.match(source, /get title\(\)[\s\S]*?TYPES\.Actor\.clock[\s\S]*?return `\$\{typeLabel\}: \$\{this\.document\.name\}`/);
@@ -186,7 +186,9 @@ test("Clock SCSS owns centered direct-segment geometry inside the shared ruled c
   ]);
   assert.match(entrypoint, /&\.actor\.clock\s*\{\s*@import 'import\/clock-sheet\.scss';/);
   assert.match(scss, /form\.clock-sheet[\s\S]*?min-height: 320px/);
-  assert.match(scss, /& \{[\s\S]*?min-width: 290px;[\s\S]*?max-width: 560px;[\s\S]*?min-height: 420px;[\s\S]*?max-height: 680px/);
+  assert.match(scss, /& \{[\s\S]*?min-width: 290px;[\s\S]*?max-width: 560px;[\s\S]*?min-height: 420px;[\s\S]*?max-height: min\(680px, calc\(100vh - 32px\)\)/);
+  assert.match(scss, /\.window-content\s*\{[^}]*flex:\s*1 1 auto;[^}]*height:\s*auto;/);
+  assert.match(scss, /form\.clock-sheet\s*\{[^}]*height:\s*auto;[^}]*flex:\s*1 1 auto;/);
   assert.match(scss, /overflow: auto/);
   assert.match(scss, /clock-sheet__card[\s\S]*?grid-template-rows: auto minmax\(280px, 1fr\)[\s\S]*?width: 100%/);
   assert.match(scss, /clock-sheet__header[\s\S]*?grid-template-columns: minmax\(160px, 1fr\) 132px[\s\S]*?width: 100%/);

@@ -5,9 +5,12 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = file => readFile(new URL(file, root), "utf8");
 
-test("NPC initially fits its complete dossier while retaining manual resizing", async () => {
+test("NPC starts with a definite usable height while retaining manual resizing", async () => {
   const source = await read("module/blades-npc-sheet.js");
-  assert.match(source, /position:\s*\{\s*width:\s*640,\s*height:\s*"auto"\s*\}/);
+  assert.match(source, /position:\s*\{\s*width:\s*640,\s*height:\s*760\s*\}/);
+  const styles = await read("scss/import/npc-sheet.scss");
+  assert.match(styles, /\.npc-dossier__editor-tabs\s*\{[^}]*gap:\s*4px;/);
+  assert.match(styles, /min-height:\s*420px;[\s\S]*?max-height:\s*calc\(100vh - 32px\)/);
   assert.match(source, /window:\s*\{\s*resizable:\s*true\s*\}/);
 });
 
